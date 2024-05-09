@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Car;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
+    private string $key = 'cars';
+    private array $metaData = ['active' => 'cars'];
+    private array $relations = ['rents', 'oilChanges'];
     private array $rules = [
         'state_number' => ['required', 'string'],
         'brand' => ['required', 'string'],
@@ -20,15 +23,12 @@ class CarController extends Controller
     ];
 
     public function __construct(
-        private readonly string $key = 'cars',
-        private readonly array $metaData = ['active' => $this->key],
-        private readonly array $relations = ['rents', 'penalties'],
-        private User $model,
+        private Car $model,
     ) {}
 
     public function index()
     {
-        $data = $this->model->with($this->relations)->all();
+        $data = $this->model->with($this->relations)->get();
 
         return view("admin.$this->key.index", compact('data') + $this->metaData);
     }

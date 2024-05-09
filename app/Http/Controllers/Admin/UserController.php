@@ -9,6 +9,9 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    private string $key = 'users';
+    private array $metaData = ['active' => 'users'];
+    private array $relations = ['rents', 'penalties'];
     private array $rules = [
         'name' => ['required', 'string'],
         'phone' => ['sometimes', 'string', 'regex:/^87\d{8}$/'],
@@ -17,9 +20,6 @@ class UserController extends Controller
     ];
 
     public function __construct(
-        private readonly string $key = 'users',
-        private readonly array $metaData = ['active' => $this->key],
-        private readonly array $relations = ['rents', 'penalties'],
         private User $model,
     ) {}
 

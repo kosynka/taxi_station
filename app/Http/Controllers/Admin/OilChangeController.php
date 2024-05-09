@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class OilChangeController extends Controller
 {
+    private string $key = 'oilchanges';
+    private array $metaData = ['active' => 'oilchanges'];
+    private array $relations = ['car'];
     private array $rules = [
         'car_id' => ['required', 'integer', 'exists:cars,id'],
         'mileage' => ['required', 'integer', 'min:0'],
@@ -15,9 +18,6 @@ class OilChangeController extends Controller
     ];
 
     public function __construct(
-        private readonly string $key = 'oil_changes',
-        private readonly array $metaData = ['active' => $this->key],
-        private readonly array $relations = ['car'],
         private OilChange $model,
     ) {}
 

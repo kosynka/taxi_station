@@ -30,4 +30,20 @@ class Car extends Model
     {
         return $this->hasMany(Rent::class, 'car_id', 'id');
     }
+
+    public function today()
+    {
+        return $this->rents()->whereDate('start_at', '>=', now()->format('Y-m-d'))->first();
+    }
+
+    public function getStatus(): array
+    {
+        return match ($this->status) {
+            'on_rent' => ['success', 'На прокате'],
+            'in_parking' => ['danger', 'На стоянке'],
+            'at_service' => ['warning', 'На сервисе'],
+            'parking_fine' => ['secondary', 'На штраф стоянке'],
+            default => ['light', 'Неизвестно'],
+        };
+    }
 }

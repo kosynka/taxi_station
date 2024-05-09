@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class RentController extends Controller
 {
+    private string $key = 'rents';
+    private array $metaData = ['active' => 'rents'];
+    private array $relations = ['car', 'driver', 'penalty'];
     private array $rules = [
         'car_id' => ['required', 'integer', 'exists:cars,id'],
         'driver_id' => ['required', 'integer', 'exists:drivers,id'],
@@ -17,9 +20,6 @@ class RentController extends Controller
     ];
 
     public function __construct(
-        private readonly string $key = 'rents',
-        private readonly array $metaData = ['active' => $this->key],
-        private readonly array $relations = ['car', 'driver', 'penalty'],
         private Rent $model,
     ) {}
 

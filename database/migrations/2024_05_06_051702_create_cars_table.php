@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('brand');
             $table->string('model');
             $table->unsignedInteger('year')->default(0);
-            $table->enum('status', ['on_rent', 'in_parking', 'at_service', 'investor'])->default('in_parking');
+            $table->enum('status', ['on_rent', 'in_parking', 'at_service', 'parking_fine'])->default('in_parking');
             $table->unsignedBigInteger('mileage')->default(0);
             $table->unsignedBigInteger('deposit')->default(0);
             $table->unsignedBigInteger('rent_sum')->default(0);

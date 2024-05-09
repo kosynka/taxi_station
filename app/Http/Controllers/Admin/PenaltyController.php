@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class PenaltyController extends Controller
 {
+    private string $key = 'penalties';
+    private array $metaData = ['active' => 'penalties'];
+    private array $relations = ['rent'];
     private array $rules = [
         'rent_id' => ['required', 'integer', 'exists:rents,id'],
         'received_at' => ['required', 'date'],
@@ -17,9 +20,6 @@ class PenaltyController extends Controller
     ];
 
     public function __construct(
-        private readonly string $key = 'penalties',
-        private readonly array $metaData = ['active' => $this->key],
-        private readonly array $relations = ['rent'],
         private Penalty $model,
     ) {}
 

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Car;
+use App\Models\Rent;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -167,5 +168,7 @@ class DatabaseSeeder extends Seeder
         foreach ($cars as $car) {
             Car::create($car);
         }
+
+        Rent::factory(200)->create();
     }
 }

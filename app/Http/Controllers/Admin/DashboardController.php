@@ -7,9 +7,7 @@ use App\Models\Rent;
 
 class DashboardController extends Controller
 {
-    public function __construct(
-        private readonly array $metaData = ['active' => 'dashboard'],
-    ) {}
+    private array $metaData = ['active' => 'dashboard'];
 
     public function dashboard()
     {
