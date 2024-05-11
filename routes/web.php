@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OilChangeController;
@@ -28,7 +30,11 @@ Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'admin']], funct
 
     Route::group(['prefix' => '/users', 'controller' => UserController::class], function () {
         Route::get('/', 'index')->name('users.index');
+        Route::post('/', 'store')->name('users.store');
+        Route::get('/create', 'create')->name('users.create');
         Route::get('/{id}', 'show')->name('users.show');
+        Route::post('/{id}', 'update')->name('users.update');
+        Route::get('/{id}/delete', 'delete')->name('users.delete');
     });
 
     Route::group(['prefix' => '/cars', 'controller' => CarController::class], function () {

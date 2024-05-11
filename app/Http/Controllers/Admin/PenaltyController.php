@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -25,7 +27,7 @@ class PenaltyController extends Controller
 
     public function index()
     {
-        $data = $this->model->with($this->relations)->all();
+        $data = $this->model->with($this->relations)->get();
 
         return view("admin.$this->key.index", compact('data') + $this->metaData);
     }

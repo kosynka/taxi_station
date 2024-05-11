@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Car;
 use App\Models\OilChange;
 use Illuminate\Http\Request;
 
@@ -23,7 +26,7 @@ class OilChangeController extends Controller
 
     public function index()
     {
-        $data = $this->model->with($this->relations)->all();
+        $data = Car::with('oilChanges')->get();
 
         return view("admin.$this->key.index", compact('data') + $this->metaData);
     }

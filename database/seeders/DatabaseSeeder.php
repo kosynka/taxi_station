@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\Car;
+use App\Models\OilChange;
 use App\Models\Rent;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -166,7 +169,25 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($cars as $car) {
-            Car::create($car);
+            $car = Car::create($car);
+
+            OilChange::create([
+                'car_id' => $car->id,
+                'mileage' => rand(1000, 5000),
+                'changed_at' => date('Y-m-d', strtotime('-2 year')),
+            ]);
+
+            OilChange::create([
+                'car_id' => $car->id,
+                'mileage' => rand(5000, 10000),
+                'changed_at' => date('Y-m-d', strtotime('-1 year')),
+            ]);
+
+            OilChange::create([
+                'car_id' => $car->id,
+                'mileage' => rand(10000, 15000),
+                'changed_at' => date('Y-m-d', strtotime('-1 week')),
+            ]);
         }
 
         Rent::factory(200)->create();

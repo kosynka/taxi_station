@@ -12,17 +12,17 @@
             </li>
 
             <li>
-                <a href="" class="nav-link {{ isset($active) && $active == 'oilchanges' ? 'active' : '' }}">
+                <a href="{{ route('oilchanges.index') }}" class="nav-link {{ isset($active) && $active == 'oilchanges' ? 'active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="currentColor"
                             d="M22 12.5s2 2.17 2 3.5a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.33 2-3.5 2-3.5M6 6h4a1 1 0 0 1 1 1a1 1 0 0 1-1 1H9v2h2c.74 0 1.39.4 1.73 1l6.51-3.76l3.26 1.89c.5.27.64.87.37 1.37c-.28.47-.87.64-1.37.36l-2.1-1.21l-3.65 6.32c-.34.61-1 1.03-1.75 1.03H5a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h2V8H6a1 1 0 0 1-1-1a1 1 0 0 1 1-1m-1 6v3h9l2.06-3.57l-3.46 2l-.91-1.43zM.38 9.21L2.09 7.5c.41-.39 1.02-.39 1.41 0s.39 1 0 1.41l-1.71 1.71c-.39.38-1.02.38-1.41 0C0 10.23 0 9.6.38 9.21" />
                     </svg>
-                    Замены масла
+                    Замена масла
                 </a>
             </li>
 
             <li>
-                <a href="" class="nav-link {{ isset($active) && $active == 'users' ? 'active' : '' }}">
+                <a href="{{ route('users.index') }}" class="nav-link {{ isset($active) && $active == 'users' ? 'active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="feather feather-users align-text-bottom" aria-hidden="true">
@@ -35,8 +35,8 @@
                 </a>
             </li>
 
-            <li>
-                <a href="" class="nav-link {{ isset($active) && $active == 'rents' ? 'active' : '' }}">
+            <!-- <li>
+                <a href="{{ route('rents.index') }}" class="nav-link {{ isset($active) && $active == 'rents' ? 'active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="feather feather-bar-chart-2 align-text-bottom" aria-hidden="true">
@@ -49,14 +49,14 @@
             </li>
 
             <li>
-                <a href="" class="nav-link {{ isset($active) && $active == 'penalties' ? 'active' : '' }}">
+                <a href="{{ route('penalties.index') }}" class="nav-link {{ isset($active) && $active == 'penalties' ? 'active' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="currentColor"
                             d="M9.5 10.5H12a1 1 0 0 0 0-2h-1V8a1 1 0 0 0-2 0v.55a2.5 2.5 0 0 0 .5 4.95h1a.5.5 0 0 1 0 1H8a1 1 0 0 0 0 2h1v.5a1 1 0 0 0 2 0v-.55a2.5 2.5 0 0 0-.5-4.95h-1a.5.5 0 0 1 0-1M21 12h-3V3a1 1 0 0 0-.5-.87a1 1 0 0 0-1 0l-3 1.72l-3-1.72a1 1 0 0 0-1 0l-3 1.72l-3-1.72a1 1 0 0 0-1 0A1 1 0 0 0 2 3v16a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-6a1 1 0 0 0-1-1M5 20a1 1 0 0 1-1-1V4.73l2 1.14a1.08 1.08 0 0 0 1 0l3-1.72l3 1.72a1.08 1.08 0 0 0 1 0l2-1.14V19a3 3 0 0 0 .18 1Zm15-1a1 1 0 0 1-2 0v-5h2Z" />
                     </svg>
                     Штрафы
                 </a>
-            </li>
+            </li> -->
         </ul>
 
         <!-- <h6

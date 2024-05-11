@@ -2,7 +2,6 @@
 
 @section('content')
     </br><h2>Машины</h2>
-    <h3>{{ now()->format('Y-m-d H:i') }}</h3>
 
     <!-- <a href="{{ route('cars.create') }}" class="btn btn-sm btn-success">
         Добавить новый автомобиль
@@ -18,7 +17,7 @@
                     <th scope="col">Модель</th>
                     <th scope="col">год</th>
                     <th scope="col">пробег</th>
-                    <th scope="col">сумма аренды</th>
+                    <th scope="col">стоимость аренды</th>
                     <th scope="col">Статус</th>
                     <th scope="col">Водитель</th>
                 </tr>

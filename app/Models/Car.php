@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Car extends Model
 {
@@ -26,9 +29,26 @@ class Car extends Model
         return $this->hasMany(OilChange::class, 'car_id', 'id');
     }
 
+    public function lastOilChange(): ?OilChange
+    {
+        return $this->oilChanges()->orderBy('changed_at', 'desc')->first();
+    }
+
     public function rents(): HasMany
     {
         return $this->hasMany(Rent::class, 'car_id', 'id');
+    }
+
+    public function penalties(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Penalty::class,
+            Rent::class,
+            'car_id',
+            'rent_id',
+            'id',
+            'id',
+        );
     }
 
     public function today()
@@ -45,5 +65,25 @@ class Car extends Model
             'parking_fine' => ['secondary', 'На штраф стоянке'],
             default => ['light', 'Неизвестно'],
         };
+    }
+
+    public function getLastOilChangeStatus(): string
+    {
+        $lastOilChange = $this->lastOilChange();
+
+        if ($lastOilChange !== null) {
+            $changedAt = $lastOilChange->changed_at;
+            $monthsAgo = now()->diffInMonths($changedAt);
+
+            if ($monthsAgo < 3) {
+                return 'success';
+            } elseif ($monthsAgo < 6) {
+                return 'warning';
+            } else {
+                return 'danger';
+            }
+        }
+
+        return 'light';
     }
 }

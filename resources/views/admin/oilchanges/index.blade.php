@@ -1,11 +1,10 @@
 @extends('main')
 
 @section('content')
-    </br><h2>Машины</h2>
-    <h3>{{ now()->format('Y-m-d H:i') }}</h3>
+    </br><h2>Замена масла</h2>
 
     <!-- <a href="{{ route('cars.create') }}" class="btn btn-sm btn-success">
-        Добавить новый автомобиль
+        Добавить новую замену масла
     </a> -->
 
     <div class="table-responsive">
@@ -18,9 +17,8 @@
                     <th scope="col">Модель</th>
                     <th scope="col">год</th>
                     <th scope="col">пробег</th>
-                    <th scope="col">сумма аренды</th>
-                    <th scope="col">Статус</th>
-                    <th scope="col">Водитель</th>
+                    <th scope="col">Последняя замена</th>
+                    <th scope="col">История замен</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,12 +30,25 @@
                         <td>{{ $item->model }}</td>
                         <td>{{ $item->year }}</td>
                         <td>{{ $item->mileage }} км</td>
-                        <td>{{ $item->rent_sum }} тг</td>
                         <td>
-                            <span class="badge rounded-pill bg-{{ $item->getStatus()[0] }}">{{ $item->getStatus()[1] }}</span>
+                            @php
+                                $lastOilChange = $item->lastOilChange();
+                            @endphp
+
+                            @if (isset($lastOilChange))
+                                <h6>
+                                    <span class="badge bg-{{ $item->getLastOilChangeStatus()}}">
+                                        {{ $lastOilChange->changed_at->diffForHumans() }}
+                                    </span>
+                                    на {{ $lastOilChange->mileage }}км
+                                </h6>
+                            @endif
                         </td>
                         <td>
-                            {{ $item->today()?->driver->name }}
+                            @foreach($item->oilChanges as $oilChange)
+                                {{ $oilChange->changed_at->format('Y.m.d') }} на {{ $oilChange->mileage }}км
+                                </br>
+                            @endforeach
                         </td>
                     </tr>
                 @endforeach

@@ -14,12 +14,32 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
+    <h5 class="text-muted w-100" type="text">
+        <div id="auto-datetime"></div>
+    </h5>
     <!-- <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search"
         aria-label="Search"> -->
 
+    <h5 class="text-muted" type="text">
+        {{ auth()->user()->email }}
+    </h5>
     <div class="navbar-nav">
-        <div class="nav-item text-nowrap">
+        <div class="nav-item text-nowrap text-muted">
             <a class="nav-link px-3" href="{{ route('my.logout') }}">Выйти</a>
         </div>
     </div>
 </header>
+
+<script>
+    function updateTime() {
+        var now = new Date();
+        var date = now.toLocaleDateString();
+        var time = now.toLocaleTimeString();
+        var dateTimeString = date + ' ' + time;
+        document.getElementById('auto-datetime').textContent = dateTimeString;
+    }
+
+    setInterval(updateTime, 1000);
+
+    updateTime();
+</script>
