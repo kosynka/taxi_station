@@ -7,19 +7,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     private string $key = 'users';
     private array $metaData = ['active' => 'users'];
     private array $relations = ['rents', 'penalties'];
-    private array $rules = [
-        'name' => ['required', 'string'],
-        'phone' => ['sometimes', 'string', 'regex:/^87\d{8}$/'],
-        'email' => ['required', 'email:rfc,dns', 'unique:users,email'],
-        'password' => ['required', 'string', 'min:5', 'confirmed'],
-    ];
 
     public function __construct(
         private User $model,
@@ -49,9 +43,15 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate($this->rules);
+        $data = $request->validate([
+            'name' => ['required', 'string'],
+            'phone' => ['sometimes', 'string', 'regex:/^87\d{9}$/'],
+            'email' => ['sometimes', 'email:rfc,dns', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:5'],
+        ]);
 
-        $data['role'] = 'driver';
+        $data['role'] = 'taxi_driver';
+        $data['password'] = Hash::make($data['password']);
 
         $this->model->create($data);
 
@@ -62,7 +62,30 @@ class UserController extends Controller
     {
         $item = $this->model->findOrFail($id);
 
-        $data = $request->validate($this->rules);
+        $data = $request->validate([
+            'name' => ['nullable', 'string'],
+            'phone' => ['nullable', 'string', 'regex:/^87\d{9}$/'],
+            'email' => ['nullable', 'email:rfc,dns', "unique:users,email,$id"],
+            'password' => ['nullable', 'string', 'min:5'],
+        ]);
+
+        if (!isset($data['name']) || $data['name'] === null) {
+            unset($data['name']);
+        }
+
+        if (!isset($data['phone']) || $data['phone'] === null) {
+            unset($data['phone']);
+        }
+
+        if (!isset($data['email']) || $data['email'] === null) {
+            unset($data['email']);
+        }
+
+        if (isset($data['password']) && $data['password'] !== null) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
 
         $item->update($data);
         $item->save();

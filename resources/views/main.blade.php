@@ -84,6 +84,20 @@
             @include('app.sidebar')
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                @if(session()->has('success'))
+                    <div class="mt-1 alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session()->get('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @foreach($errors->all() as $error)
+                    <div class="mt-1 alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Ошибка</strong> {{ $error }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endforeach
+
                 @yield('content')
             </main>
         </div>
