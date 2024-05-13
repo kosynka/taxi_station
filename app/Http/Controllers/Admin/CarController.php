@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\CarStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Car;
 use Illuminate\Http\Request;
@@ -11,22 +12,17 @@ use Illuminate\Http\Request;
 class CarController extends Controller
 {
     private string $key = 'cars';
-    private array $metaData = ['active' => 'cars'];
+    private array $metaData = [];
     private array $relations = ['rents', 'oilChanges'];
-    private array $rules = [
-        'state_number' => ['required', 'string'],
-        'brand' => ['required', 'string'],
-        'model' => ['required', 'string'],
-        'year' => ['required', 'integer', 'min:0'],
-        'status' => ['required', 'string', 'in:on_rent,in_parking,at_service,investor'],
-        'mileage' => ['required', 'integer', 'min:0'],
-        'deposit' => ['required', 'integer', 'min:0'],
-        'rent_sum' => ['required', 'integer', 'min:0'],
-    ];
 
     public function __construct(
         private Car $model,
-    ) {}
+    ) {
+        $this->metaData = [
+            'active' => 'cars',
+            'statuses' => array_column(CarStatus::cases(), 'value'),
+        ];
+    }
 
     public function index()
     {
@@ -49,7 +45,16 @@ class CarController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate($this->rules);
+        $data = $request->validate([
+            'state_number' => ['required', 'string'],
+            'brand' => ['required', 'string'],
+            'model' => ['required', 'string'],
+            'year' => ['nullable', 'integer', 'min:0'],
+            'status' => ['required', 'string', 'in:on_rent,in_parking,at_service,investor'],
+            'mileage' => ['nullable', 'integer', 'min:0'],
+            'deposit' => ['nullable', 'integer', 'min:0'],
+            'rent_sum' => ['nullable', 'integer', 'min:0'],
+        ]);
 
         $this->model->create($data);
 
@@ -60,7 +65,16 @@ class CarController extends Controller
     {
         $item = $this->model->findOrFail($id);
 
-        $data = $request->validate($this->rules);
+        $data = $request->validate([
+            'state_number' => ['required', 'string'],
+            'brand' => ['required', 'string'],
+            'model' => ['required', 'string'],
+            'year' => ['nullable', 'integer', 'min:0'],
+            'status' => ['required', 'string', 'in:on_rent,in_parking,at_service,parking_fine'],
+            'mileage' => ['nullable ', 'integer', 'min:0'],
+            'deposit' => ['nullable', 'integer', 'min:0'],
+            'rent_sum' => ['nullable', 'integer', 'min:0'],
+        ]);
 
         $item->update($data);
         $item->save();
