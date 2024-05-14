@@ -29,8 +29,8 @@
     <div class="mb-3">
         <label for="status" class="form-label">Статус</label>
         <select name="status" class="form-select">
-            @foreach($statuses as $status)
-                <option value="{{ $status['name'] }}">{{ $status['text'] }}</option>
+            @foreach($statuses as $status => $text)
+                <option value="{{ $status }}">{{ $text }}</option>
             @endforeach
         </select>
     </div>

@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->enum('role', ['admin', 'taxi_driver'])->default('taxi_driver');
+            $table->enum('role', ['admin', 'employee', 'taxi_driver'])->default('taxi_driver');
+            $table->unsignedBigInteger('balance')->nullable();
             $table->string('iin')->nullable()->unique();
             $table->string('email')->nullable()->unique();
             $table->string('phone')->nullable();

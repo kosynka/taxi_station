@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\CarStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Car;
 use Illuminate\Http\Request;
@@ -20,7 +19,7 @@ class CarController extends Controller
     ) {
         $this->metaData = [
             'active' => 'cars',
-            'statuses' => array_column(CarStatus::cases(), 'value'),
+            'statuses' => Car::getStatuses(),
         ];
     }
 
@@ -52,7 +51,6 @@ class CarController extends Controller
             'year' => ['nullable', 'integer', 'min:0'],
             'status' => ['required', 'string', 'in:on_rent,in_parking,at_service,investor'],
             'mileage' => ['nullable', 'integer', 'min:0'],
-            'deposit' => ['nullable', 'integer', 'min:0'],
             'rent_sum' => ['nullable', 'integer', 'min:0'],
         ]);
 
@@ -72,7 +70,6 @@ class CarController extends Controller
             'year' => ['nullable', 'integer', 'min:0'],
             'status' => ['required', 'string', 'in:on_rent,in_parking,at_service,parking_fine'],
             'mileage' => ['nullable ', 'integer', 'min:0'],
-            'deposit' => ['nullable', 'integer', 'min:0'],
             'rent_sum' => ['nullable', 'integer', 'min:0'],
         ]);
 

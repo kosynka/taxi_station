@@ -14,6 +14,8 @@
         </a>
     </h2>
 
+    <input class="form-control" id="myInput" type="text" placeholder="Поиск">
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -26,7 +28,7 @@
                     <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="myTable">
                 @foreach($data as $item)
                     <tr>
                         <td>{{ $item->id }}</td>

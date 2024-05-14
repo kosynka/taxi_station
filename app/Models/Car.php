@@ -20,9 +20,13 @@ class Car extends Model
         'year',
         'status',
         'mileage',
-        'deposit',
         'rent_sum',
     ];
+
+    public static $on_rent = 'on_rent';
+    public static $in_parking = 'in_parking';
+    public static $at_service = 'at_service';
+    public static $parking_fine = 'parking_fine';
 
     public function oilChanges(): HasMany
     {
@@ -56,14 +60,23 @@ class Car extends Model
         return $this->rents()->whereDate('start_at', '>=', now()->format('Y-m-d'))->first();
     }
 
-    public function getStatus(): array
+    public static function getStatuses(): array
+    {
+        return [
+            'on_rent' => 'На прокате',
+            'in_parking' => 'На стоянке',
+            'at_service' => 'На обслуживании',
+            'parking_fine' => 'На штраф стоянке',
+        ];
+    }
+
+    public function getStatus(): ?array
     {
         return match ($this->status) {
             'on_rent' => ['success', 'На прокате'],
             'in_parking' => ['danger', 'На стоянке'],
-            'at_service' => ['warning', 'На сервисе'],
+            'at_service' => ['warning', 'На обслуживании'],
             'parking_fine' => ['secondary', 'На штраф стоянке'],
-            default => ['light', 'Неизвестно'],
         };
     }
 

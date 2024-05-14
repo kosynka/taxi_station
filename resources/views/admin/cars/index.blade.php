@@ -14,6 +14,8 @@
         </a>
     </h2>
 
+    <input class="form-control" id="myInput" type="text" placeholder="Поиск">
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -30,7 +32,7 @@
                     <th scope="col">Водитель</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="myTable">
                 @foreach($data as $item)
                     <tr>
                         <td>{{ $item->id }}</td>
@@ -60,4 +62,15 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 @endsection
