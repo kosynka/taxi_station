@@ -99,8 +99,7 @@
 
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input value="{{ $data->password != null ? $data->password : old('password') }}" type="text"
-                            class="form-control" name="password" id="password" required>
+                        <input type="text" class="form-control" name="password" id="password" required>
                         <label for="password" class="form-label">Пароль</label>
                     </div>
                 </div>
