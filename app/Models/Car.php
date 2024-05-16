@@ -15,12 +15,27 @@ class Car extends Model
 
     protected $fillable = [
         'state_number',
+        'vin',
+        'carcass',
         'brand',
         'model',
+        'engine_capacity',
         'year',
-        'status',
+        'color',
         'mileage',
-        'rent_sum',
+        'amount',
+        'status',
+
+        'photo_1',
+        'photo_2',
+        'photo_3',
+        'photo_4',
+        'photo_5',
+        'photo_6',
+        'photo_7',
+        'photo_8',
+        'photo_9',
+        'photo_10',
     ];
 
     public static $on_rent = 'on_rent';
@@ -30,17 +45,19 @@ class Car extends Model
 
     public function oilChanges(): HasMany
     {
-        return $this->hasMany(OilChange::class, 'car_id', 'id');
+        return $this->hasMany(OilChange::class, 'car_id', 'id')
+            ->orderBy('changed_at', 'desc');
     }
 
     public function lastOilChange(): ?OilChange
     {
-        return $this->oilChanges()->orderBy('changed_at', 'desc')->first();
+        return $this->oilChanges()->first();
     }
 
     public function rents(): HasMany
     {
-        return $this->hasMany(Rent::class, 'car_id', 'id');
+        return $this->hasMany(Rent::class, 'car_id', 'id')
+            ->orderBy('start_at', 'desc');
     }
 
     public function penalties(): HasManyThrough
@@ -52,7 +69,7 @@ class Car extends Model
             'rent_id',
             'id',
             'id',
-        );
+        )->orderBy('received_date', 'desc');
     }
 
     public function today()

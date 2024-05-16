@@ -20,7 +20,6 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col"></th>
                     <th scope="col">Гос.номер</th>
                     <th scope="col">Марка</th>
@@ -35,7 +34,6 @@
             <tbody id="myTable">
                 @foreach($data as $item)
                     <tr>
-                        <td>{{ $item->id }}</td>
                         <td>
                             <a class="link-primary" href="{{ route('cars.show', ['id' => $item->id]) }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -50,7 +48,7 @@
                         <td>{{ $item->model }}</td>
                         <td>{{ $item->year }}</td>
                         <td>{{ $item->mileage }} км</td>
-                        <td>{{ $item->rent_sum }} тг</td>
+                        <td>@convert($item->amount)</td>
                         <td>
                             <span class="badge rounded-pill bg-{{ $item->getStatus()[0] }}">{{ $item->getStatus()[1] }}</span>
                         </td>
@@ -62,15 +60,4 @@
             </tbody>
         </table>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            $("#myInput").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
-    </script>
 @endsection

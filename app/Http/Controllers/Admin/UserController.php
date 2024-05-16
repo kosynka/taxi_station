@@ -45,8 +45,13 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string'],
-            'phone' => ['sometimes', 'string', 'regex:/^87\d{9}$/'],
-            'email' => ['sometimes', 'email:rfc,dns', 'unique:users,email'],
+            'phone' => ['nullable', 'string', 'regex:/^87\d{9}$/'],
+            'email' => ['nullable', 'email:rfc,dns', 'unique:users,email'],
+            'balance' => ['nullable', 'integer'],
+            'iin' => ['nullable', 'string', 'regex:/^\d{12}$/', 'unique:users,iin'],
+            'driver_license_number' => ['nullable', 'string'],
+            'driver_license_date' => ['nullable', 'date'],
+            'driver_license_categories' => ['nullable', 'string'],
             'password' => ['required', 'string', 'min:5'],
         ]);
 
@@ -66,6 +71,11 @@ class UserController extends Controller
             'name' => ['nullable', 'string'],
             'phone' => ['nullable', 'string', 'regex:/^87\d{9}$/'],
             'email' => ['nullable', 'email:rfc,dns', "unique:users,email,$id"],
+            'balance' => ['nullable', 'integer'],
+            'iin' => ['nullable', 'string', 'regex:/^\d{12}$/', "unique:users,iin,$id"],
+            'driver_license_number' => ['nullable', 'string'],
+            'driver_license_date' => ['nullable', 'date'],
+            'driver_license_categories' => ['nullable', 'string'],
             'password' => ['nullable', 'string', 'min:5'],
         ]);
 

@@ -20,18 +20,16 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col"></th>
-                    <th scope="col">Имя</th>
+                    <th scope="col">ФИО</th>
                     <th scope="col">Почта</th>
-                    <th scope="col">Телефон</th>
-                    <th scope="col"></th>
+                    <th scope="col">ИИН</th>
+                    <th scope="col">Баланс</th>
                 </tr>
             </thead>
             <tbody id="myTable">
                 @foreach($data as $item)
                     <tr>
-                        <td>{{ $item->id }}</td>
                         <td>
                             <a class="link-primary" href="{{ route('users.show', ['id' => $item->id]) }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -44,7 +42,8 @@
                         </td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->email }}</td>
-                        <td>{{ $item->phone }}</td>
+                        <td>{{ $item->iin }}</td>
+                        <td>@convert($item->balance)</td>
                     </tr>
                 @endforeach
             </tbody>

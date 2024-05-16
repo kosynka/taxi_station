@@ -7,12 +7,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Car;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class CarController extends Controller
 {
     private string $key = 'cars';
     private array $metaData = [];
-    private array $relations = ['rents', 'oilChanges'];
+    private array $relations = ['rents.driver', 'penalties', 'oilChanges'];
 
     public function __construct(
         private Car $model,
@@ -49,10 +50,30 @@ class CarController extends Controller
             'brand' => ['required', 'string'],
             'model' => ['required', 'string'],
             'year' => ['nullable', 'integer', 'min:0'],
-            'status' => ['required', 'string', 'in:on_rent,in_parking,at_service,investor'],
             'mileage' => ['nullable', 'integer', 'min:0'],
-            'rent_sum' => ['nullable', 'integer', 'min:0'],
+            'amount' => ['nullable', 'integer', 'min:0'],
+
+            'photo_1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo_2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo_3' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo_4' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo_5' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo_6' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo_7' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo_8' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo_9' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo_10' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
         ]);
+
+        $data['status'] = 'in_parking';
+
+        for ($i = 1; $i <= 10; $i++) {
+            $name = "photo_$i";
+
+            if (isset($data[$name])) {
+                $data[$name] = $this->storeFile($name);
+            }
+        }
 
         $this->model->create($data);
 
@@ -70,8 +91,37 @@ class CarController extends Controller
             'year' => ['nullable', 'integer', 'min:0'],
             'status' => ['required', 'string', 'in:on_rent,in_parking,at_service,parking_fine'],
             'mileage' => ['nullable ', 'integer', 'min:0'],
-            'rent_sum' => ['nullable', 'integer', 'min:0'],
+            'amount' => ['nullable', 'integer', 'min:0'],
+
+            'photo1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo3' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo4' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo5' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo6' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo7' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo8' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo9' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'photo10' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
         ]);
+
+        $currentFiles = [];
+
+        for ($i = 1; $i <= 10; $i++) {
+            $name = "photo_$i";
+
+            if (request()->file($name) != null) {
+                $data[$name] = $this->storeFile($name);
+
+                if ($item->{$name} !== null) {
+                    $currentFiles[] = $item->{$name};
+                }
+            }
+        }
+
+        if (!empty($currentFiles)) {
+            File::delete($currentFiles);
+        }
 
         $item->update($data);
         $item->save();
@@ -86,5 +136,14 @@ class CarController extends Controller
         $item->delete();
 
         return redirect()->route("$this->key.index")->with(['success' => 'Успешно удален']);
+    }
+
+    private function storeFile(string $name): string
+    {
+        $file = request()->file($name);
+        $filePath = uniqid('image_') . '_' . now()->format('Y_m_d_h_i_s') . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('images', $filePath, ['disk' => 'public']);
+
+        return "storage/images/$filePath";
     }
 }

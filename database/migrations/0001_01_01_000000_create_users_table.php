@@ -18,12 +18,15 @@ return new class extends Migration
 
             $table->string('name');
             $table->enum('role', ['admin', 'employee', 'taxi_driver'])->default('taxi_driver');
-            $table->unsignedBigInteger('balance')->nullable();
-            $table->string('iin')->nullable()->unique();
             $table->string('email')->nullable()->unique();
             $table->string('phone')->nullable();
             $table->string('password');
-            $table->foreignId('current_team_id')->nullable();
+
+            $table->bigInteger('balance')->nullable();
+            $table->string('iin')->nullable()->unique();
+            $table->string('driver_license_number')->nullable();
+            $table->date('driver_license_date')->nullable();
+            $table->string('driver_license_categories')->nullable();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

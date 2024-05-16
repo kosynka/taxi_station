@@ -18,7 +18,7 @@ class Rent extends Model
         'driver_id',
         'start_at',
         'end_at',
-        'deposit',
+        'amount',
     ];
 
     protected function casts(): array

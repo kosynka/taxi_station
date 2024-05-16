@@ -27,6 +27,12 @@ class User extends Authenticatable
         'role',
         'password',
         'phone',
+
+        'balance',
+        'iin',
+        'driver_license_number',
+        'driver_license_date',
+        'driver_license_categories',
     ];
 
     protected $hidden = [
@@ -46,11 +52,20 @@ class User extends Authenticatable
 
     public function rents(): HasMany
     {
-        return $this->hasMany(Rent::class, 'driver_id', 'id');
+        return $this->hasMany(Rent::class, 'driver_id', 'id')
+            ->orderBy('start_at', 'desc');
     }
 
     public function penalties(): HasManyThrough
     {
-        return $this->hasManyThrough(Penalty::class, Rent::class, 'driver_id', 'rent_id', 'id', 'id');
+        return $this->hasManyThrough(
+            Penalty::class,
+            Rent::class,
+            'driver_id',
+            'rent_id',
+            'id',
+            'id',
+        )
+        ->orderBy('received_date', 'desc');
     }
 }

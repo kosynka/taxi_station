@@ -32,7 +32,7 @@
                         <td>{{ $item->model }}</td>
                         <td>{{ $item->year }}</td>
                         <td>{{ $item->mileage }} км</td>
-                        <td>{{ $item->rent_sum }} тг</td>
+                        <td>{{ $item->amount }} тг</td>
                         <td>
                             <span class="badge rounded-pill bg-{{ $item->getStatus()[0] }}">{{ $item->getStatus()[1] }}</span>
                         </td>

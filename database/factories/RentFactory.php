@@ -23,7 +23,7 @@ class RentFactory extends Factory
             'driver_id' => random_int(1, 48),
             'start_at' => fake()->dateTimeBetween('-2 days', 'now')->format('Y-m-d H:i:s'),
             'end_at' => null,
-            'deposit' => null,
+            'amount' => null,
         ];
     }
 }

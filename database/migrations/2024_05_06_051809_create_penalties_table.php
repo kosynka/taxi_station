@@ -21,8 +21,10 @@ return new class extends Migration
                 ->constrained('rents')
                 ->nullOnDelete();
 
-            $table->timestamp('received_at');
-            $table->timestamp('paid_at')->nullable();
+            $table->enum('type', ['fine', 'accident'])->default('fine');
+            $table->string('protocol_file_path')->nullable();
+            $table->date('received_date');
+            $table->date('paid_date')->nullable();
             $table->unsignedBigInteger('amount');
             $table->enum('status', ['unpaid', 'paid_with_discount', 'paid_without_discount'])->default('unpaid');
             $table->timestamps();

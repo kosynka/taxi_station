@@ -18,7 +18,7 @@ class RentController extends Controller
         'driver_id' => ['required', 'integer', 'exists:drivers,id'],
         'start_at' => ['required', 'date'],
         'end_at' => ['sometimes', 'date', 'after:start_at'],
-        'deposit' => ['sometimes', 'integer', 'min:0'],
+        'amount' => ['sometimes', 'integer', 'min:0'],
     ];
 
     public function __construct(

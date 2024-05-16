@@ -3,10 +3,6 @@
 @section('content')
     </br><h2>Замена масла</h2>
 
-    <!-- <a href="{{ route('cars.create') }}" class="btn btn-sm btn-success">
-        Добавить новую замену масла
-    </a> -->
-
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>

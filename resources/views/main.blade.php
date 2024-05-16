@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="ru">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +19,8 @@
 
     <!-- Favicons -->
     <link rel="manifest" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
+    <link rel="mask-icon" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/safari-pinned-tab.svg"
+        color="#712cf9">
     <link rel="icon" href="https://getbootstrap.com/docs/5.2/assets/img/favicons/favicon.ico">
     <meta name="theme-color" content="#712cf9">
 
@@ -87,17 +89,17 @@
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 @if(session()->has('success'))
-                    <div class="mt-1 alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session()->get('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                <div class="mt-1 alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session()->get('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 @endif
 
                 @foreach($errors->all() as $error)
-                    <div class="mt-1 alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Ошибка</strong> {{ $error }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                <div class="mt-1 alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Ошибка</strong> {{ $error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 @endforeach
 
                 @yield('content')
@@ -112,6 +114,46 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
         integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
         crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    var text = $(this).text().toLowerCase();
+                    var index = text.indexOf(value);
+                    $(this).toggle(index > -1);
+                });
+            });
+
+            $("#penalty-search-input").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#penalty-search-table tr").filter(function () {
+                    var text = $(this).text().toLowerCase();
+                    var index = text.indexOf(value);
+                    $(this).toggle(index > -1);
+                });
+            });
+
+            $("#rent-search-input").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#rent-search-table tr").filter(function () {
+                    var text = $(this).text().toLowerCase();
+                    var index = text.indexOf(value);
+                    $(this).toggle(index > -1);
+                });
+            });
+
+            $("#oilchange-search-input").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#oilchange-search-table tr").filter(function () {
+                    var text = $(this).text().toLowerCase();
+                    var index = text.indexOf(value);
+                    $(this).toggle(index > -1);
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
