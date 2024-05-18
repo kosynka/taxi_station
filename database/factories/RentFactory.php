@@ -20,7 +20,6 @@ class RentFactory extends Factory
     public function definition(): array
     {
         $car = Car::query()
-            ->where('role', '!=', 'admin')
             ->inRandomOrder()
             ->first();
 
@@ -33,7 +32,7 @@ class RentFactory extends Factory
 
         return [
             'car_id' => $car->id,
-            'driver_id' => random_int(1, 48),
+            'driver_id' => random_int(2, 48),
             'start_date' => $startDate,
             'amount' => $car->amount,
         ];
