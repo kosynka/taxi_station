@@ -2,7 +2,7 @@
 
 @section('content')
 </br>
-<h2>Машины</h2>
+<h2>Аренда</h2>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -115,17 +115,22 @@
                 <table class="table table-lg table-bordered mb-4">
                     <thead>
                         <tr>
-                            <th>Машина</th>
+                            <th>Сумма</th>
+                        
+                            <th scope="col"></th>
+                            <th scope="col"></th>
 
                             @foreach($dates as $date)
-                                <th>{{ $date }}</th>
+                            <th>@convert($amountByDays[$date])</th>
                             @endforeach
                         </tr>
                         <tr>
-                            <th>Сумма</th>
+                            <th scope="col">Гос.номер</th>
+                            <th scope="col">Марка</th>
+                            <th scope="col">Модель</th>
 
                             @foreach($dates as $date)
-                                <th>@convert($amountByDays[$date])</th>
+                                <th>{{ $date }}</th>
                             @endforeach
                         </tr>
                     </thead>
@@ -133,8 +138,9 @@
                     <tbody id="history-search-table">
                         @foreach($historyByDays as $key => $item)
                             <tr>
-                                <td>{{ $item['car']->brand }} {{ $item['car']->model }}</td>
-
+                                <td>{{ $item['car']->brand }}</td>
+                                <td>{{ $item['car']->model }}</td>
+                                <td>{{ $item['car']->state_number }}</td>
                                 @foreach ($item['dates'] as $date => $rent)
                                     <td>
                                         {{ $rent?->driver->name }}
