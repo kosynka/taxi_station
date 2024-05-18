@@ -26,8 +26,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->nullOnDelete();
 
-            $table->timestamp('start_at');
-            $table->timestamp('end_at')->nullable();
+            $table->date('start_date');
             $table->unsignedBigInteger('amount')->nullable();
             $table->timestamps();
         });

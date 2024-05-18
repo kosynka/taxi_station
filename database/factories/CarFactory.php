@@ -19,7 +19,7 @@ class CarFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'amount' => $this->faker->numberBetween(10000, 30000),
         ];
     }
 }

@@ -152,6 +152,15 @@
                     $(this).toggle(index > -1);
                 });
             });
+
+            $("#history-search-input").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#history-search-table tr").filter(function () {
+                    var text = $(this).text().toLowerCase();
+                    var index = text.indexOf(value);
+                    $(this).toggle(index > -1);
+                });
+            });
         });
     </script>
 </body>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,11 +39,6 @@ class Car extends Model
         'photo_10',
     ];
 
-    public static $on_rent = 'on_rent';
-    public static $in_parking = 'in_parking';
-    public static $at_service = 'at_service';
-    public static $parking_fine = 'parking_fine';
-
     public function oilChanges(): HasMany
     {
         return $this->hasMany(OilChange::class, 'car_id', 'id')
@@ -57,7 +53,21 @@ class Car extends Model
     public function rents(): HasMany
     {
         return $this->hasMany(Rent::class, 'car_id', 'id')
-            ->orderBy('start_at', 'desc');
+            ->orderBy('start_date', 'desc');
+    }
+
+    public function todayRent(): ?Model
+    {
+        return $this->rents()
+            ->whereDate('start_date', '=', now()->toDateString())
+            ->first();
+    }
+
+    public function historyRent(): Collection
+    {
+        return $this->rents()
+            ->whereDate('start_date', '<=', now()->toDateString())
+            ->get();
     }
 
     public function penalties(): HasManyThrough
@@ -72,28 +82,28 @@ class Car extends Model
         )->orderBy('received_date', 'desc');
     }
 
-    public function today()
-    {
-        return $this->rents()->whereDate('start_at', '>=', now()->format('Y-m-d'))->first();
-    }
+    public const ON_RENT = 'on_rent';
+    public const IN_PARKING = 'in_parking';
+    public const AT_SERVICE = 'at_service';
+    public const PARKING_FINE = 'parking_fine';
 
     public static function getStatuses(): array
     {
         return [
-            'on_rent' => 'На прокате',
-            'in_parking' => 'На стоянке',
-            'at_service' => 'На обслуживании',
-            'parking_fine' => 'На штраф стоянке',
+            self::ON_RENT => 'На прокате',
+            self::IN_PARKING => 'На стоянке',
+            self::AT_SERVICE => 'На обслуживании',
+            self::PARKING_FINE => 'На штраф стоянке',
         ];
     }
 
     public function getStatus(): ?array
     {
         return match ($this->status) {
-            'on_rent' => ['success', 'На прокате'],
-            'in_parking' => ['danger', 'На стоянке'],
-            'at_service' => ['warning', 'На обслуживании'],
-            'parking_fine' => ['secondary', 'На штраф стоянке'],
+            self::ON_RENT => ['success', 'На прокате'],
+            self::IN_PARKING => ['danger', 'На стоянке'],
+            self::AT_SERVICE => ['warning', 'На обслуживании'],
+            self::PARKING_FINE => ['secondary', 'На штраф стоянке'],
         };
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Car;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,12 +19,23 @@ class RentFactory extends Factory
      */
     public function definition(): array
     {
+        $car = Car::query()
+            ->where('role', '!=', 'admin')
+            ->inRandomOrder()
+            ->first();
+
+        $startDate = fake()->dateTimeBetween('-30 days', 'now')->format('Y-m-d');
+
+        if ($startDate === now()->format('Y-m-d')) {
+            $car->status = Car::ON_RENT;
+            $car->save();
+        }
+
         return [
-            'car_id' => random_int(1, 73),
+            'car_id' => $car->id,
             'driver_id' => random_int(1, 48),
-            'start_at' => fake()->dateTimeBetween('-2 days', 'now')->format('Y-m-d H:i:s'),
-            'end_at' => null,
-            'amount' => null,
+            'start_date' => $startDate,
+            'amount' => $car->amount,
         ];
     }
 }

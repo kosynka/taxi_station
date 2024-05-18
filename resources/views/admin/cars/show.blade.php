@@ -224,8 +224,8 @@
                 <thead>
                     <tr>
                         <th scope="col"></th>
-                        <th scope="col">Время начала</th>
-                        <th scope="col">Время конца</th>
+                        <th scope="col">Дата</th>
+                        <!-- <th scope="col">Время конца</th> -->
                         <th scope="col">Сумма</th>
                         <th scope="col">Водитель</th>
                     </tr>
@@ -236,13 +236,13 @@
                         <tr>
                             <td scope="col">{{ $rent->id }}</td>
                             <td scope="col">
-                                {{ $rent->start_at->format('Y.m.d') }}
-                                ({{ $rent->start_at->diffForHumans() }})
+                                {{ $rent->start_date->format('Y.m.d') }}
+                                ({{ $rent->start_date->diffForHumans() }})
                             </td>
-                            <td scope="col">
-                                {{ $rent->end_at ? $rent->end_at->format('Y.m.d') : '' }}
-                                {{ $rent->end_at ? "(" . $rent->end_at->diffForHumans() . ")" : '' }}
-                            </td>
+                            <!-- <td scope="col"> -->
+                                <!-- {{ $rent->end_at ? $rent->end_at->format('Y.m.d') : '' }} -->
+                                <!-- {{ $rent->end_at ? "(" . $rent->end_at->diffForHumans() . ")" : '' }} -->
+                            <!-- </td> -->
                             <td scope="col">@convert($rent->amount)</td>
                             <td scope="col">
                                 <a class="link-primary" href="{{ route('users.show', ['id' => $rent->driver->id]) }}">

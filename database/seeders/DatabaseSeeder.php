@@ -169,8 +169,8 @@ class DatabaseSeeder extends Seeder
             ['state_number' => '977BAG02', 'brand' => 'Geely', 'model' => 'ATLAS', 'year' => 2024, 'amount' => 20000],
         ];
 
-        foreach ($cars as $car) {
-            $car = Car::create($car);
+        foreach ($cars as $item) {
+            $car = Car::create($item);
 
             OilChange::create([
                 'car_id' => $car->id,
@@ -198,7 +198,7 @@ class DatabaseSeeder extends Seeder
         }
 
         Rent::factory()
-            ->count(150)
+            ->count(1000)
             ->has(Penalty::factory()->count(3))
             ->create();
     }

@@ -16,17 +16,14 @@ class Rent extends Model
     protected $fillable = [
         'car_id',
         'driver_id',
-        'start_at',
+        'start_date',
         'end_at',
         'amount',
     ];
 
     protected function casts(): array
     {
-        return [
-            'start_at' => 'datetime',
-            'end_at' => 'datetime',
-        ];
+        return ['start_date' => 'date:d.m.Y'];
     }
 
     public function car(): BelongsTo

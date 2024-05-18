@@ -53,7 +53,7 @@
                             <span class="badge rounded-pill bg-{{ $item->getStatus()[0] }}">{{ $item->getStatus()[1] }}</span>
                         </td>
                         <td>
-                            {{ $item->today()?->driver->name }}
+                            {{ $item->todayRent()?->driver->name }}
                         </td>
                     </tr>
                 @endforeach

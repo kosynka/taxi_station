@@ -187,8 +187,8 @@
                 <thead>
                     <tr>
                         <th scope="col"></th>
-                        <th scope="col">Время начала</th>
-                        <th scope="col">Время конца</th>
+                        <th scope="col">Дата</th>
+                        <!-- <th scope="col">Время конца</th> -->
                         <th scope="col">Сумма</th>
                         <th scope="col">Машина</th>
                     </tr>
@@ -198,8 +198,8 @@
                     @foreach($data->rents as $rent)
                         <tr>
                             <td scope="col">{{ $rent->id }}</td>
-                            <td scope="col">{{ $rent->start_at }}</td>
-                            <td scope="col">{{ $rent->end_at }}</td>
+                            <td scope="col">{{ $rent->start_date }}</td>
+                            <!-- <td scope="col">{{ $rent->end_at }}</td> -->
                             <td scope="col">@convert($rent->amount)</td>
                             <td scope="col">
                                 <a class="link-primary" href="{{ route('cars.show', ['id' => $rent->car->id]) }}">
