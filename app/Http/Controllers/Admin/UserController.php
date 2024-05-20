@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -45,15 +46,38 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string'],
-            'phone' => ['nullable', 'string', 'regex:/^87\d{9}$/'],
+            'phone' => ['required', 'string', 'regex:/^87\d{9}$/'],
             'email' => ['nullable', 'email:rfc,dns', 'unique:users,email'],
             'balance' => ['nullable', 'integer'],
-            'iin' => ['nullable', 'string', 'regex:/^\d{12}$/', 'unique:users,iin'],
-            'driver_license_number' => ['nullable', 'string'],
-            'driver_license_date' => ['nullable', 'date'],
-            'driver_license_categories' => ['nullable', 'string'],
+
+            'iin' => ['required', 'string', 'regex:/^\d{12}$/', 'unique:users,iin'],
+            'id_doc_number' => ['required', 'string'],
+            'id_doc_date' => ['required', 'string'],
+            'id_doc_until_date' => ['required', 'date'],
+            'registration_address' => ['required', 'string'],
+            'residence_address' => ['required', 'string'],
+            'driver_license_number' => ['required', 'string'],
+            'driver_license_date' => ['required', 'date'],
+            'driver_license_categories' => ['required', 'string'],
             'password' => ['required', 'string', 'min:5'],
+
+            'id_doc_photo_1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'id_doc_photo_2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'driver_license_photo_1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'driver_license_photo_2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
         ]);
+
+        $fileNames = ['id_doc_photo_1', 'id_doc_photo_2', 'driver_license_photo_1', 'driver_license_photo_2'];
+
+        foreach ($fileNames as $name) {
+            if (request()->file($name) != null) {
+                $data[$name] = $this->storeFile($name);
+
+                if (isset($data[$name])) {
+                    $data[$name] = $this->storeFile($name);
+                }
+            }
+        }
 
         $data['role'] = 'taxi_driver';
         $data['password'] = Hash::make($data['password']);
@@ -68,15 +92,26 @@ class UserController extends Controller
         $item = $this->model->findOrFail($id);
 
         $data = $request->validate([
-            'name' => ['nullable', 'string'],
-            'phone' => ['nullable', 'string', 'regex:/^87\d{9}$/'],
+            'name' => ['required', 'string'],
+            'phone' => ['required', 'string', 'regex:/^87\d{9}$/'],
             'email' => ['nullable', 'email:rfc,dns', "unique:users,email,$id"],
             'balance' => ['nullable', 'integer'],
-            'iin' => ['nullable', 'string', 'regex:/^\d{12}$/', "unique:users,iin,$id"],
-            'driver_license_number' => ['nullable', 'string'],
-            'driver_license_date' => ['nullable', 'date'],
-            'driver_license_categories' => ['nullable', 'string'],
+
+            'iin' => ['required', 'string', 'regex:/^\d{12}$/', "unique:users,iin,$id"],
+            'id_doc_number' => ['required', 'string'],
+            'id_doc_date' => ['required', 'string'],
+            'id_doc_until_date' => ['required', 'date'],
+            'registration_address' => ['required', 'string'],
+            'residence_address' => ['required', 'string'],
+            'driver_license_number' => ['required', 'string'],
+            'driver_license_date' => ['required', 'date'],
+            'driver_license_categories' => ['required', 'string'],
             'password' => ['nullable', 'string', 'min:5'],
+
+            'id_doc_photo_1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'id_doc_photo_2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'driver_license_photo_1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
+            'driver_license_photo_2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
         ]);
 
         if (!isset($data['name']) || $data['name'] === null) {
@@ -97,6 +132,22 @@ class UserController extends Controller
             unset($data['password']);
         }
 
+        $fileNames = ['id_doc_photo_1', 'id_doc_photo_2', 'driver_license_photo_1', 'driver_license_photo_2'];
+
+        foreach ($fileNames as $name) {
+            if (request()->file($name) != null) {
+                $data[$name] = $this->storeFile($name);
+
+                if ($item->{$name} !== null) {
+                    $currentFiles[] = $item->{$name};
+                }
+            }
+
+            if (!empty($currentFiles)) {
+                File::delete($currentFiles);
+            }
+        }
+
         $item->update($data);
         $item->save();
 
@@ -110,5 +161,14 @@ class UserController extends Controller
         $item->delete();
 
         return redirect()->route("$this->key.index")->with(['success' => 'Успешно удален']);
+    }
+
+    private function storeFile(string $name): string
+    {
+        $file = request()->file($name);
+        $filePath = uniqid('image_') . '_' . now()->format('Y_m_d_h_i_s') . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('images', $filePath, ['disk' => 'public']);
+
+        return "storage/images/$filePath";
     }
 }

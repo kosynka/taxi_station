@@ -47,9 +47,13 @@ class CarController extends Controller
     {
         $data = $request->validate([
             'state_number' => ['required', 'string'],
+            'vin' => ['required', 'string'],
+            'carcass' => ['nullable', 'string'],
             'brand' => ['required', 'string'],
             'model' => ['required', 'string'],
             'year' => ['nullable', 'integer', 'min:0'],
+            'engine_capacity' => ['nullable', 'string'],
+            'color' => ['nullable', 'string'],
             'mileage' => ['nullable', 'integer', 'min:0'],
             'amount' => ['nullable', 'integer', 'min:0'],
 
@@ -86,9 +90,13 @@ class CarController extends Controller
 
         $data = $request->validate([
             'state_number' => ['required', 'string'],
+            'vin' => ['required', 'string'],
+            'carcass' => ['nullable', 'string'],
             'brand' => ['required', 'string'],
             'model' => ['required', 'string'],
             'year' => ['nullable', 'integer', 'min:0'],
+            'engine_capacity' => ['nullable', 'string'],
+            'color' => ['nullable', 'string'],
             'status' => ['required', 'string', 'in:on_rent,in_parking,at_service,parking_fine'],
             'mileage' => ['nullable ', 'integer', 'min:0'],
             'amount' => ['nullable', 'integer', 'min:0'],

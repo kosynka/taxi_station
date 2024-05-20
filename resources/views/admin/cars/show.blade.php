@@ -49,9 +49,9 @@
 
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input value="{{ $data->vin !== null ? $data->vin : old('vin') }}" type="text" class="form-control" name="vin"
-                            id="vin">
-                        <label for="vin" class="form-label">№ кузова</label>
+                        <input value="{{ $data->carcass !== null ? $data->carcass : old('carcass') }}" type="text" class="form-control" name="carcass"
+                            id="carcass">
+                        <label for="carcass" class="form-label">№ кузова</label>
                     </div>
                 </div>
 

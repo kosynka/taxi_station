@@ -12,6 +12,16 @@
     </div>
 
     <div class="form-floating mb-3">
+        <input type="text" class="form-control" name="vin" id="vin" required>
+        <label for="vin" class="form-label">VIN <i style="color: red;">*</i></label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" name="vin" id="vin">
+        <label for="vin" class="form-label">№ кузова</label>
+    </div>
+
+    <div class="form-floating mb-3">
         <input type="text" class="form-control" name="brand" id="brand" required>
         <label for="brand" class="form-label">Марка <i style="color: red;">*</i></label>
     </div>
@@ -22,8 +32,18 @@
     </div>
 
     <div class="form-floating mb-3">
-        <input type="number" class="form-control" name="year" id="year" min="1900">
-        <label for="year" class="form-label">Год</label>
+        <input type="text" class="form-control" name="engine_capacity" id="engine_capacity" required>
+        <label for="engine_capacity" class="form-label">Объём двигателя <i style="color: red;">*</i></label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input type="number" class="form-control" name="year" id="year" min="1900" required>
+        <label for="year" class="form-label">Год <i style="color: red;">*</i></label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" name="color" id="color">
+        <label for="color" class="form-label">Цвет</label>
     </div>
 
     <div class="form-floating mb-3">
