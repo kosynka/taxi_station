@@ -62,38 +62,72 @@
                 <div class="col">
                     <div class="form-floating mb-3">
                         <input value="{{ $data->iin != null ? $data->iin : old('iin') }}" type="text"
-                            class="form-control" name="iin" id="iin">
+                            class="form-control" name="iin" id="iin" required>
                         <label for="iin" class="form-label">ИИН</label>
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input
-                            value="{{ $data->driver_license_number != null ? $data->driver_license_number : old('driver_license_number') }}"
-                            type="text" class="form-control" name="driver_license_number" id="driver_license_number">
+                        <input value="{{ $data->id_doc_number != null ? $data->id_doc_number : old('id_doc_number') }}" type="text"
+                            class="form-control" name="id_doc_number" id="id_doc_number" required>
+                        <label for="id_doc_number" class="form-label">Номер удостоверения личности</label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input value="{{ $data->id_doc_date != null ? $data->id_doc_date : old('id_doc_date') }}" type="text"
+                            class="form-control" name="id_doc_date" id="id_doc_date" required>
+                        <label for="id_doc_date" class="form-label">Дата выдачи удостоверения личности</label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input value="{{ $data->id_doc_until_date != null ? $data->id_doc_until_date : old('id_doc_until_date') }}" type="text"
+                            class="form-control" name="id_doc_until_date" id="id_doc_until_date" required>
+                        <label for="id_doc_until_date" class="form-label">Срок действия удостоверения личности</label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input value="{{ $data->registration_address != null ? $data->registration_address : old('registration_address') }}"
+                            type="text" class="form-control" name="registration_address" id="registration_address" required>
+                        <label for="registration_address" class="form-label">Адрес прописки</label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input value="{{ $data->residence_address != null ? $data->residence_address : old('residence_address') }}" type="text"
+                            class="form-control" name="residence_address" id="residence_address" required>
+                        <label for="residence_address" class="form-label">Адрес проживания</label>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input value="{{ $data->driver_license_number != null ? $data->driver_license_number : old('driver_license_number') }}"
+                            type="text" class="form-control" name="driver_license_number" id="driver_license_number" required>
                         <label for="driver_license_number" class="form-label">Номер водительского удостоверения</label>
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input
-                            value="{{ $data->driver_license_date != null ? $data->driver_license_date : old('driver_license_date') }}"
-                            type="date" class="form-control" name="driver_license_date" id="driver_license_date">
-                        <label for="driver_license_date" class="form-label">Дата выдачи водительского
-                            удостоверения</label>
+                        <input value="{{ $data->driver_license_date != null ? $data->driver_license_date : old('driver_license_date') }}"
+                            type="date" class="form-control" name="driver_license_date" id="driver_license_date" required>
+                        <label for="driver_license_date" class="form-label">Дата выдачи водительских пра</label>
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input
-                            value="{{ $data->driver_license_categories != null ? $data->driver_license_categories : old('driver_license_categories') }}"
-                            type="text" class="form-control" name="driver_license_categories"
-                            id="driver_license_categories">
-                        <label for="driver_license_categories" class="form-label">Категории водительского
-                            удостоверения</label>
+                        <input value="{{ $data->driver_license_categories != null ? $data->driver_license_categories : old('driver_license_categories') }}"
+                            type="text" class="form-control" name="driver_license_categories" id="driver_license_categories" required>
+                        <label for="driver_license_categories" class="form-label">Категории водительских пра</label>
                     </div>
                 </div>
 
@@ -101,6 +135,54 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="password" id="password" required>
                         <label for="password" class="form-label">Пароль</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row row-cols-1">
+                <div class="vstack gap-3">
+                    <div class="col">
+                        <div class="form bg-light border mb-3">
+                            <label for="id_doc_photo_1" class="form-label">Фото удостоверения личности - лицевая сторона</label>
+                            <input type="file" class="form-control" name="id_doc_photo_1" id="id_doc_photo_1">
+
+                            @if($data->id_doc_photo_1 != null)
+                                <img src="{{ url($data->id_doc_photo_1) }}" style="max-width: 600px; max-height: 600px;">
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form bg-light border mb-3">
+                            <label for="id_doc_photo_2" class="form-label">Фото удостоверения личности - лицевая сторон</label>
+                            <input type="file" class="form-control" name="id_doc_photo_2" id="id_doc_photo_2">
+
+                            @if($data->id_doc_photo_2 != null)
+                                <img src="{{ url($data->id_doc_photo_2) }}" style="max-width: 600px; max-height: 600px;">
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form bg-light border mb-3">
+                            <label for="driver_license_photo_1" class="form-label">Фото водительских прав - лицевая сторон</label>
+                            <input type="file" class="form-control" name="driver_license_photo_1" id="driver_license_photo_1">
+
+                            @if($data->driver_license_photo_1 != null)
+                                <img src="{{ url($data->driver_license_photo_1) }}" style="max-width: 600px; max-height: 600px;">
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form bg-light border mb-3">
+                            <label for="driver_license_photo_2" class="form-label">Фото водительских прав - лицевая сторон</label>
+                            <input type="file" class="form-control" name="driver_license_photo_2" id="driver_license_photo_2">
+
+                            @if($data->driver_license_photo_2 != null)
+                                <img src="{{ url($data->driver_license_photo_2) }}" style="max-width: 600px; max-height: 600px;">
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

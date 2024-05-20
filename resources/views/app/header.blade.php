@@ -25,7 +25,7 @@
     </h5>
     <div class="navbar-nav">
         <div class="nav-item text-nowrap text-muted">
-            <a class="nav-link px-3" href="{{ route('my.logout') }}">Выйти</a>
+            <a class="nav-link px-3" href="{{ route('custom.logout') }}">Выйти</a>
         </div>
     </div>
 </header>

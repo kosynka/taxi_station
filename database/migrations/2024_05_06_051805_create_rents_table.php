@@ -28,6 +28,7 @@ return new class extends Migration
 
             $table->date('start_date');
             $table->unsignedBigInteger('amount')->nullable();
+            $table->string('contract_file_path')->nullable();
             $table->timestamps();
         });
     }

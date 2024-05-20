@@ -20,14 +20,25 @@ class DatabaseSeeder extends Seeder
         $now = date('Y-m-d H:i:s');
 
         User::create([
-            'name' => 'Виктория Администратор',
+            'name' => 'Администратор',
             'role' => 'admin',
-            'email' => 'victoria.admin@mail.ru',
+            'email' => 'admin.admin@mail.ru',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'email_verified_at' => $now,
             'created_at' => $now,
             'updated_at' => $now,
+
+            'iin' => '940928400000',
+            'id_doc_number' => '123456789',
+            'id_doc_date' => '2020-01-01',
+            'id_doc_until_date' => '2025-01-01',
+            'registration_address' => 'г. Алматы, ул. Абая, д. 1',
+            'residence_address' => 'г. Алматы, ул. Абая, д. 1',
+
+            'driver_license_number' => '123456789',
+            'driver_license_date' => '2020-01-01',
+            'driver_license_categories' => 'A B C',
         ]);
 
         $drivers = [

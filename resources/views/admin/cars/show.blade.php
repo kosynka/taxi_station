@@ -73,8 +73,8 @@
 
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input value="{{ $data->engine_capacity !== null ? $data->engine_capacity : old('engine_capacity') }}" type="number"
-                            class="form-control" name="engine_capacity" id="engine_capacity" step="0.1" min="0" max="100">
+                        <input value="{{ $data->engine_capacity !== null ? $data->engine_capacity : old('engine_capacity') }}" type="text"
+                            class="form-control" name="engine_capacity" id="engine_capacity">
                         <label for="engine_capacity" class="form-label">Объём двигателя</label>
                     </div>
                 </div>

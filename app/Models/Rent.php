@@ -19,6 +19,7 @@ class Rent extends Model
         'start_date',
         'end_at',
         'amount',
+        'contract_file_path',
     ];
 
     protected function casts(): array

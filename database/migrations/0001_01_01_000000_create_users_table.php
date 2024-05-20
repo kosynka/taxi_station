@@ -23,10 +23,21 @@ return new class extends Migration
             $table->string('password');
 
             $table->bigInteger('balance')->nullable();
+
             $table->string('iin')->nullable()->unique();
+            $table->string('id_doc_number')->nullable();
+            $table->date('id_doc_date')->nullable();
+            $table->date('id_doc_until_date')->nullable();
+            $table->string('registration_address')->nullable();
+            $table->string('residence_address')->nullable();
             $table->string('driver_license_number')->nullable();
             $table->date('driver_license_date')->nullable();
             $table->string('driver_license_categories')->nullable();
+
+            $table->string('id_doc_photo_1')->nullable();
+            $table->string('id_doc_photo_2')->nullable();
+            $table->string('driver_license_photo_1')->nullable();
+            $table->string('driver_license_photo_2')->nullable();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

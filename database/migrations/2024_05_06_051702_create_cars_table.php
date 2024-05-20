@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('carcass')->nullable();
             $table->string('brand');
             $table->string('model');
-            $table->double('engine_capacity')->nullable();
+            $table->string('engine_capacity')->nullable();
             $table->unsignedInteger('year')->default(2000);
             $table->string('color')->nullable();
             $table->unsignedBigInteger('mileage')->default(0);

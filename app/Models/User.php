@@ -29,10 +29,23 @@ class User extends Authenticatable
         'phone',
 
         'balance',
+
         'iin',
+        'id_doc_number',
+        'id_doc_date',
+        'id_doc_until_date',
+        'registration_address',             // Адрес прописки
+        'residence_address',                // Адрес проживания
+
         'driver_license_number',
         'driver_license_date',
         'driver_license_categories',
+
+        'id_doc_photo_1',
+        'id_doc_photo_2',
+
+        'driver_license_photo_1',
+        'driver_license_photo_2',
     ];
 
     protected $hidden = [

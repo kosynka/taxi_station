@@ -2,31 +2,25 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CarController;
+use App\Http\Controllers\Admin\ContractController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OilChangeController;
 use App\Http\Controllers\Admin\PenaltyController;
 use App\Http\Controllers\Admin\RentController;
 use App\Http\Controllers\Admin\UserController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('dashboard');
-    }
-
-    return redirect('login');
+Route::group(['middleware' => 'refresh_cars', 'controller' => AuthController::class], function () {
+    Route::get('/', 'check')->name('check');
+    Route::get('/custom-logout', 'logout')->name('custom.logout');
 });
-
-Route::get('/my-logout', function () {
-    Auth::logout();
-
-    return redirect('login');
-})->name('my.logout');
 
 Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'admin']], function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/contract', [ContractController::class, 'contract'])->name('contract');
 
     Route::group(['prefix' => '/users', 'controller' => UserController::class], function () {
         Route::get('/', 'index')->name('users.index');
@@ -37,7 +31,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'admin']], funct
         Route::get('/{id}/delete', 'delete')->name('users.delete');
     });
 
-    Route::group(['prefix' => '/cars', 'controller' => CarController::class], function () {
+    Route::group(['prefix' => '/cars', 'middleware' => 'refresh_cars', 'controller' => CarController::class], function () {
         Route::get('/', 'index')->name('cars.index');
         Route::post('/', 'store')->name('cars.store');
         Route::get('/create', 'create')->name('cars.create');
@@ -55,7 +49,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'admin']], funct
         Route::get('/{id}/delete', 'delete')->name('oilchanges.delete');
     });
 
-    Route::group(['prefix' => '/rents', 'controller' => RentController::class], function () {
+    Route::group(['prefix' => '/rents', 'middleware' => 'refresh_cars', 'controller' => RentController::class], function () {
         Route::get('/', 'index')->name('rents.index');
         Route::post('/', 'store')->name('rents.store');
         Route::get('/create', 'create')->name('rents.create');

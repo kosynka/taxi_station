@@ -16,7 +16,7 @@ class RentController extends Controller
 {
     private string $key = 'rents';
     private array $metaData = ['active' => 'rents'];
-    private array $relations = ['car', 'driver', 'penalty'];
+    private array $relations = ['car', 'driver'];
     private array $rules = [
         'car_id' => ['required', 'integer', 'exists:cars,id'],
         'driver_id' => ['required', 'integer', 'exists:drivers,id'],
@@ -36,7 +36,7 @@ class RentController extends Controller
 
         $today = Car::with(['rents' => function ($query) use ($historyStartDate) {
                 $query->whereDate('start_date', '=', $historyStartDate);
-            }])
+            }, 'rents.driver'])
             ->get();
 
         $todayAmount = 0;

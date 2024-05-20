@@ -10,7 +10,7 @@
 
 <div class="modal fade" id="createRentModal{{ $car->state_number }}" tabindex="-1"
     aria-labelledby="createRentModal{{ $car->state_number }}Label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg">
         <form class="demo-form" method="POST" data-parsley-validate="" class="form-horizontal form-label-left" novalidate=""
             enctype="multipart/form-data" action="{{ route('rents.store') }}">
             {{ csrf_field() }}
@@ -32,7 +32,7 @@
 
                     <input name="amount" value="{{ $car->amount }}" hidden>
 
-                    <input class="form-control" name="driver_id" list="datalistOptions" placeholder="Водитель..." style="width: 360px;">
+                    <input class="form-control" name="driver_id" list="datalistOptions" placeholder="Водитель...">
                     <datalist id="datalistOptions">
                         @foreach($drivers as $driver)
                             <option value="{{ $driver->id }}">
