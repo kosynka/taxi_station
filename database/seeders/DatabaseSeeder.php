@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Car;
 use App\Models\OilChange;
 use App\Models\Penalty;
+use App\Models\Permission;
 use App\Models\Rent;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -18,6 +19,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $now = date('Y-m-d H:i:s');
+
+        $permissions = [
+            ['name' => 'create', 'title' => 'Создавать', 'description' => 'Создавать новые записи', 'is_active' => true],
+            ['name' => 'update', 'title' => 'Редактировать', 'description' => 'Редактировать существующие записи', 'is_active' => true],
+            ['name' => 'delete', 'title' => 'Удалять', 'description' => 'Удалять существующие записи', 'is_active' => true],
+        ];
+
+        foreach ($permissions as $data) {
+            Permission::create($data);
+        }
 
         User::create([
             'name' => 'Администратор',
