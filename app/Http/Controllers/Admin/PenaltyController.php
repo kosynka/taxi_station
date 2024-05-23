@@ -14,25 +14,6 @@ class PenaltyController extends Controller
     private string $key = 'penalties';
     private array $metaData;
     private array $relations = ['rent.car', 'rent.driver'];
-    private array $rules = [
-        'rent_id' => ['required', 'integer', 'exists:rents,id'],
-        'received_date' => ['required', 'date'],
-        'paid_date' => [
-            'nullable',
-            'date',
-            'required_if:status,paid_with_discount',
-            'required_if:status,paid_without_discount',
-        ],
-        'amount' => ['required', 'integer', 'min:0'],
-        'status' => ['required', 'in:unpaid,paid_with_discount,paid_without_discount'],
-        'comment' => ['nullable', 'string'],
-        'protocol_file_path' => [
-            'nullable',
-            'mimes:pdf,jpeg,jpg,png',
-            'max:10240',
-            'required_with:status,accident',
-        ],
-    ];
 
     public function __construct(private Penalty $model)
     {
@@ -70,13 +51,6 @@ class PenaltyController extends Controller
         return view("admin.$this->key.index", compact('data') + $this->metaData);
     }
 
-    public function show(int $id)
-    {
-        $data = $this->model->with($this->relations)->findOrFail($id);
-
-        return view("admin.$this->key.show", compact('data') + $this->metaData);
-    }
-
     public function create()
     {
         return view("admin.$this->key.create", $this->metaData);
@@ -84,7 +58,25 @@ class PenaltyController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate($this->rules);
+        $data = $request->validate([
+            'type' => ['required', 'in:fine,accident'],
+            'rent_id' => ['required', 'integer', 'exists:rents,id'],
+            'received' => ['required', 'date'],
+            'paid_date' => [
+                'nullable',
+                'date',
+                'required_if:status,paid_with_discount',
+                'required_if:status,paid_without_discount',
+            ],
+            'amount' => ['required', 'integer', 'min:0'],
+            'status' => ['required', 'in:unpaid,paid_with_discount,paid_without_discount'],
+            'comment' => ['nullable', 'string'],
+            'protocol_file_path' => [
+                'nullable',
+                'mimes:pdf,jpeg,jpg,png',
+                'max:10240',
+            ],
+        ]);
 
         if (request()->file('protocol_file_path') != null) {
             $data['protocol_file_path'] = $this->storeFile('protocol_file_path');
@@ -95,11 +87,35 @@ class PenaltyController extends Controller
         return redirect()->route("$this->key.index")->with(['success' => 'Успешно создан']);
     }
 
+    public function show(int $id)
+    {
+        $data = $this->model->with($this->relations)->findOrFail($id);
+
+        return view("admin.$this->key.show", compact('data') + $this->metaData);
+    }
+
     public function update(int $id, Request $request)
     {
         $item = $this->model->findOrFail($id);
 
-        $data = $request->validate($this->rules);
+        $data = $request->validate([
+            'type' => ['required', 'in:fine,accident'],
+            'received' => ['required', 'date'],
+            'paid_date' => [
+                'nullable',
+                'date',
+                'required_if:status,paid_with_discount',
+                'required_if:status,paid_without_discount',
+            ],
+            'amount' => ['required', 'integer', 'min:0'],
+            'status' => ['required', 'in:unpaid,paid_with_discount,paid_without_discount'],
+            'comment' => ['nullable', 'string'],
+            'protocol_file_path' => [
+                'nullable',
+                'mimes:pdf,jpeg,jpg,png',
+                'max:10240',
+            ],
+        ]);
 
         if (request()->file('protocol_file_path') != null) {
             $data['protocol_file_path'] = $this->storeFile('protocol_file_path');

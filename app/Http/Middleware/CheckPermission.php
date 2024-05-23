@@ -25,5 +25,7 @@ class CheckPermission
 
             return redirect()->back()->with(['error' => 'У вас нет на это прав']);
         }
+
+        return $next($request);
     }
 }

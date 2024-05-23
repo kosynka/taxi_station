@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,16 +22,25 @@ class Penalty extends Model
         'amount',
         'status',
         'comments',
-
         'protocol_file_path',
     ];
 
-    protected function casts(): array
+    protected function received(): Attribute
     {
-        return [
-            'received_date' => 'date',
-            'paid_date' => 'date',
-        ];
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $attributes['received_date']
+                ? Carbon::parse($attributes['received_date'])
+                : null,
+        );
+    }
+
+    protected function paid(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $attributes['paid_date']
+                ? Carbon::parse($attributes['paid_date'])
+                : null,
+        );
     }
 
     public function rent(): BelongsTo

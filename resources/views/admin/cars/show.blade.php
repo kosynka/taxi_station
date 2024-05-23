@@ -189,12 +189,12 @@
                                 @endif
                             </td>
                             <td scope="col">
-                                {{ $penalty->received_date->format('Y.m.d') }}
-                                ({{ $penalty->received_date->diffForHumans() }})
+                                {{ $penalty->received->format('Y.m.d') }}
+                                ({{ $penalty->received->diffForHumans() }})
                             </td>
                             <td scope="col">
-                                {{ $penalty->paid_date->format('Y.m.d') }}
-                                ({{ $penalty->paid_date->diffForHumans() }})
+                                {{ $penalty->paidformat('Y.m.d') }}
+                                ({{ $penalty->paiddiffForHumans() }})
                             </td>
                             <td scope="col">@convert($penalty->amount)</td>
                             <td scope="col">

@@ -131,12 +131,12 @@
                     </div>
                 </div>
 
-                <div class="col">
+                <!-- <div class="col">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="password" id="password" required>
                         <label for="password" class="form-label">Пароль</label>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class="row row-cols-1">
@@ -232,12 +232,12 @@
                                 @endif
                             </td>
                             <td scope="col">
-                                {{ $penalty->received_date->format('Y.m.d') }}
-                                ({{ $penalty->received_date->diffForHumans() }})
+                                {{ $penalty->received->format('Y.m.d') }}
+                                ({{ $penalty->received->diffForHumans() }})
                             </td>
                             <td scope="col">
-                                {{ $penalty->paid_date->format('Y.m.d') }}
-                                ({{ $penalty->paid_date->diffForHumans() }})
+                                {{ $penalty->paidformat('Y.m.d') }}
+                                ({{ $penalty->paiddiffForHumans() }})
                             </td>
                             <td scope="col">@convert($penalty->amount)</td>
                             <td scope="col">

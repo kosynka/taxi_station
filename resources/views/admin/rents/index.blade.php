@@ -170,6 +170,12 @@
                                         </br>
                                         @convert($rent->amount)
 
+                                        @if(isset($rent->penalty))
+                                            <a class="link-{{ $rent->penalty->getType()[0] }}" href="{{ route('penalties.show', ['id' => $rent->penalty]) }}">
+                                                {{ $rent->penalty->getType()[1] }} (@convert($rent->penalty->amount))
+                                            </a>
+                                        @endif
+
                                         @if($rent->getLastComment())
                                             </br>
                                             <small>

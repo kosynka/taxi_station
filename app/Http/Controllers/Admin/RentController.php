@@ -40,7 +40,7 @@ class RentController extends Controller
 
         $today = Car::with(['rents' => function ($query) use ($historyStartDate) {
                 $query->whereDate('start_at', '=', $historyStartDate);
-            }, 'rents.driver'])
+            }, 'rents.driver', 'rents.penalty'])
             ->get();
 
         $todayAmount = 0;

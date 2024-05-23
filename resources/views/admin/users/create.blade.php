@@ -106,12 +106,12 @@
             </div>
         </div>
 
-        <div class="col">
+        <!-- <div class="col">
             <div class="form-floating mb-3">
                 <input value="{{ old('password') }}" type="text" class="form-control" name="password" id="password" required>
                 <label for="password" class="form-label">Пароль <i style="color: red;">*</i></label>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div class="row row-cols-1">

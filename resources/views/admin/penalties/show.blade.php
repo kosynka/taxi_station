@@ -5,29 +5,38 @@
 <h2>
     {{ $data->rent->car->state_number }}
     {{ $data->rent->car->brand }}
-    {{ $data->rent->car->model }}
+    {{ $data->rent->car->model }} </br>
     {{ $data->rent->driver->name }}
 </h2>
 
 <form class="demo-form" method="POST" data-parsley-validate="" class="form-horizontal form-label-left" novalidate=""
-    enctype="multipart/form-data" action="{{ route('penalties.store') }}">
+    enctype="multipart/form-data" action="{{ route('penalties.update', ['id' => $data->id]) }}">
     {{ csrf_field() }}
 
     <div class="form-floating mb-3">
-        <input type="date" class="form-control" name="received_date" id="received_date"
-            value="{{ $data->received_date !== null ? $data->received_date : old('received_date') }}" required>
+        <select name="type" class="form-select" required>
+            @foreach($types as $type => $text)
+                <option value="{{ $type }}" {{ $data->type == $type ? 'selected' : '' }}>{{ $text }}</option>
+            @endforeach
+        </select>
+        <label for="type" class="form-label">Тип <i style="color: red;">*</i></label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input type="date" class="form-control" name="received_date" id="received_date" value="{{ $data->received_date }}"
+            required>
         <label for="received_date" class="form-label">Дата получения <i style="color: red;">*</i></label>
     </div>
 
     <div class="form-floating mb-3">
         <input type="date" class="form-control" name="paid_date" id="paid_date"
-            value="{{ $data->paid_date !== null ? $data->paid_date : old('paid_date') }}" required>
+            value="{{ $data->paid_date ? $data->paid_date : old('paid_date') }}" required>
         <label for="paid_date" class="form-label">Дата оплаты</label>
     </div>
 
     <div class="form-floating mb-3">
         <input type="number" class="form-control" name="amount" id="amount"
-            value="{{ $data->amount !== null ? $data->amount : old('amount') }}" required>
+            value="{{ $data->amount ? $data->amount : old('amount') }}" required>
         <label for="amount" class="form-label">Сумма <i style="color: red;">*</i></label>
     </div>
 
@@ -60,7 +69,7 @@
         <label for="protocol_file_path" class="form-label">
             Протокол
 
-            @if($data->protocol_file_path !== null)
+            @if($data->protocol_file_path)
                 <a target="_blank" href="{{ url($data->protocol_file_path) }}">
                     посмотреть
                 </a>

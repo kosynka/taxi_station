@@ -6,6 +6,15 @@
     enctype="multipart/form-data" action="{{ route('penalties.store') }}">
     {{ csrf_field() }}
 
+    <div class="form-floating mb-3">
+        <select name="type" class="form-select" required>
+            @foreach($types as $type => $text)
+                <option value="{{ $type }}">{{ $text }}</option>
+            @endforeach
+        </select>
+        <label for="type" class="form-label">Тип <i style="color: red;">*</i></label>
+    </div>
+
     <div class="mb-3">
         <input class="form-control" name="rent_id" list="datalistOptions" placeholder="Выберите аренду" required>
         <datalist id="datalistOptions">

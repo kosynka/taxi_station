@@ -87,13 +87,13 @@
                         @endif
                     </td>
                     <td scope="col">
-                        {{ $item->received_date->format('Y.m.d') }}
-                        ({{ $item->received_date->diffForHumans() }})
+                        {{ $item->received->format('Y.m.d') }}
+                        ({{ $item->received->diffForHumans() }})
                     </td>
                     <td scope="col">
-                        @if($item->paid_date)
-                            {{ $item->paid_date->format('Y.m.d') }}
-                            ({{ $item->paid_date->diffForHumans() }})
+                        @if($item->paid)
+                            {{ $item->paid->format('Y.m.d') }}
+                            ({{ $item->paid->diffForHumans() }})
                         @endif
                     </td>
                     <td scope="col">@convert($item->amount)</td>
