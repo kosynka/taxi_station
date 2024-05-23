@@ -193,8 +193,8 @@
                                 ({{ $penalty->received->diffForHumans() }})
                             </td>
                             <td scope="col">
-                                {{ $penalty->paidformat('Y.m.d') }}
-                                ({{ $penalty->paiddiffForHumans() }})
+                                {{ $penalty->paid->format('Y.m.d') }}
+                                ({{ $penalty->paid->diffForHumans() }})
                             </td>
                             <td scope="col">@convert($penalty->amount)</td>
                             <td scope="col">
