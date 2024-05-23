@@ -34,7 +34,7 @@
     <div class="form-floating mb-3">
         <select name="status" class="form-select" required>
             @foreach($statuses as $status => $text)
-                <option value="{{ $status }}" {{ $data->status == $status ? 'selected' : '' }} > }}>{{ $text }}</option>
+                <option value="{{ $status }}" {{ $data->status == $status ? 'selected' : '' }}>{{ $text }}</option>
             @endforeach
         </select>
         <label for="status" class="form-label">Статус <i style="color: red;">*</i></label>

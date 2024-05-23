@@ -25,13 +25,15 @@
                 </a>
             </li>
 
-            <li>
-                <a href="{{ route('users.index') }}"
-                    class="nav-link {{ isset($active) && $active == 'users' ? 'active' : '' }}">
-                    @include('icons.driver')
-                    Водители
-                </a>
-            </li>
+            @if(auth()->user()->roleIs('admin'))
+                <li>
+                    <a href="{{ route('users.index') }}"
+                        class="nav-link {{ isset($active) && $active == 'users' ? 'active' : '' }}">
+                        @include('icons.driver')
+                        Водители
+                    </a>
+                </li>
+            @endif
 
             <li>
                 <a href="{{ route('penalties.index') }}"
