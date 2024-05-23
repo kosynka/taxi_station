@@ -16,15 +16,21 @@ class Rent extends Model
     protected $fillable = [
         'car_id',
         'driver_id',
-        'start_date',
+        'start_at',
         'end_at',
         'amount',
+        'comments',
         'contract_file_path',
+        'contract_with_buy_file_path',
     ];
 
     protected function casts(): array
     {
-        return ['start_date' => 'date:d.m.Y'];
+        return [
+            'start_at' => 'datetime',
+            'end_at' => 'datetime',
+            'comments' => 'array',
+        ];
     }
 
     public function car(): BelongsTo
@@ -40,5 +46,37 @@ class Rent extends Model
     public function penalty(): HasOne
     {
         return $this->hasOne(Penalty::class, 'rent_id', 'id');
+    }
+
+    public function addComment(array $changes): void
+    {
+        $comments = $this->comments ?? [];
+
+        $id = count($comments) + 1;
+
+        $new_comment = [
+            $id => [
+                'id' => $id,
+                'text' => $changes['text'],
+                'old_status' => $this->status,
+                'new_status' => $changes['status'],
+                'user_id' => auth()->user()->id,
+                'created_at' => now()->toDateTimeString(),
+                'updated_at' => now()->toDateTimeString(),
+            ]
+        ];
+
+        $this->comments = $comments + $new_comment;
+    }
+
+    public function getLastComment(): array|bool
+    {
+        $comments = $this->comments ?? [];
+
+        if (empty($comments)) {
+            return false;
+        }
+
+        return end($comments);
     }
 }

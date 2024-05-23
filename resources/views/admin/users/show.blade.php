@@ -77,7 +77,7 @@
 
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input value="{{ $data->id_doc_date != null ? $data->id_doc_date : old('id_doc_date') }}" type="text"
+                        <input value="{{ $data->id_doc_date != null ? $data->id_doc_date : old('id_doc_date') }}" type="date"
                             class="form-control" name="id_doc_date" id="id_doc_date" required>
                         <label for="id_doc_date" class="form-label">Дата выдачи удостоверения личности</label>
                     </div>
@@ -85,7 +85,7 @@
 
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input value="{{ $data->id_doc_until_date != null ? $data->id_doc_until_date : old('id_doc_until_date') }}" type="text"
+                        <input value="{{ $data->id_doc_until_date != null ? $data->id_doc_until_date : old('id_doc_until_date') }}" type="date"
                             class="form-control" name="id_doc_until_date" id="id_doc_until_date" required>
                         <label for="id_doc_until_date" class="form-label">Срок действия удостоверения личности</label>
                     </div>
@@ -280,7 +280,7 @@
                     @foreach($data->rents as $rent)
                         <tr>
                             <td scope="col">{{ $rent->id }}</td>
-                            <td scope="col">{{ $rent->start_date }}</td>
+                            <td scope="col">{{ $rent->start_at }}</td>
                             <!-- <td scope="col">{{ $rent->end_at }}</td> -->
                             <td scope="col">@convert($rent->amount)</td>
                             <td scope="col">

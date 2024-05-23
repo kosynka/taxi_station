@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Penalty;
+use App\Models\Rent;
 use Illuminate\Http\Request;
 
 class PenaltyController extends Controller
@@ -16,18 +17,33 @@ class PenaltyController extends Controller
     private array $rules = [
         'rent_id' => ['required', 'integer', 'exists:rents,id'],
         'received_date' => ['required', 'date'],
-        'paid_date' => ['sometimes', 'date', 'after:received_date'],
+        'paid_date' => [
+            'nullable',
+            'date',
+            'required_if:status,paid_with_discount',
+            'required_if:status,paid_without_discount',
+        ],
         'amount' => ['required', 'integer', 'min:0'],
         'status' => ['required', 'in:unpaid,paid_with_discount,paid_without_discount'],
+        'comment' => ['nullable', 'string'],
+        'protocol_file_path' => [
+            'nullable',
+            'mimes:pdf,jpeg,jpg,png',
+            'max:10240',
+            'required_with:status,accident',
+        ],
     ];
 
-    public function __construct(
-        private Penalty $model,
-    )
+    public function __construct(private Penalty $model)
     {
         $this->metaData = [
             'active' => $this->key,
             'statuses' => Penalty::getStatuses(),
+            'types' => Penalty::getTypes(),
+            'rents' => Rent::with(['driver', 'car'])
+                ->whereDoesntHave('penalty')
+                // ->whereDate('start_at', '=', now()->toDateString())
+                ->get(),
         ];
     }
 
@@ -47,8 +63,8 @@ class PenaltyController extends Controller
             $query->where('status', $request->status);
         }
 
-        $data = $query->orderBy('received_date')
-            ->orderBy('paid_date')
+        $data = $query->orderBy('received_date', 'desc')
+            ->orderBy('paid_date', 'desc')
             ->paginate(50);
 
         return view("admin.$this->key.index", compact('data') + $this->metaData);
@@ -70,6 +86,10 @@ class PenaltyController extends Controller
     {
         $data = $request->validate($this->rules);
 
+        if (request()->file('protocol_file_path') != null) {
+            $data['protocol_file_path'] = $this->storeFile('protocol_file_path');
+        }
+
         $this->model->create($data);
 
         return redirect()->route("$this->key.index")->with(['success' => 'Успешно создан']);
@@ -80,6 +100,10 @@ class PenaltyController extends Controller
         $item = $this->model->findOrFail($id);
 
         $data = $request->validate($this->rules);
+
+        if (request()->file('protocol_file_path') != null) {
+            $data['protocol_file_path'] = $this->storeFile('protocol_file_path');
+        }
 
         $item->update($data);
         $item->save();
@@ -94,5 +118,14 @@ class PenaltyController extends Controller
         $item->delete();
 
         return redirect()->route("$this->key.index")->with(['success' => 'Успешно удален']);
+    }
+
+    private function storeFile(string $name): string
+    {
+        $file = request()->file($name);
+        $filePath = uniqid('image_') . '_' . now()->format('Y_m_d_h_i_s') . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('images', $filePath, ['disk' => 'public']);
+
+        return "storage/images/$filePath";
     }
 }

@@ -17,13 +17,13 @@ class RefreshCars
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $rents = Rent::whereDate('start_date', '=', now()->toDateString())->get();
+        $rents = Rent::whereDate('start_at', '=', now()->toDateString())->get();
 
         if ($rents->count() === 0) {
             $cars = Car::where('status', Car::ON_RENT)->get();
 
             foreach ($cars as $car) {
-                $car->update(['status' => Car::IN_PARKING]);
+                $car->update(['status' => Car::EMPTY]);
                 $car->save();
             }
         }

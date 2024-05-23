@@ -15,27 +15,31 @@ use Illuminate\Support\Facades\Log;
 class RentController extends Controller
 {
     private string $key = 'rents';
-    private array $metaData = ['active' => 'rents'];
+    private array $metaData = [];
     private array $relations = ['car', 'driver'];
     private array $rules = [
         'car_id' => ['required', 'integer', 'exists:cars,id'],
         'driver_id' => ['required', 'integer', 'exists:drivers,id'],
-        'start_date' => ['nullable', 'date'],
+        'start_at' => ['nullable', 'datetime'],
         'amount' => ['sometimes', 'integer', 'min:0'],
     ];
 
     public function __construct(
         private Rent $model,
     ) {
+        $this->metaData = [
+            'active' => 'rents',
+            'statuses' => Car::getStatuses(),
+        ];
     }
 
     public function index()
     {
         $drivers = User::where('role', 'taxi_driver')->get();
-        $historyStartDate = $this->model->min('start_date');
+        $historyStartDate = \Carbon\Carbon::parse($this->model->min('start_at'))->format('Y-m-d');
 
         $today = Car::with(['rents' => function ($query) use ($historyStartDate) {
-                $query->whereDate('start_date', '=', $historyStartDate);
+                $query->whereDate('start_at', '=', $historyStartDate);
             }, 'rents.driver'])
             ->get();
 
@@ -51,11 +55,11 @@ class RentController extends Controller
 
         $notToday = $this->model
             ->with($this->relations)
-            ->whereDate('start_date', '!=', $historyStartDate)
-            ->orderBy('start_date')
+            ->whereDate('start_at', '!=', $historyStartDate)
+            ->orderBy('start_at')
             ->get()
             ->groupBy(function ($date) {
-                return \Carbon\Carbon::parse($date->start_date)->format('d.m.Y');
+                return \Carbon\Carbon::parse($date->start_at)->format('d.m.Y');
             });
 
         $historyByDays = [];
@@ -112,13 +116,13 @@ class RentController extends Controller
         $data = $request->validate([
             'car_id' => ['required', 'integer', 'exists:cars,id'],
             'driver_id' => ['required', 'integer', 'exists:users,id'],
-            'start_date' => ['nullable', 'date'],
+            'start_at' => ['nullable', 'datetime'],
         ]);
 
         $car = Car::find($data['car_id']);
 
-        if (!isset($data['start_date'])) {
-            $data['start_date'] = now()->toDateString();
+        if (!isset($data['start_at'])) {
+            $data['start_at'] = now()->toDateTimeString();
         }
 
         if (!isset($data['amount'])) {

@@ -27,7 +27,16 @@ return new class extends Migration
             $table->unsignedBigInteger('mileage')->default(0);
 
             $table->unsignedBigInteger('amount')->default(0);
-            $table->enum('status', ['on_rent', 'in_parking', 'at_service', 'parking_fine'])->default('in_parking');
+            $table->enum('status', [
+                'empty',
+                'on_rent',
+                'in_parking',
+                'at_service',
+                'parking_fine',
+                'at_owner',
+                'weekend',
+                'accident',
+            ])->default('empty');
 
             $table->string('photo_1')->nullable();
             $table->string('photo_2')->nullable();
@@ -39,6 +48,8 @@ return new class extends Migration
             $table->string('photo_8')->nullable();
             $table->string('photo_9')->nullable();
             $table->string('photo_10')->nullable();
+
+            $table->json('comments')->nullable();
 
             $table->timestamps();
         });

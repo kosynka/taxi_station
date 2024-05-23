@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class OilChangeController extends Controller
 {
     private string $key = 'oilchanges';
-    private array $metaData = ['active' => 'oilchanges'];
+    private array $metaData;
     private array $relations = ['car'];
     private array $rules = [
         'car_id' => ['required', 'integer', 'exists:cars,id'],
@@ -22,7 +22,12 @@ class OilChangeController extends Controller
 
     public function __construct(
         private OilChange $model,
-    ) {}
+    )
+    {
+        $this->metaData = [
+            'active' => $this->key,
+        ];
+    }
 
     public function index()
     {
@@ -34,13 +39,16 @@ class OilChangeController extends Controller
     public function show(int $id)
     {
         $data = $this->model->with($this->relations)->findOrFail($id);
+        $cars = Car::all();
 
-        return view("admin.$this->key.show", compact('data') + $this->metaData);
+        return view("admin.$this->key.show", compact('data', 'cars') + $this->metaData);
     }
 
     public function create()
     {
-        return view("admin.$this->key.create", $this->metaData);
+        $cars = Car::all();
+
+        return view("admin.$this->key.create", compact('cars') + $this->metaData);
     }
 
     public function store(Request $request)

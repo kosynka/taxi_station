@@ -27,6 +27,7 @@ return new class extends Migration
             $table->date('paid_date')->nullable();
             $table->unsignedBigInteger('amount');
             $table->enum('status', ['unpaid', 'paid_with_discount', 'paid_without_discount'])->default('unpaid');
+            $table->json('comments')->nullable();
             $table->timestamps();
         });
     }

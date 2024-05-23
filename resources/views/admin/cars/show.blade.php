@@ -236,8 +236,8 @@
                         <tr>
                             <td scope="col">{{ $rent->id }}</td>
                             <td scope="col">
-                                {{ $rent->start_date->format('Y.m.d') }}
-                                ({{ $rent->start_date->diffForHumans() }})
+                                {{ $rent->start_at->format('Y.m.d') }}
+                                ({{ $rent->start_at->diffForHumans() }})
                             </td>
                             <!-- <td scope="col"> -->
                                 <!-- {{ $rent->end_at ? $rent->end_at->format('Y.m.d') : '' }} -->

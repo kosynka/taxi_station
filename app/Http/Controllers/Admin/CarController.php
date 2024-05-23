@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Car;
+use App\Models\Rent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -69,7 +70,7 @@ class CarController extends Controller
             'photo_10' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
         ]);
 
-        $data['status'] = 'in_parking';
+        $data['status'] = 'empty';
 
         for ($i = 1; $i <= 10; $i++) {
             $name = "photo_$i";
@@ -97,7 +98,11 @@ class CarController extends Controller
             'year' => ['nullable', 'integer', 'min:0'],
             'engine_capacity' => ['nullable', 'string'],
             'color' => ['nullable', 'string'],
-            'status' => ['required', 'string', 'in:on_rent,in_parking,at_service,parking_fine'],
+            'status' => [
+                'required',
+                'string',
+                'in:on_rent,in_parking,at_service,parking_fine,at_owner,weekend,accident',
+            ],
             'mileage' => ['nullable ', 'integer', 'min:0'],
             'amount' => ['nullable', 'integer', 'min:0'],
 
@@ -135,6 +140,40 @@ class CarController extends Controller
         $item->save();
 
         return redirect()->route("$this->key.index")->with(['success' => 'Успешно изменен']);
+    }
+
+    public function status(int $id, Request $request)
+    {
+        $data = $request->validate([
+            'rent_id' => ['nullable', 'integer'],
+            'comment' => ['nullable', 'string'],
+            'status' => [
+                'required',
+                'string',
+                'in:on_rent,in_parking,at_service,parking_fine,at_owner,weekend,accident',
+            ],
+        ]);
+
+        $item = $this->model->find($id);
+
+        $item->status = $data['status'];
+        $item->addComment([
+            'text' => $data['comment'],
+            'status' => $data['status'] ?? $item->status,
+        ]);
+
+        $item->save();
+
+        if ($data['rent_id'] != 0) {
+            $rent = Rent::find($data['rent_id']);
+            $rent->addComment([
+                'text' => $data['comment'],
+                'status' => $data['status'] ?? $item->status,
+            ]);
+            $rent->save();
+        }
+
+        return redirect()->back()->with(['success' => 'Успешно изменен']);
     }
 
     public function delete(int $id)

@@ -9,12 +9,11 @@ use App\Models\Car;
 use App\Models\Rent;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\TemplateProcessor;
 
 class ContractController extends Controller
 {
-    public function contract(Request $request)
+    public function contractRent(Request $request)
     {
         $data = $request->validate([
             'rent_id' => ['required', 'integer', 'exists:rents,id'],
@@ -25,7 +24,11 @@ class ContractController extends Controller
         if ($rent->contract_file_path !== null) {
             $filePath = $rent->contract_file_path;
         } else {
-            $filePath = $this->getContractFromTemplate($rent->car, $rent->driver);
+            $filePath = $this->getContractFromTemplate(
+                $rent->car,
+                $rent->driver,
+                'Договор аренды',
+            );
 
             $rent->contract_file_path = $filePath;
             $rent->save();
@@ -34,7 +37,31 @@ class ContractController extends Controller
         return response()->download(storage_path($filePath));
     }
 
-    private function getContractFromTemplate(Car $car, User $driver): string
+    public function contractRentWithBuy(Request $request)
+    {
+        $data = $request->validate([
+            'rent_id' => ['required', 'integer', 'exists:rents,id'],
+        ]);
+
+        $rent = Rent::with(['car', 'driver'])->find($data['rent_id']);
+
+        if ($rent->contract_with_buy_file_path !== null) {
+            $filePath = $rent->contract_with_buy_file_path;
+        } else {
+            $filePath = $this->getContractWithBuyFromTemplate(
+                $rent->car,
+                $rent->driver,
+                'Договор аренды с выкупом',
+            );
+
+            $rent->contract_with_buy_file_path = $filePath;
+            $rent->save();
+        }
+
+        return response()->download(storage_path($filePath));
+    }
+
+    private function getContractFromTemplate(Car $car, User $driver, string $title): string
     {
         $template = new TemplateProcessor(storage_path('contract_template.docx'));
 
@@ -60,11 +87,21 @@ class ContractController extends Controller
             'DRIVER_PHONE' => $driver->phone,
         ]);
 
-        $filename = 'Договор аренды с выкупом ' .
+        $filename = $title . ' ' .
             now()->format('d.m.Y') . ' ' .
             $car->state_number . ' ' . $driver->name . '.docx';
 
         $template->saveAs(storage_path($filename));
+
+        return $filename;
+    }
+
+    private function getContractWithBuyFromTemplate(Car $car, User $driver, string $title): string
+    {
+        // TODO
+        $filename = $title . ' ' .
+            now()->format('d.m.Y') . ' ' .
+            $car->state_number . ' ' . $driver->name . '.docx';
 
         return $filename;
     }

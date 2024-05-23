@@ -37,7 +37,16 @@ class Car extends Model
         'photo_8',
         'photo_9',
         'photo_10',
+
+        'comments',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'comments' => 'array',
+        ];
+    }
 
     public function oilChanges(): HasMany
     {
@@ -53,20 +62,20 @@ class Car extends Model
     public function rents(): HasMany
     {
         return $this->hasMany(Rent::class, 'car_id', 'id')
-            ->orderBy('start_date', 'desc');
+            ->orderBy('start_at', 'desc');
     }
 
     public function todayRent(): ?Model
     {
         return $this->rents()
-            ->whereDate('start_date', '=', now()->toDateString())
+            ->whereDate('start_at', '=', now()->toDateString())
             ->first();
     }
 
     public function historyRent(): Collection
     {
         return $this->rents()
-            ->whereDate('start_date', '<=', now()->toDateString())
+            ->whereDate('start_at', '<=', now()->toDateString())
             ->get();
     }
 
@@ -82,28 +91,39 @@ class Car extends Model
         )->orderBy('received_date', 'desc');
     }
 
+    public const EMPTY = 'empty';
     public const ON_RENT = 'on_rent';
     public const IN_PARKING = 'in_parking';
     public const AT_SERVICE = 'at_service';
     public const PARKING_FINE = 'parking_fine';
+    public const AT_OWNER = 'at_owner';
+    public const WEEKEND = 'weekend';
+    public const ACCIDENT = 'accident';
 
     public static function getStatuses(): array
     {
         return [
-            self::ON_RENT => 'На прокате',
-            self::IN_PARKING => 'На стоянке',
-            self::AT_SERVICE => 'На обслуживании',
-            self::PARKING_FINE => 'На штраф стоянке',
+            self::ON_RENT => 'На линии',
+            self::IN_PARKING => 'На парковке',
+            self::AT_SERVICE => 'На СТО',
+            self::PARKING_FINE => 'Штраф стоянка',
+            self::AT_OWNER => 'У инвестора',
+            self::WEEKEND => 'Выходной',
+            self::ACCIDENT => 'Аварийная ДТП',
         ];
     }
 
-    public function getStatus(): ?array
+    public function getStatus(string $status = null): ?array
     {
-        return match ($this->status) {
-            self::ON_RENT => ['success', 'На прокате'],
-            self::IN_PARKING => ['danger', 'На стоянке'],
-            self::AT_SERVICE => ['warning', 'На обслуживании'],
-            self::PARKING_FINE => ['secondary', 'На штраф стоянке'],
+        return match ($status ?? $this->status) {
+            self::EMPTY => ['info', 'Не проставлен'],
+            self::ON_RENT => ['success', 'На линии'],
+            self::IN_PARKING => ['secondary', 'На парковке'],
+            self::AT_SERVICE => ['warning', 'На СТО'],
+            self::PARKING_FINE => ['secondary', 'Штраф стоянка'],
+            self::AT_OWNER => ['primary', 'У инвестора'],
+            self::WEEKEND => ['primary', 'Выходной'],
+            self::ACCIDENT => ['danger', 'Аварийная ДТП'],
         };
     }
 
@@ -125,5 +145,33 @@ class Car extends Model
         }
 
         return 'light';
+    }
+
+    public function addComment(array $changes): void
+    {
+        $comments = $this->comments ?? [];
+
+        $id = count($comments) + 1;
+
+        $new_comment = [
+            $id => [
+                'id' => $id,
+                'text' => $changes['text'],
+                'old_status' => $this->status,
+                'new_status' => $changes['status'],
+                'user_id' => auth()->user()->id,
+                'created_at' => now()->toDateTimeString(),
+                'updated_at' => now()->toDateTimeString(),
+            ]
+        ];
+
+        $this->comments = $comments + $new_comment;
+    }
+
+    public function getLastComment(): array|bool
+    {
+        $comments = $this->comments ?? [];
+
+        return end($comments);
     }
 }

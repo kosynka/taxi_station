@@ -33,7 +33,7 @@ class RentFactory extends Factory
         return [
             'car_id' => $car->id,
             'driver_id' => random_int(2, 48),
-            'start_date' => $startDate,
+            'start_at' => $startDate,
             'amount' => $car->amount,
         ];
     }

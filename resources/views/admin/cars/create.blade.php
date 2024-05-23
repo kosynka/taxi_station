@@ -65,6 +65,19 @@
         <label for="amount" class="form-label">Сумма аренды, тг <i style="color: red;">*</i></label>
     </div>
 
+    <div class="row row-cols-1">
+        <div class="vstack gap-3">
+        @for($i = 1; $i <= 10; $i++)
+            <div class="col">
+                <div class="form bg-light border mb-3">
+                    <label for="amount" class="form-label">Фото {{ $i }}</label>
+                    <input type="file" class="form-control" name="photo_{{ $i }}" id="photo_{{ $i }}">
+                </div>
+            </div>
+        @endfor
+        </div>
+    </div>
+
     <div class="col-auto">
         <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
     </div>

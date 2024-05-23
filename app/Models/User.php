@@ -66,7 +66,7 @@ class User extends Authenticatable
     public function rents(): HasMany
     {
         return $this->hasMany(Rent::class, 'driver_id', 'id')
-            ->orderBy('start_date', 'desc');
+            ->orderBy('start_at', 'desc');
     }
 
     public function penalties(): HasManyThrough
@@ -80,5 +80,10 @@ class User extends Authenticatable
             'id',
         )
         ->orderBy('received_date', 'desc');
+    }
+
+    public function roleIs(string $role = 'admin'): bool
+    {
+        return $this->role === $role;
     }
 }

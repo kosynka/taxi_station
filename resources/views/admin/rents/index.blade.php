@@ -41,6 +41,7 @@
                         <th scope="col">Пробег</th>
                         <th scope="col">Стоимость аренды</th>
                         <th scope="col">Статус</th>
+                        <th scope="col">Коммент</th>
                         <th scope="col">Водитель</th>
                     </tr>
                 </thead>
@@ -55,7 +56,28 @@
                             <td>{{ $item->mileage }} км</td>
                             <td>@convert($item->amount)</td>
                             <td>
-                                <span class="badge rounded-pill bg-{{ $item->getStatus()[0] }}">{{ $item->getStatus()[1] }}</span>
+                                @include('admin.rents.status', [
+                                    'car' => $item,
+                                    'rent' => $item->todayRent(),
+                                ])
+                            </td>
+                            <td>
+                                @if($item->getLastComment())
+                                    <small>
+                                        @php
+                                            $commentUser = \App\Models\User::find($item->getLastComment()['user_id']);
+                                        @endphp
+                                        <blockquote class="blockquote">
+                                            <p class="mb-3">{{ $item->getLastComment()['text'] }}</p>
+                                            <small>
+                                                <footer class="blockquote-footer">
+                                                    {{ $item->getLastComment()['created_at'] }}
+                                                    <cite>{{ $commentUser->name }}({{ $commentUser->role }})</cite>
+                                                </footer>
+                                            </small>
+                                        </blockquote>
+                                    </small>
+                                @endif
                             </td>
                             <td>
                                 @if($item->todayRent() !== null)
@@ -143,9 +165,21 @@
                                 <td>{{ $item['car']->state_number }}</td>
                                 @foreach ($item['dates'] as $date => $rent)
                                     <td>
-                                        {{ $rent?->driver->name }}
+                                    @if($rent)
+                                        {{ $rent->driver->name }}
                                         </br>
-                                        @if($rent)@convert($rent->amount)@endif
+                                        @convert($rent->amount)
+
+                                        @if($rent->getLastComment())
+                                            </br>
+                                            <small>
+                                                {{ $rent->getLastComment()['text'] }} -
+                                                {{ \App\Models\User::find($rent->getLastComment()['user_id'])->name }}
+                                                </br>
+                                                {{ $rent->getLastComment()['created_at'] }}
+                                            </small>
+                                        @endif
+                                    @endif
                                     </td>
                                 @endforeach
                             </tr>

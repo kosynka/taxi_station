@@ -37,9 +37,13 @@
             </li>
         </ul>
 
+        <!-- // TODO: divide by role
+        // admin: everything
+        // manager: add rents(comments), add oilchanges -->
+
         <!-- <h6
             class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
-            <span>Saved reports</span>
+            <span>Добавить штраф/ДТП</span>
             <a class="link-secondary" href="#" aria-label="Add a new report">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
