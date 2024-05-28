@@ -198,6 +198,12 @@ class RentController extends Controller
             $item->car->save();
         }
 
+        if (isset($data['end_at'])) {
+            $data['end_at'] = now()->toDateTimeString();
+            $item->car->status = Car::PASSED;
+            $item->car->save();
+        }
+
         $item->update($data);
         $item->save();
 
