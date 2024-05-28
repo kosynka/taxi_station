@@ -23,15 +23,15 @@
     </div>
 
     <div class="form-floating mb-3">
-        <input type="date" class="form-control" name="received_date" id="received_date" value="{{ $data->received_date }}"
+        <input type="datetime-local" class="form-control" name="received_at" id="received_at" value="{{ $data->received_at }}"
             required>
-        <label for="received_date" class="form-label">Дата получения <i style="color: red;">*</i></label>
+        <label for="received_at" class="form-label">Дата получения <i style="color: red;">*</i></label>
     </div>
 
     <div class="form-floating mb-3">
-        <input type="date" class="form-control" name="paid_date" id="paid_date"
-            value="{{ $data->paid_date ? $data->paid_date : old('paid_date') }}" required>
-        <label for="paid_date" class="form-label">Дата оплаты</label>
+        <input type="datetime-local" class="form-control" name="paid_at" id="paid_at"
+            value="{{ $data->paid_at ? $data->paid_at : old('paid_at') }}" required>
+        <label for="paid_at" class="form-label">Дата оплаты</label>
     </div>
 
     <div class="form-floating mb-3">

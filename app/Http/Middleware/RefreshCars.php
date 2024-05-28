@@ -17,14 +17,27 @@ class RefreshCars
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $rents = Rent::whereDate('start_at', '=', now()->toDateString())->get();
+        $cars = Car::with([
+            'rents' => function ($query) {
+                $query->whereDate('start_at', '=', date('Y-m-d', strtotime("-1 days")));
+            }, 
+            'rents.driver',
+            ])->get();
 
-        if ($rents->count() === 0) {
-            $cars = Car::where('status', Car::ON_RENT)->get();
+        foreach ($cars as $car) {
+            $yesterdayRent = $car->yesterdayRent();
 
-            foreach ($cars as $car) {
-                $car->update(['status' => Car::EMPTY]);
-                $car->save();
+            if ($yesterdayRent !== null && $car->todayRent() === null) {
+                $newRent = $yesterdayRent->replicate();
+                $newRent->start_at = now();
+                $newRent->end_at = null;
+                $newRent->amount = $car->amount;
+                $newRent->save();
+
+                if ($car->status === Car::PASSED) {
+                    $car->update(['status' => Car::EMPTY]);
+                    $car->save();
+                }
             }
         }
 

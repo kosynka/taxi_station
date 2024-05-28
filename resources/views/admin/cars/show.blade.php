@@ -153,10 +153,15 @@
     <div class="tab-pane fade" id="penalty" role="tabpanel" aria-labelledby="penalty-tab">
         </br>
 
+        <a class="btn btn-primary mb-3" href="#"
+            onclick="download_table_as_csv('car_penalties_table', ',', 'История штрафов и ДТП {{ $data->shortDescription() }}');">
+            Выгрузить таблицу
+        </a>
+
         <input class="form-control" id="penalty-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="car_penalties_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -189,11 +194,11 @@
                                 @endif
                             </td>
                             <td scope="col">
-                                {{ $penalty->received->format('Y.m.d') }}
+                                {{ $penalty->received->format('d.m.Y') }}
                                 ({{ $penalty->received->diffForHumans() }})
                             </td>
                             <td scope="col">
-                                {{ $penalty->paid->format('Y.m.d') }}
+                                {{ $penalty->paid->format('d.m.Y') }}
                                 ({{ $penalty->paid->diffForHumans() }})
                             </td>
                             <td scope="col">@convert($penalty->amount)</td>
@@ -217,10 +222,15 @@
     <div class="tab-pane fade" id="rent" role="tabpanel" aria-labelledby="rent-tab">
         </br>
 
+        <a class="btn btn-primary mb-3" href="#"
+            onclick="download_table_as_csv('car_rents_table', ',', 'История аренд {{ $data->shortDescription() }}');">
+            Выгрузить таблицу
+        </a>
+
         <input class="form-control" id="rent-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="car_rents_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -236,11 +246,11 @@
                         <tr>
                             <td scope="col">{{ $rent->id }}</td>
                             <td scope="col">
-                                {{ $rent->start_at->format('Y.m.d') }}
+                                {{ $rent->start_at->format('d.m.Y H:i:s') }}
                                 ({{ $rent->start_at->diffForHumans() }})
                             </td>
                             <!-- <td scope="col"> -->
-                                <!-- {{ $rent->end_at ? $rent->end_at->format('Y.m.d') : '' }} -->
+                                <!-- {{ $rent->end_at ? $rent->end_at->format('d.m.Y H:i:s') : '' }} -->
                                 <!-- {{ $rent->end_at ? "(" . $rent->end_at->diffForHumans() . ")" : '' }} -->
                             <!-- </td> -->
                             <td scope="col">@convert($rent->amount)</td>
@@ -259,10 +269,15 @@
     <div class="tab-pane fade" id="oilchange" role="tabpanel" aria-labelledby="oilchange-tab">
         </br>
 
+        <a class="btn btn-primary mb-3" href="#"
+            onclick="download_table_as_csv('car_oilchanges_table', ',', 'История замен масла {{ $data->shortDescription() }}');">
+            Выгрузить таблицу
+        </a>
+
         <input class="form-control" id="oilchange-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="car_oilchanges_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -277,7 +292,7 @@
                             <td scope="col">{{ $oilChange->id }}</td>
                             <td scope="col">{{ $oilChange->mileage }}</td>
                             <td scope="col">
-                                {{ $oilChange->changed_at->format('Y.m.d') }}
+                                {{ $oilChange->changed_at->format('d.m.Y H:i:s') }}
                                 ({{ $oilChange->changed_at->diffForHumans() }})
                             </td>
                         </tr>

@@ -18,8 +18,8 @@ class PenaltyFactory extends Factory
     {
         return [
             'type' => fake()->randomElement(['fine', 'accident']),
-            'received_date' => fake()->dateTimeBetween('-4 month', '-1 month')->format('Y-m-d H:i:s'),
-            'paid_date' => fake()->dateTimeBetween('-2 month', 'now')->format('Y-m-d H:i:s'),
+            'received_at' => fake()->dateTimeBetween('-4 month', '-1 month')->format('Y-m-d H:i:s'),
+            'paid_at' => fake()->dateTimeBetween('-2 month', 'now')->format('Y-m-d H:i:s'),
             'amount' => random_int(10000, 200000),
             'status' => fake()->randomElement(['unpaid', 'paid_with_discount', 'paid_without_discount']),
         ];

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\Commentable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -20,6 +21,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use Commentable;
 
     protected $fillable = [
         'name',
@@ -41,6 +43,8 @@ class User extends Authenticatable
         'driver_license_date',
         'driver_license_categories',
 
+        'comments',
+
         'id_doc_photo_1',
         'id_doc_photo_2',
 
@@ -60,6 +64,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'comments' => 'array',
         ];
     }
 
@@ -79,7 +84,7 @@ class User extends Authenticatable
             'id',
             'id',
         )
-        ->orderBy('received_date', 'desc');
+        ->orderBy('received_at', 'desc');
     }
 
     public function roleIs(string $role = 'admin'): bool

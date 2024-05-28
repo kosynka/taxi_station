@@ -33,20 +33,24 @@ class PenaltyController extends Controller
         $query = $this->model->with($this->relations);
 
         if (isset($request->date_from)) {
-            $query->whereDate('received_date', '>=', $request->date_from);
+            $query->whereDate('received_at', '>=', $request->date_from);
         }
 
         if (isset($request->date_to)) {
-            $query->whereDate('received_date', '<=', $request->date_to);
+            $query->whereDate('received_at', '<=', $request->date_to);
+        }
+
+        if (isset($request->type)) {
+            $query->where('type', $request->type);
         }
 
         if (isset($request->status)) {
             $query->where('status', $request->status);
         }
 
-        $data = $query->orderBy('received_date', 'desc')
-            ->orderBy('paid_date', 'desc')
-            ->paginate(50);
+        $data = $query->orderBy('received_at', 'desc')
+            ->orderBy('paid_at', 'desc')
+            ->paginate($request->per_page ?? 100);
 
         return view("admin.$this->key.index", compact('data') + $this->metaData);
     }
@@ -61,8 +65,8 @@ class PenaltyController extends Controller
         $data = $request->validate([
             'type' => ['required', 'in:fine,accident'],
             'rent_id' => ['required', 'integer', 'exists:rents,id'],
-            'received' => ['required', 'date'],
-            'paid_date' => [
+            'received_at' => ['required', 'date'],
+            'paid_at' => [
                 'nullable',
                 'date',
                 'required_if:status,paid_with_discount',
@@ -100,8 +104,8 @@ class PenaltyController extends Controller
 
         $data = $request->validate([
             'type' => ['required', 'in:fine,accident'],
-            'received' => ['required', 'date'],
-            'paid_date' => [
+            'received_at' => ['required', 'date'],
+            'paid_at' => [
                 'nullable',
                 'date',
                 'required_if:status,paid_with_discount',

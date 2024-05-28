@@ -8,10 +8,14 @@
         </a>
     </h2>
 
+    <a class="btn btn-primary mb-3" href="#" onclick="download_table_as_csv('cars_table', ',', 'Машины');">
+        Выгрузить таблицу
+    </a>
+
     <input class="form-control" id="myInput" type="text" placeholder="Поиск">
 
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped" id="cars_table">
             <thead>
                 <tr>
                     <th scope="col"></th>
@@ -40,10 +44,16 @@
                         <td>{{ $item->mileage }} км</td>
                         <td>@convert($item->amount)</td>
                         <td>
-                            <span class="badge rounded-pill bg-{{ $item->getStatus()[0] }}">{{ $item->getStatus()[1] }}</span>
+                            @include('admin.rents.status-modal', [
+                                'car' => $item,
+                                'rent' => $item->todayRent(),
+                            ])
                         </td>
                         <td>
-                            {{ $item->todayRent()?->driver->name }}
+                            <a class="link-primary" href="{{ route('users.show', ['id' => $item->id]) }}">
+                                {{ $item->todayRent()?->driver->name }}
+                                {{ $item->todayRent()?->driver->phone }}
+                            </a>
                         </td>
                     </tr>
                 @endforeach

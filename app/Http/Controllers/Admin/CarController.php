@@ -21,7 +21,7 @@ class CarController extends Controller
     ) {
         $this->metaData = [
             'active' => 'cars',
-            'statuses' => Car::getStatuses(),
+            'statuses' => Car::getStatusesForUpdate(),
         ];
     }
 

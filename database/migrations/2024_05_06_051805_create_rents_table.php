@@ -26,7 +26,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->nullOnDelete();
 
-            $table->datetime('start_at');
+            $table->datetime('start_at')->nullable();
             $table->datetime('end_at')->nullable();
             $table->unsignedBigInteger('amount')->nullable();
             $table->string('contract_file_path')->nullable();

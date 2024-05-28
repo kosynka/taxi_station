@@ -9,10 +9,14 @@
         </a>
     </h2>
 
+    <a class="btn btn-primary mb-3" href="#" onclick="download_table_as_csv('oilchanges_table', ',', 'Замена масла');">
+        Выгрузить таблицу
+    </a>
+
     <input class="form-control" id="myInput" type="text" placeholder="Поиск">
 
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped" id="oilchanges_table">
             <thead>
                 <tr>
                     <th scope="col"></th>
@@ -22,27 +26,40 @@
                     <th scope="col">год</th>
                     <th scope="col">пробег</th>
                     <th scope="col">Последняя замена</th>
+                    <th scope="col">Следующая замена</th>
                     <th scope="col">История замен</th>
                 </tr>
             </thead>
             <tbody id="myTable">
                 @foreach($data as $item)
+                    @php
+                        $rowColor = $item->mileage - $item->getLastOilChangeMileage() >= 9000 ? 'bg-warning' : '';
+                        $lastOilChange = $item->lastOilChange();
+                        $nextOilChange = $item->mileage - $item->getLastOilChangeMileage();
+
+                        if ($nextOilChange < 0) {
+                            $nextOilChange = 'просрочена на ' . abs($nextOilChange + 10000) . 'км';
+                            $rowColor = 'bg-danger';
+                        } else {
+                            $nextOilChange = 'через ' . (10000 - $nextOilChange) . 'км';
+                        }
+                    @endphp
                     <tr>
                         <td>
                             <a class="link-primary" href="{{ route('oilchanges.show', ['id' => $item->id]) }}">
                                 @include('icons.pen')
                             </a>
                         </td>
-                        <td>{{ $item->state_number }}</td>
+                        <td>
+                            <a class="link-primary" href="{{ route('cars.show', ['id' => $item->id]) }}">
+                                {{ $item->state_number }}
+                            </a>
+                        </td>
                         <td>{{ $item->brand }}</td>
                         <td>{{ $item->model }}</td>
                         <td>{{ $item->year }}</td>
                         <td>{{ $item->mileage }} км</td>
                         <td>
-                            @php
-                                $lastOilChange = $item->lastOilChange();
-                            @endphp
-
                             @if (isset($lastOilChange))
                                 <h6>
                                     <span class="badge bg-{{ $item->getLastOilChangeStatus()}}">
@@ -52,9 +69,18 @@
                                 </h6>
                             @endif
                         </td>
+                        <td class="{{ $rowColor }}">
+                            @if ($nextOilChange < 0)
+                                <span class="badge bg-danger">
+                                    {{ $nextOilChange }}
+                                </span>
+                            @else
+                                {{ $nextOilChange }}
+                            @endif
+                        </td>
                         <td>
                             @foreach($item->oilChanges as $oilChange)
-                                {{ $oilChange->changed_at->format('Y.m.d') }} на {{ $oilChange->mileage }}км
+                                {{ $oilChange->changed_at->format('d.m.Y H:i:s') }} на {{ $oilChange->mileage }}км
                                 </br>
                             @endforeach
                         </td>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\Commentable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class Car extends Model
 {
     use HasFactory;
+    use Commentable;
 
     protected $fillable = [
         'state_number',
@@ -72,6 +74,13 @@ class Car extends Model
             ->first();
     }
 
+    public function yesterdayRent(): ?Model
+    {
+        return $this->rents()
+            ->whereDate('start_at', '=', date('Y-m-d', strtotime("-1 days")))
+            ->first();
+    }
+
     public function historyRent(): Collection
     {
         return $this->rents()
@@ -88,10 +97,16 @@ class Car extends Model
             'rent_id',
             'id',
             'id',
-        )->orderBy('received_date', 'desc');
+        )->orderBy('received_at', 'desc');
+    }
+
+    public function shortDescription(): string
+    {
+        return $this->state_number . ' ' . $this->brand . ' ' . $this->model;
     }
 
     public const EMPTY = 'empty';
+    public const PASSED = 'passed';
     public const ON_RENT = 'on_rent';
     public const IN_PARKING = 'in_parking';
     public const AT_SERVICE = 'at_service';
@@ -104,6 +119,19 @@ class Car extends Model
     {
         return [
             self::ON_RENT => 'На линии',
+            self::PASSED => 'Сдан',
+            self::IN_PARKING => 'На парковке',
+            self::AT_SERVICE => 'На СТО',
+            self::PARKING_FINE => 'Штраф стоянка',
+            self::AT_OWNER => 'У инвестора',
+            self::WEEKEND => 'Выходной',
+            self::ACCIDENT => 'Аварийная ДТП',
+        ];
+    }
+
+    public static function getStatusesForUpdate(): array
+    {
+        return [
             self::IN_PARKING => 'На парковке',
             self::AT_SERVICE => 'На СТО',
             self::PARKING_FINE => 'Штраф стоянка',
@@ -117,6 +145,7 @@ class Car extends Model
     {
         return match ($status ?? $this->status) {
             self::EMPTY => ['info', 'Не проставлен'],
+            self::PASSED => ['primary', 'Сдан'],
             self::ON_RENT => ['success', 'На линии'],
             self::IN_PARKING => ['secondary', 'На парковке'],
             self::AT_SERVICE => ['warning', 'На СТО'],
@@ -147,31 +176,10 @@ class Car extends Model
         return 'light';
     }
 
-    public function addComment(array $changes): void
+    public function getLastOilChangeMileage(): int
     {
-        $comments = $this->comments ?? [];
+        $lastOilChange = $this->lastOilChange();
 
-        $id = count($comments) + 1;
-
-        $new_comment = [
-            $id => [
-                'id' => $id,
-                'text' => $changes['text'],
-                'old_status' => $this->status,
-                'new_status' => $changes['status'],
-                'user_id' => auth()->user()->id,
-                'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString(),
-            ]
-        ];
-
-        $this->comments = $comments + $new_comment;
-    }
-
-    public function getLastComment(): array|bool
-    {
-        $comments = $this->comments ?? [];
-
-        return end($comments);
+        return $lastOilChange?->mileage ?? 0;
     }
 }

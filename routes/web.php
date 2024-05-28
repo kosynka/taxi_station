@@ -24,13 +24,13 @@ Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'role:admin,mana
     Route::get('/contract/rent', [ContractController::class, 'contractRent'])->name('contract.rent');
     Route::get('/contract/rent-with-buy', [ContractController::class, 'contractRentWithBuy'])->name('contract.rent.with.buy');
 
-    Route::group(['prefix' => '/users', 'middleware' => ['role:admin'], 'controller' => UserController::class], function () {
+    Route::group(['prefix' => '/users', 'controller' => UserController::class], function () {
         Route::get('/', 'index')->name('users.index');
         Route::post('/', 'store')->name('users.store');
         Route::get('/create', 'create')->name('users.create');
         Route::get('/{id}', 'show')->name('users.show');
-        Route::post('/{id}', 'update')->name('users.update');
-        Route::get('/{id}/delete', 'delete')->name('users.delete');
+        Route::post('/{id}', 'update')->name('users.update')->middleware('role:admin');
+        Route::get('/{id}/delete', 'delete')->name('users.delete')->middleware('role:admin');
     });
 
     Route::group(['prefix' => '/cars', 'middleware' => ['refresh_cars'], 'controller' => CarController::class], function () {

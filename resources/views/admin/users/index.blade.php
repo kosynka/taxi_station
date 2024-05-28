@@ -8,15 +8,19 @@
         </a>
     </h2>
 
+    <a class="btn btn-primary mb-3" href="#" onclick="download_table_as_csv('drivers_table', ',', 'Водители');">
+        Выгрузить таблицу
+    </a>
+
     <input class="form-control" id="myInput" type="text" placeholder="Поиск">
 
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped" id="drivers_table">
             <thead>
                 <tr>
                     <th scope="col"></th>
                     <th scope="col">ФИО</th>
-                    <th scope="col">Почта</th>
+                    <th scope="col">Телефон</th>
                     <th scope="col">ИИН</th>
                     <th scope="col">Баланс</th>
                 </tr>
@@ -30,7 +34,7 @@
                             </a>
                         </td>
                         <td>{{ $item->name }}</td>
-                        <td>{{ $item->email }}</td>
+                        <td>{{ $item->phone }}</td>
                         <td>{{ $item->iin }}</td>
                         <td>@convert($item->balance)</td>
                     </tr>

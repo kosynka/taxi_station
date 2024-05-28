@@ -59,7 +59,8 @@ class UserController extends Controller
             'driver_license_number' => ['required', 'string'],
             'driver_license_date' => ['required', 'date'],
             'driver_license_categories' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:5'],
+            // 'password' => ['required', 'string', 'min:5'],
+            'comment' => ['nullable', 'string'],
 
             'id_doc_photo_1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
             'id_doc_photo_2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
@@ -80,9 +81,14 @@ class UserController extends Controller
         }
 
         $data['role'] = 'taxi_driver';
-        $data['password'] = Hash::make($data['password']);
+        // $data['password'] = Hash::make($data['password']);
 
-        $this->model->create($data);
+        $driver = $this->model->create($data);
+
+        if (!isset($data['comment'])) {
+            $driver->addComment(['text' => $data['comment']]);
+            $driver->save();
+        }
 
         return redirect()->route("$this->key.index")->with(['success' => 'Успешно создан']);
     }
@@ -106,7 +112,8 @@ class UserController extends Controller
             'driver_license_number' => ['required', 'string'],
             'driver_license_date' => ['required', 'date'],
             'driver_license_categories' => ['required', 'string'],
-            'password' => ['nullable', 'string', 'min:5'],
+            // 'password' => ['nullable', 'string', 'min:5'],
+            'comment' => ['nullable', 'string'],
 
             'id_doc_photo_1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
             'id_doc_photo_2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
@@ -149,6 +156,11 @@ class UserController extends Controller
         }
 
         $item->update($data);
+
+        if (isset($data['comment'])) {
+            $item->addComment(['text' => $data['comment']]);
+        }
+
         $item->save();
 
         return redirect()->route("$this->key.index")->with(['success' => 'Успешно изменен']);

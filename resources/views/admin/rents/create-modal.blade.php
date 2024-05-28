@@ -18,22 +18,32 @@
                 </div>
 
                 <div class="modal-body">
-                    <h4>
+                    <h5>
+                        Статус поменяется:
                         <span class="badge rounded-pill bg-{{ $car->getStatus()[0] }}">{{ $car->getStatus()[1] }}</span>
-                    </h4>
+                        ->
+                        <span class="badge rounded-pill bg-success">На линии</span>
+                    </h5>
+
+                    </br>
 
                     <input name="car_id" value="{{ $car->id }}" hidden>
 
                     <input name="amount" value="{{ $car->amount }}" hidden>
 
-                    <input class="form-control" name="driver_id" list="datalistOptions" placeholder="Водитель...">
-                    <datalist id="datalistOptions">
-                        @foreach($drivers as $driver)
-                            <option value="{{ $driver->id }}">
-                                {{ $driver->name }}
-                            </option>
-                        @endforeach
-                    </datalist>
+                    <div class="form-floating mb-3">
+                        <select name="driver_id" class="form-select">
+                            <option></option>
+                            @foreach($drivers as $driver)
+                                <option value="{{ $driver->id }}">
+                                    {{ $driver->name }}
+                                    {{ $driver->phone }} |
+                                    Баланс @convert($driver->balance)
+                                </option>
+                            @endforeach
+                        </select>
+                        <label for="status" class="form-label">Водитель <i style="color: red;">*</i></label>
+                    </div>
                 </div>
 
                 <div class="modal-footer">

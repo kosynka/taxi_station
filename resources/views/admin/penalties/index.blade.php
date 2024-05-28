@@ -2,29 +2,51 @@
 
 @section('content')
 </br>
-    <h2>
-        Штрафы
-        <a class="link-success" href="{{ route('penalties.create') }}">
-            @include('icons.plus')
-        </a>
-    </h2>
+<h2>
+    Штрафы
+    <a class="link-success" href="{{ route('penalties.create') }}">
+        @include('icons.plus')
+    </a>
+</h2>
 </br>
 
 <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
     <div class="row row-cols-3">
         <div class="col">
             <div class="mb-3">
-                <label for="date_from" class="form-label">Дата от</label>
-                <input type="date" class="form-control" name="date_from" id="date_from"
+                <label for="per_page" class="form-label">Показать количество</label>
+                <input type="number" class="form-control" name="per_page" id="per_page" min="10"
+                    value="@if(request()->per_page){{ request()->per_page }}@endif">
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="mb-3">
+                <label for="date_from" class="form-label">Дата время происшествия от</label>
+                <input type="datetime-local" class="form-control" name="date_from" id="date_from"
                     value="@if(request()->date_from){{ request()->date_from }}@endif">
             </div>
         </div>
 
         <div class="col">
             <div class="mb-3">
-                <label for="date_to" class="form-label">Дата до</label>
-                <input type="date" class="form-control" name="date_to" id="date_to"
+                <label for="date_to" class="form-label">Дата время происшествия до</label>
+                <input type="datetime-local" class="form-control" name="date_to" id="date_to"
                     value="@if(request()->date_to){{ request()->date_to }}@endif">
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="mb-3">
+                <label for="type" class="form-label">Тип</label>
+                <select name="type" class="form-select">
+                    <option></option>
+                    @foreach($types as $type => $text)
+                        <option value="{{ $type }}" @if (request()->type === $type) selected @endif>
+                            {{ $text }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
         </div>
 
@@ -44,12 +66,16 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary mb-3">Фильтрация</button>
+        <button type="submit" class="btn btn-primary m-3">Фильтрация</button>
+
+        <a class="btn btn-primary m-3" href="#" onclick="download_table_as_csv('penalties_table', ',', 'Штрафы');">
+            Выгрузить таблицу
+        </a>
     </div>
 </form>
 
 <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped" id="penalties_table">
         <thead>
             <tr>
                 <th scope="col"></th>
@@ -87,13 +113,11 @@
                         @endif
                     </td>
                     <td scope="col">
-                        {{ $item->received->format('Y.m.d') }}
-                        ({{ $item->received->diffForHumans() }})
+                        {{ $item->received->format('d.m.Y H:i:s') }}
                     </td>
                     <td scope="col">
                         @if($item->paid)
-                            {{ $item->paid->format('Y.m.d') }}
-                            ({{ $item->paid->diffForHumans() }})
+                            {{ $item->paid->format('d.m.Y H:i:s') }}
                         @endif
                     </td>
                     <td scope="col">@convert($item->amount)</td>

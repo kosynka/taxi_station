@@ -133,10 +133,22 @@
 
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="password" id="password" required>
-                        <label for="password" class="form-label">Пароль</label>
+                        <textarea class="form-control" name="comment" id="comment"></textarea>
+                        <label for="comment" class="form-label">Коммент</label>
                     </div>
                 </div>
+
+                @if($data->getLastComment())
+                    <div class="col">
+                        Коммент:
+                        <small>
+                            {{ $data->getLastComment()['text'] }}
+                            </br>
+                            {{ \App\Models\User::find($data->getLastComment()['user_id'])->name }}
+                            {{ $data->getLastComment()['created_at'] }}
+                        </small>
+                    </div>
+                @endif
             </div>
 
             <div class="row row-cols-1">
@@ -196,10 +208,15 @@
     <div class="tab-pane fade" id="penalty" role="tabpanel" aria-labelledby="penalty-tab">
         </br>
 
+        <a class="btn btn-primary mb-3" href="#"
+            onclick="download_table_as_csv('user_penalties_table', ',', 'История штрафов и ДТП {{ $data->name }}');">
+            Выгрузить таблицу
+        </a>
+
         <input class="form-control" id="penalty-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="user_penalties_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -232,12 +249,12 @@
                                 @endif
                             </td>
                             <td scope="col">
-                                {{ $penalty->received->format('Y.m.d') }}
-                                ({{ $penalty->received->diffForHumans() }})
+                                {{ $penalty->received->format('d.m.Y H:i:s') }}
                             </td>
                             <td scope="col">
-                                {{ $penalty->paid->format('Y.m.d') }}
-                                ({{ $penalty->paid->diffForHumans() }})
+                                @if($penalty->paid)
+                                    {{ $penalty->paid->format('d.m.Y H:i:s') }}
+                                @endif
                             </td>
                             <td scope="col">@convert($penalty->amount)</td>
                             <td scope="col">
@@ -262,10 +279,15 @@
     <div class="tab-pane fade" id="rent" role="tabpanel" aria-labelledby="rent-tab">
         </br>
 
+        <a class="btn btn-primary mb-3" href="#"
+            onclick="download_table_as_csv('user_rents_table', ',', 'История аренд {{ $data->name }}');">
+            Выгрузить таблицу
+        </a>
+
         <input class="form-control" id="rent-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="user_rents_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>

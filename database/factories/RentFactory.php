@@ -23,9 +23,9 @@ class RentFactory extends Factory
             ->inRandomOrder()
             ->first();
 
-        $startDate = fake()->dateTimeBetween('-30 days', 'now')->format('Y-m-d');
+        $startDate = fake()->dateTimeBetween('-30 days', 'now');
 
-        if ($startDate === now()->format('Y-m-d')) {
+        if ($startDate->format('Y-m-d') === now()->toDateString()) {
             $car->status = Car::ON_RENT;
             $car->save();
         }
@@ -33,7 +33,7 @@ class RentFactory extends Factory
         return [
             'car_id' => $car->id,
             'driver_id' => random_int(2, 48),
-            'start_at' => $startDate,
+            'start_at' => $startDate->format('Y-m-d H:i:s'),
             'amount' => $car->amount,
         ];
     }

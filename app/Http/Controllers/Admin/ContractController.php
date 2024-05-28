@@ -63,6 +63,7 @@ class ContractController extends Controller
 
     private function getContractFromTemplate(Car $car, User $driver, string $title): string
     {
+        // TODO
         $template = new TemplateProcessor(storage_path('contract_template.docx'));
 
         $template->setValues([
@@ -98,10 +99,35 @@ class ContractController extends Controller
 
     private function getContractWithBuyFromTemplate(Car $car, User $driver, string $title): string
     {
-        // TODO
+        $template = new TemplateProcessor(storage_path('contract_template.docx'));
+
+        $template->setValues([
+            'DATE' => now()->format('«d» m Yг.'),
+            'DRIVER_NAME' => $driver->name,
+            'DRIVER_LICENSE_NUMBER' => $driver->driver_license_number,
+            'DRIVER_LICENSE_DATE' => \Carbon\Carbon::parse($driver->driver_license_date)->format('d.m.Y'),
+            'DRIVER_LICENSE_CATEGORIES' => $driver->driver_license_categories,
+            'CAR_BRAND_MODEL' => $car->brand . ' ' . $car->model,
+            'CAR_COLOR' => $car->color,
+            'CAR_YEAR' => $car->year,
+            'CAR_STATE_NUMBER' => $car->state_number,
+            'CAR_VIN' => $car->vin,
+            'CAR_ENGINE_CAPACITY' => $car->engine_capacity,
+            'CAR_AMOUNT' => $car->amount,
+            'DRIVER_IIN' => $driver->iin,
+            'DRIVER_ID_DOC_NUMBER' => $driver->id_doc_number,
+            'DRIVER_ID_DOC_DATE' => \Carbon\Carbon::parse($driver->id_doc_date)->format('d.m.Y'),
+            'DRIVER_ID_DOC_UNTIL_DATE' => \Carbon\Carbon::parse($driver->id_doc_until_date)->format('d.m.Y'),
+            'DRIVER_REGISTRATION_ADDRESS' => $driver->registration_address,
+            'DRIVER_RESIDENCE_ADDRESS' => $driver->residence_address,
+            'DRIVER_PHONE' => $driver->phone,
+        ]);
+
         $filename = $title . ' ' .
-            now()->format('d.m.Y') . ' ' .
-            $car->state_number . ' ' . $driver->name . '.docx';
+        now()->format('d.m.Y') . ' ' .
+        $car->state_number . ' ' . $driver->name . '.docx';
+
+        $template->saveAs(storage_path($filename));
 
         return $filename;
     }

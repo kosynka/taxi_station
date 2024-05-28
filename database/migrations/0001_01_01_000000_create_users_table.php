@@ -34,6 +34,8 @@ return new class extends Migration
             $table->date('driver_license_date')->nullable();
             $table->string('driver_license_categories')->nullable();
 
+            $table->json('comments')->nullable();
+
             $table->string('id_doc_photo_1')->nullable();
             $table->string('id_doc_photo_2')->nullable();
             $table->string('driver_license_photo_1')->nullable();

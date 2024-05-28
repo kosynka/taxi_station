@@ -20,7 +20,7 @@
         <datalist id="datalistOptions">
             @foreach($rents as $rent)
                 <option style="width: 300px !important;" value="{{ $rent->id }}">
-                    {{ \Carbon\Carbon::parse($rent->start_at)->format('d.m.Y') }} |
+                    {{ \Carbon\Carbon::parse($rent->start_at)->format('d.m.Y H:i:s') }} |
                     {{ $rent->car->state_number }}
                     {{ $rent->car->brand }}
                     {{ $rent->car->model }} |
@@ -31,13 +31,13 @@
     </div>
 
     <div class="form-floating mb-3">
-        <input type="date" class="form-control" name="received_date" id="received_date" required>
-        <label for="received_date" class="form-label">Дата получения <i style="color: red;">*</i></label>
+        <input type="datetime-local" class="form-control" name="received_at" id="received_at" required>
+        <label for="received_at" class="form-label">Дата получения <i style="color: red;">*</i></label>
     </div>
 
     <div class="form-floating mb-3">
-        <input type="date" class="form-control" name="paid_date" id="paid_date" required>
-        <label for="paid_date" class="form-label">Дата оплаты</label>
+        <input type="datetime-local" class="form-control" name="paid_at" id="paid_at" required>
+        <label for="paid_at" class="form-label">Дата оплаты</label>
     </div>
 
     <div class="form-floating mb-3">

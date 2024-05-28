@@ -20,7 +20,7 @@ class RentController extends Controller
     private array $rules = [
         'car_id' => ['required', 'integer', 'exists:cars,id'],
         'driver_id' => ['required', 'integer', 'exists:drivers,id'],
-        'start_at' => ['nullable', 'datetime'],
+        'start_at' => ['nullable', 'date'],
         'amount' => ['sometimes', 'integer', 'min:0'],
     ];
 
@@ -29,12 +29,19 @@ class RentController extends Controller
     ) {
         $this->metaData = [
             'active' => 'rents',
-            'statuses' => Car::getStatuses(),
+            'statuses' => Car::getStatusesForUpdate(),
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $params = $request->validate([
+            'date_from' => ['nullable', 'date', 'before_or_equal:date_to'],
+            'date_to' => ['nullable', 'date', 'after_or_equal:date_from'],
+        ]);
+
+        $active = 'today';
+
         $drivers = User::where('role', 'taxi_driver')->get();
         $historyStartDate = \Carbon\Carbon::parse($this->model->min('start_at'))->format('Y-m-d');
 
@@ -53,10 +60,23 @@ class RentController extends Controller
             }
         }
 
-        $notToday = $this->model
+        $notTodayQuery = $this->model
             ->with($this->relations)
-            ->whereDate('start_at', '!=', $historyStartDate)
-            ->orderBy('start_at')
+            ->whereDate('start_at', '!=', $historyStartDate);
+
+        if (!empty($params)) {
+            $active = 'history';
+
+            if (isset($params['date_from'])) {
+                $notTodayQuery->whereDate('start_at', '>=', $params['date_from']);
+            }
+
+            if (isset($params['date_to'])) {
+                $notTodayQuery->whereDate('start_at', '<=', $params['date_to']);
+            }
+        }
+
+        $notToday = $notTodayQuery->orderBy('start_at')
             ->get()
             ->groupBy(function ($date) {
                 return \Carbon\Carbon::parse($date->start_at)->format('d.m.Y');
@@ -81,6 +101,10 @@ class RentController extends Controller
             }
         }
 
+        if (!array_key_exists('dates', $historyByDays[1])) {
+            return redirect()->route("$this->key.index")->with(['error' => 'Нет данных за выбранный период']);
+        }
+
         $dates = array_keys($historyByDays[1]['dates']);
         $dates = array_map(function ($date) {
             return \Carbon\Carbon::parse($date)->format('d.m.Y');
@@ -88,6 +112,7 @@ class RentController extends Controller
 
         return view("admin.$this->key.index",
             compact(
+                'active',
                 'today',
                 'amountByDays',
                 'historyByDays',
@@ -116,7 +141,7 @@ class RentController extends Controller
         $data = $request->validate([
             'car_id' => ['required', 'integer', 'exists:cars,id'],
             'driver_id' => ['required', 'integer', 'exists:users,id'],
-            'start_at' => ['nullable', 'datetime'],
+            'start_at' => ['nullable', 'date'],
         ]);
 
         $car = Car::find($data['car_id']);
@@ -159,7 +184,18 @@ class RentController extends Controller
     {
         $item = $this->model->findOrFail($id);
 
-        $data = $request->validate($this->rules);
+        $data = $request->validate([
+            'car_id' => ['nullable', 'integer', 'exists:cars,id'],
+            'driver_id' => ['nullable', 'integer', 'exists:drivers,id'],
+            'end_at' => ['nullable', 'date'],
+            'amount' => ['nullable', 'integer', 'min:0'],
+            'comment' => ['nullable', 'string'],
+        ]);
+
+        if ($item->start_at === now()->toDateString() && isset($data['end_at'])) {
+            $item->car->status = Car::EMPTY;
+            $item->car->save();
+        }
 
         $item->update($data);
         $item->save();

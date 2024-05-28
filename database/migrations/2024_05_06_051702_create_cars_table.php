@@ -29,6 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('amount')->default(0);
             $table->enum('status', [
                 'empty',
+                'passed',
                 'on_rent',
                 'in_parking',
                 'at_service',
