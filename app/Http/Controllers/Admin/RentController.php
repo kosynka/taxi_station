@@ -187,7 +187,7 @@ class RentController extends Controller
 
         $data = $request->validate([
             'car_id' => ['nullable', 'integer', 'exists:cars,id'],
-            'driver_id' => ['nullable', 'integer', 'exists:drivers,id'],
+            'driver_id' => ['nullable', 'integer', 'exists:users,id'],
             'end_at' => ['nullable', 'date'],
             'amount' => ['nullable', 'integer', 'min:0'],
             'comment' => ['nullable', 'string'],
