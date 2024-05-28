@@ -191,37 +191,39 @@ class DatabaseSeeder extends Seeder
             ['state_number' => '977BAG02', 'brand' => 'Geely', 'model' => 'ATLAS', 'year' => 2024, 'amount' => 20000],
         ];
 
-        foreach ($cars as $item) {
-            $car = Car::create($item);
+        if (app()->isProduction() === false) {
+            foreach ($cars as $item) {
+                $car = Car::create($item);
 
-            OilChange::create([
-                'car_id' => $car->id,
-                'mileage' => rand(1000, 5000),
-                'changed_at' => date('Y-m-d', strtotime('-2 year')),
-            ]);
+                OilChange::create([
+                    'car_id' => $car->id,
+                    'mileage' => rand(1000, 5000),
+                    'changed_at' => date('Y-m-d', strtotime('-2 year')),
+                ]);
 
-            OilChange::create([
-                'car_id' => $car->id,
-                'mileage' => rand(5000, 10000),
-                'changed_at' => date('Y-m-d', strtotime('-1 year')),
-            ]);
+                OilChange::create([
+                    'car_id' => $car->id,
+                    'mileage' => rand(5000, 10000),
+                    'changed_at' => date('Y-m-d', strtotime('-1 year')),
+                ]);
 
-            OilChange::create([
-                'car_id' => $car->id,
-                'mileage' => rand(10000, 15000),
-                'changed_at' => date('Y-m-d', strtotime('-1 week')),
-            ]);
+                OilChange::create([
+                    'car_id' => $car->id,
+                    'mileage' => rand(10000, 15000),
+                    'changed_at' => date('Y-m-d', strtotime('-1 week')),
+                ]);
 
-            OilChange::create([
-                'car_id' => $car->id,
-                'mileage' => rand(10000, 15000),
-                'changed_at' => date('Y-m-d', strtotime('-1 week')),
-            ]);
+                OilChange::create([
+                    'car_id' => $car->id,
+                    'mileage' => rand(10000, 15000),
+                    'changed_at' => date('Y-m-d', strtotime('-1 week')),
+                ]);
+            }
+
+            Rent::factory()
+                ->count(1000)
+                ->has(Penalty::factory()->count(3))
+                ->create();
         }
-
-        Rent::factory()
-            ->count(1000)
-            ->has(Penalty::factory()->count(3))
-            ->create();
     }
 }
