@@ -191,10 +191,10 @@ class DatabaseSeeder extends Seeder
             ['state_number' => '977BAG02', 'brand' => 'Geely', 'model' => 'ATLAS', 'year' => 2024, 'amount' => 20000],
         ];
 
-        if (app()->isProduction() === false) {
-            foreach ($cars as $item) {
-                $car = Car::create($item);
+        foreach ($cars as $item) {
+            $car = Car::create($item);
 
+            if (app()->isProduction() === false) {
                 OilChange::create([
                     'car_id' => $car->id,
                     'mileage' => rand(1000, 5000),
@@ -219,7 +219,9 @@ class DatabaseSeeder extends Seeder
                     'changed_at' => date('Y-m-d', strtotime('-1 week')),
                 ]);
             }
+        }
 
+        if (app()->isProduction() === false) {
             Rent::factory()
                 ->count(1000)
                 ->has(Penalty::factory()->count(3))

@@ -12,7 +12,13 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link {{ $active == 'history' ? 'active' : '' }}" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button"
             role="tab" aria-controls="history" aria-selected="false">
-            История ({{ $dates[0] }}{{ last($dates) != $dates[0] ? ' - ' . last($dates) : '' }})
+            История (
+                @if(empty($dates))
+                    нет данных
+                @else
+                    {{ $dates[0] }}{{ last($dates) != $dates[0] ? ' - ' . last($dates) : '' }}
+                @endif
+                )
         </button>
     </li>
 </ul>
@@ -169,7 +175,7 @@
                             <th scope="col"></th>
 
                             @foreach($dates as $date)
-                            <th>@convert($amountByDays[$date])</th>
+                                <th>@convert($amountByDays[$date])</th>
                             @endforeach
                         </tr>
                         <tr>

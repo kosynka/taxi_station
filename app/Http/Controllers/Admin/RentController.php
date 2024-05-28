@@ -101,14 +101,15 @@ class RentController extends Controller
             }
         }
 
-        if (!array_key_exists('dates', $historyByDays[1])) {
-            return redirect()->route("$this->key.index")->with(['error' => 'Нет данных за выбранный период']);
+        if (empty($historyByDays) || !array_key_exists('dates', $historyByDays[1])) {
+            $dates = [];
+            $historyByDays = [];
+        } else {
+            $dates = array_keys($historyByDays[1]['dates']);
+            $dates = array_map(function ($date) {
+                return \Carbon\Carbon::parse($date)->format('d.m.Y');
+            }, $dates);
         }
-
-        $dates = array_keys($historyByDays[1]['dates']);
-        $dates = array_map(function ($date) {
-            return \Carbon\Carbon::parse($date)->format('d.m.Y');
-        }, $dates);
 
         return view("admin.$this->key.index",
             compact(
