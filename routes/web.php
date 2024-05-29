@@ -26,7 +26,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'role:admin,mana
 
     Route::group(['prefix' => '/users', 'controller' => UserController::class], function () {
         Route::get('/', 'index')->name('users.index');
-        Route::post('/', 'store')->name('users.store');
+        Route::post('/', 'store')->name('users.store')->middleware('check_permission:create');
         Route::get('/create', 'create')->name('users.create');
         Route::get('/{id}', 'show')->name('users.show');
         Route::post('/{id}', 'update')->name('users.update')->middleware('role:admin');
@@ -35,8 +35,8 @@ Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'role:admin,mana
 
     Route::group(['prefix' => '/cars', 'middleware' => ['refresh_cars'], 'controller' => CarController::class], function () {
         Route::get('/', 'index')->name('cars.index');
-        Route::post('/', 'store')->name('cars.store');
-        Route::get('/create', 'create')->name('cars.create')->middleware('check_permission:create');
+        Route::post('/', 'store')->name('cars.store')->middleware('check_permission:create');
+        Route::get('/create', 'create')->name('cars.create');
         Route::get('/{id}', 'show')->name('cars.show');
         Route::post('/{id}', 'update')->name('cars.update')->middleware('check_permission:update');
         Route::post('/{id}/status', 'status')->name('cars.status');
@@ -45,19 +45,19 @@ Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'role:admin,mana
 
     Route::group(['prefix' => '/oil-changes', 'controller' => OilChangeController::class], function () {
         Route::get('/', 'index')->name('oilchanges.index');
-        Route::post('/', 'store')->name('oilchanges.store');
+        Route::post('/', 'store')->name('oilchanges.store')->middleware('check_permission:create');
         Route::get('/create', 'create')->name('oilchanges.create');
         Route::get('/{id}', 'show')->name('oilchanges.show');
-        Route::post('/{id}', 'update')->name('oilchanges.update');
-        Route::get('/{id}/delete', 'delete')->name('oilchanges.delete')->middleware('role:admin');
+        Route::post('/{id}', 'update')->name('oilchanges.update')->middleware('check_permission:update');
+        Route::get('/{id}/delete', 'delete')->name('oilchanges.delete')->middleware('check_permission:delete');
     });
 
     Route::group(['prefix' => '/rents', 'middleware' => 'refresh_cars', 'controller' => RentController::class], function () {
         Route::get('/', 'index')->name('rents.index');
         Route::post('/', 'store')->name('rents.store');
-        Route::get('/create', 'create')->name('rents.create');
+        Route::get('/create', 'create')->name('rents.create')->middleware('check_permission:create');
         Route::get('/{id}', 'show')->name('rents.show');
-        Route::post('/{id}', 'update')->name('rents.update')->middleware(['role:admin', 'check_permission:update']);
+        Route::post('/{id}', 'update')->name('rents.update')->middleware('role:admin');
         Route::get('/{id}/delete', 'delete')->name('rents.delete')->middleware('role:admin');
     });
 
@@ -66,7 +66,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'role:admin,mana
         Route::post('/', 'store')->name('penalties.store');
         Route::get('/create', 'create')->name('penalties.create')->middleware('check_permission:create');
         Route::get('/{id}', 'show')->name('penalties.show');
-        Route::post('/{id}', 'update')->name('penalties.update')->middleware(['role:admin', 'check_permission:update']);
+        Route::post('/{id}', 'update')->name('penalties.update')->middleware('role:admin');
         Route::get('/{id}/delete', 'delete')->name('penalties.delete')->middleware('role:admin');
     });
 

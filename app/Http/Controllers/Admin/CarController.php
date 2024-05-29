@@ -145,7 +145,8 @@ class CarController extends Controller
     public function status(int $id, Request $request)
     {
         $data = $request->validate([
-            'rent_id' => ['nullable', 'integer'],
+            'rent_ids' => ['nullable'],
+            'rent_ids.*' => ['nullable', 'integer', 'exists:rents,id'],
             'comment' => ['nullable', 'string'],
             'status' => [
                 'required',
@@ -164,13 +165,15 @@ class CarController extends Controller
 
         $item->save();
 
-        if ($data['rent_id'] != 0) {
-            $rent = Rent::find($data['rent_id']);
-            $rent->addComment([
-                'text' => $data['comment'],
-                'status' => $data['status'] ?? $item->status,
-            ]);
-            $rent->save();
+        if (isset($data['rent_ids'])) {
+            foreach ($data['rent_ids'] as $rentId) {
+                $rent = Rent::find($rentId);
+                $rent->addComment([
+                    'text' => $data['comment'],
+                    'status' => $data['status'] ?? $item->status,
+                ]);
+                $rent->save();
+            }
         }
 
         return redirect()->back()->with(['success' => 'Успешно изменен']);

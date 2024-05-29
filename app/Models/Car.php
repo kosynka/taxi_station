@@ -67,18 +67,18 @@ class Car extends Model
             ->orderBy('start_at', 'desc');
     }
 
-    public function todayRent(): ?Model
+    public function todayRent(): Collection
     {
         return $this->rents()
             ->whereDate('start_at', '=', now()->toDateString())
-            ->first();
+            ->get();
     }
 
-    public function yesterdayRent(): ?Model
+    public function yesterdayRent(): Collection
     {
         return $this->rents()
             ->whereDate('start_at', '=', date('Y-m-d', strtotime("-1 days")))
-            ->first();
+            ->get();
     }
 
     public function historyRent(): Collection

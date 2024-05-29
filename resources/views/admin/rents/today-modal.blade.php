@@ -1,9 +1,10 @@
-<a class="link-dark" data-bs-toggle="modal" data-bs-target="#updateTodayRentModal{{ $car->state_number }}">
-    {{ $rent->driver->name }} (@convert($rent->amount))
+<a class="link-{{ $rent->end_at === null ? 'success fw-bold' : 'dark fw-lighter' }}" data-bs-toggle="modal"
+    data-bs-target="#updateTodayRentModal{{ $car->state_number }}{{ $rent->id }}">
+    {{ $rent->driver->name }} (@convert($rent->amount) {{ $rent->end_at !== null ? ' - ' . $rent->end_at : ''}})
 </a>
 
-<div class="modal fade" id="updateTodayRentModal{{ $car->state_number }}" tabindex="-1"
-    aria-labelledby="updateTodayRentModal{{ $car->state_number }}Label" aria-hidden="true">
+<div class="modal fade" id="updateTodayRentModal{{ $car->state_number }}{{ $rent->id }}" tabindex="-1"
+    aria-labelledby="updateTodayRentModal{{ $car->state_number }}{{ $rent->id }}Label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form id="statusModalForm" class="demo-form" method="POST" data-parsley-validate=""
@@ -11,7 +12,7 @@
                 action="{{ route('rents.update', ['id' => $rent->id]) }}">
                 {{ csrf_field() }}
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateTodayRentModal{{ $car->state_number }}Label">
+                    <h5 class="modal-title" id="updateTodayRentModal{{ $car->state_number }}{{ $rent->id }}Label">
                         Машина: {{ $car->state_number }} - {{ $car->brand }} {{ $car->model }}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -24,8 +25,6 @@
                         Баланс @convert($rent->driver->balance)
                     </h5>
                     <h5>
-                        Статус: {{ $car->getStatus()[1] }}
-                        </br>
                         Сумма: @convert($rent->amount)
                     </h5>
                     </br>
@@ -42,7 +41,11 @@
                         <label for="status" class="form-label">Водитель <i style="color: red;">*</i></label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="datetime-local" class="form-control" name="end_at" id="end_at">
+                        <input type="datetime-local" class="form-control" name="start_at" id="start_at" value="{{ $rent->start_at }}">
+                        <label for="start_at" class="form-label">Время получения машины</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="datetime-local" class="form-control" name="end_at" id="end_at" value="{{ $rent->end_at }}">
                         <label for="end_at" class="form-label">Время сдачи машины</label>
                     </div>
                     </br>
@@ -53,7 +56,7 @@
                         </a>
                     </h5> -->
                     <h5>
-                        <a class="link-primary" href="{{ route('contract.rent.with.buy', ['rent_id' => $item->todayRent()->id]) }}">
+                        <a class="link-primary" href="{{ route('contract.rent.with.buy', ['rent_id' => $rent->id]) }}">
                             Договор аренды с выкупом
                         </a>
                     </h5>

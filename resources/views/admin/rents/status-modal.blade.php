@@ -10,7 +10,11 @@
                 enctype="multipart/form-data" action="{{ route('cars.status', ['id' => $car->id]) }}">
                 {{ csrf_field() }}
 
-                <input value="{{ $rent !== null ? $rent->id : 0 }}" name="rent_id" type="number" hidden>
+                @foreach($rents as $rent)
+                    @if ($rent->end_at !== null)
+                        <input value="{{ $rent->id }}" name="rent_ids[]" type="number" hidden>
+                    @endif
+                @endforeach
 
                 <div class="modal-header">
                     <h5 class="modal-title" id="commentRentModal{{ $car->state_number }}Label">

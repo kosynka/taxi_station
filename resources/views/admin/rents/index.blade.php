@@ -73,7 +73,7 @@
                             <td>
                                 @include('admin.rents.status-modal', [
                                     'car' => $item,
-                                    'rent' => $item->todayRent(),
+                                    'rents' => $item->todayRent(),
                                 ])
                             </td>
                             <td>
@@ -86,7 +86,7 @@
                                             <p class="mb-3">{{ $item->getLastComment()['text'] }}</p>
                                             <small>
                                                 <footer class="blockquote-footer">
-                                                    {{ $item->getLastComment()['created_at'] }}
+                                                    {{ \Carbon\Carbon::parse($item->getLastComment()['created_at'])->format('h:i:s') }}
                                                     <cite>{{ $commentUser->name }}</cite>
                                                 </footer>
                                             </small>
@@ -95,13 +95,17 @@
                                 @endif
                             </td>
                             <td>
-                                @if($item->todayRent() !== null)
-                                    @include('admin.rents.today-modal', [
-                                        'car' => $item,
-                                        'drivers' => $drivers,
-                                        'rent' => $item->todayRent(),
-                                    ])
-                                @else
+                                @if($item->todayRent()->isNotEmpty())
+                                    @foreach($item->todayRent() as $rent)
+                                        @include('admin.rents.today-modal', [
+                                            'car' => $item,
+                                            'drivers' => $drivers,
+                                            'rent' => $rent,
+                                        ])
+                                        </br>
+                                    @endforeach
+                                @endif
+                                @if($item->todayRent()->count() < 2)
                                     @include('admin.rents.create-modal', [
                                         'car' => $item,
                                         'drivers' => $drivers,
@@ -109,12 +113,14 @@
                                 @endif
                             </td>
                             <td class="table-info">
-                                @if($item->yesterdayRent() !== null && $item->yesterdayRent()->end_at === null)
-                                    @include('admin.rents.yesterday-modal', [
-                                        'car' => $item,
-                                        'rent' => $item->yesterdayRent(),
-                                    ])
-                                @endif
+                                @foreach($item->yesterdayRent() as $yesterdayRent)
+                                    @if($yesterdayRent->end_at === null)
+                                        @include('admin.rents.yesterday-modal', [
+                                            'car' => $item,
+                                            'rent' => $yesterdayRent,
+                                        ])
+                                    @endif
+                                @endforeach
                             </td>
                         </tr>
                     @endforeach
@@ -195,29 +201,32 @@
                                 <td>{{ $item['car']->brand }}</td>
                                 <td>{{ $item['car']->model }}</td>
                                 <td>{{ $item['car']->state_number }}</td>
-                                @foreach ($item['dates'] as $date => $rent)
+                                @foreach ($item['dates'] as $date => $rents)
                                     <td>
-                                    @if($rent)
-                                        {{ $rent->driver->name }}
-                                        </br>
-                                        @convert($rent->amount)
+                                        @foreach($rents as $rent)
+                                            {{ $rent->driver->name }}
+                                            @convert($rent->amount) |
 
-                                        @if(isset($rent->penalty))
-                                            <a class="link-{{ $rent->penalty->getType()[0] }}" href="{{ route('penalties.show', ['id' => $rent->penalty]) }}">
-                                                {{ $rent->penalty->getType()[1] }} (@convert($rent->penalty->amount))
-                                            </a>
-                                        @endif
+                                            {{ $rent->start_at->format('h:i:s') }} - {{ $rent->end_at?->format('h:i:s') ?? 'не сдал' }}
 
-                                        @if($rent->getLastComment())
-                                            </br>
-                                            <small>
-                                                {{ $rent->getLastComment()['text'] }} -
-                                                {{ \App\Models\User::find($rent->getLastComment()['user_id'])->name }}
+                                            @if(isset($rent->penalty))
+                                                |
+                                                <a class="link-{{ $rent->penalty->getType()[0] }}" href="{{ route('penalties.show', ['id' => $rent->penalty]) }}">
+                                                    {{ $rent->penalty->getType()[1] }} (@convert($rent->penalty->amount))
+                                                </a>
+                                            @endif
+
+                                            @if($rent->getLastComment())
                                                 </br>
-                                                {{ $rent->getLastComment()['created_at'] }}
-                                            </small>
-                                        @endif
-                                    @endif
+                                                <small>
+                                                    {{ $rent->getLastComment()['text'] }} -
+                                                    {{ \App\Models\User::find($rent->getLastComment()['user_id'])->name }}
+                                                    {{ \Carbon\Carbon::parse($rent->getLastComment()['created_at'])->format('h:i:s') }}
+                                                </small>
+                                            @endif
+                                            </br>
+                                            </br>
+                                        @endforeach
                                     </td>
                                 @endforeach
                             </tr>

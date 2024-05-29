@@ -54,8 +54,8 @@ class RentController extends Controller
         $todayCarsCount = 0;
 
         foreach ($today as $car) {
-            if ($car->todayRent()) {
-                $todayAmount += $car->todayRent()->amount;
+            if ($car->todayRent()->isNotEmpty()) {
+                $todayAmount += $car->todayRent()->sum('amount');
                 $todayCarsCount += 1;
             }
         }
@@ -90,14 +90,19 @@ class RentController extends Controller
             $historyByDays[$car->id]['car'] = $car;
 
             foreach ($notToday as $date => $rentGroup) {
-                $rent = $rentGroup->where('car_id', $car->id)->first();
+                $rents = $rentGroup->where('car_id', $car->id)->all();
 
-                $historyByDays[$car->id]['dates'][$date] = $rent ?? null;
+                $historyByDays[$car->id]['dates'][$date] = $rents;
 
                 if (!isset($amountByDays[$date])) {
                     $amountByDays[$date] = 0;
                 }
-                $amountByDays[$date] += (isset($rent) ? $rent->amount : 0);
+
+                $amountByDays[$date] += (
+                    ! empty($rents)
+                    ? array_reduce($rents, function ($sum, $rent) { return $sum + $rent->amount; })
+                    : 0
+                );
             }
         }
 
