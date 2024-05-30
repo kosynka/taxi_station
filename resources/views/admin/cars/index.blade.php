@@ -46,14 +46,19 @@
                         <td>
                             @include('admin.rents.status-modal', [
                                 'car' => $item,
-                                'rent' => $item->todayRent(),
+                                'rents' => $item->todayRent(),
                             ])
                         </td>
                         <td>
-                            <a class="link-primary" href="{{ route('users.show', ['id' => $item->id]) }}">
-                                {{ $item->todayRent()?->driver->name }}
-                                {{ $item->todayRent()?->driver->phone }}
-                            </a>
+                            @if($item->todayRent()->isNotEmpty())
+                                @foreach($item->todayRent() as $rent)
+                                    <a class="link-primary" href="{{ route('users.show', ['id' => $item->id]) }}">
+                                        {{ $rent->driver->name }}
+                                        {{ $rent->driver->phone }}
+                                    </a>
+                                    </br>
+                                @endforeach
+                            @endif
                         </td>
                     </tr>
                 @endforeach

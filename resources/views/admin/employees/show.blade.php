@@ -30,6 +30,26 @@
         </div>
     </div>
 
+    @if($data->roleIs('manager'))
+        <label class="mb-1 mt-3">
+            <b>Доступы:</b>
+        </label>
+
+        <div class="row row-cols-3 mb-3">
+            @foreach($permissions as $key => $value)
+                <div class="col">
+                    <input class="form-check-input" type="checkbox" name="permissions[{{ $key }}]" {{ $data->permissions[$key] === true ?
+                    'checked' : '' }}>
+                    <label class="form-check-label" for="defaultCheck1">
+                        {{ $value }}
+                    </label>
+                </div>
+            @endforeach
+        </div>
+    @else
+        Есть все права
+    @endif
+
     <div class="col-auto">
         <button type="submit" class="btn btn-success mb-3">Создать работника</button>
     </div>

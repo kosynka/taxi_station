@@ -6,11 +6,11 @@
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link {{ $active == 'today' ? 'active' : '' }}" id="today-tab" data-bs-toggle="tab" data-bs-target="#today"
+        <button class="nav-link {{ $activeBar == 'today' ? 'active' : '' }}" id="today-tab" data-bs-toggle="tab" data-bs-target="#today"
             type="button" role="tab" aria-controls="today" aria-selected="true">Сегодня ({{ now()->format('d.m.Y') }})</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link {{ $active == 'history' ? 'active' : '' }}" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button"
+        <button class="nav-link {{ $activeBar == 'history' ? 'active' : '' }}" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button"
             role="tab" aria-controls="history" aria-selected="false">
             История (
                 @if(empty($dates))
@@ -27,7 +27,7 @@
 <div class="tab-content" id="myTabContent">
     </br>
     <!-- TODAY STATS -->
-    <div class="tab-pane fade {{ $active == 'today' ? 'show active' : '' }}" id="today" role="tabpanel" aria-labelledby="today-tab">
+    <div class="tab-pane fade {{ $activeBar == 'today' ? 'show active' : '' }}" id="today" role="tabpanel" aria-labelledby="today-tab">
         <b>Количество машин на аренде:</b> {{ $todayCarsCount }} / {{ count($today) }}
         </br>
         <b>Сумма машин на аренде:</b> @convert($todayAmount) / @convert($today->sum('amount'))
@@ -130,7 +130,7 @@
     </div>
 
     <!-- HISTORY -->
-    <div class="tab-pane fade {{ $active == 'history' ? 'show active' : '' }}" id="history" role="tabpanel" aria-labelledby="history-tab">
+    <div class="tab-pane fade {{ $activeBar == 'history' ? 'show active' : '' }}" id="history" role="tabpanel" aria-labelledby="history-tab">
         <!-- HISTORY FILTER -->
         <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
             <div class="row row-cols-3">

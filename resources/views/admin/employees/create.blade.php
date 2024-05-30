@@ -29,6 +29,19 @@
         </div>
     </div>
 
+    <div class="row row-cols-3">
+        @foreach($permissions as $key => $value)
+            <div class="col">
+                <input class="form-check-input" type="checkbox" value="1" name="permissions[{{ $key }}]">
+                <label class="form-check-label" for="defaultCheck1">
+                    {{ $value }}
+                </label>
+            </div>
+        @endforeach
+    </div>
+
+    </br>
+
     <div class="col-auto">
         <button type="submit" class="btn btn-success mb-3">Создать работника</button>
     </div>

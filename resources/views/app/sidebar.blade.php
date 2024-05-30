@@ -61,13 +61,13 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="{{ route('employees.permissions') }}"
                         class="nav-link {{ isset($active) && $active == 'employees' ? 'active' : '' }}">
                         @include('icons.lock')
                         Права доступа
                     </a>
-                </li>
+                </li> -->
             </ul>
         @endif
     </div>

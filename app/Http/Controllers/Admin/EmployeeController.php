@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
     private string $key = 'employees';
-    private array $metaData = ['active' => 'employees'];
+    private array $metaData = [];
 
-    public function __construct(
-        private User $model,
-    ) {}
+    public function __construct(private User $model)
+    {
+        $this->metaData = [
+            'active' => $this->key,
+            'permissions' => User::getPermissions(),
+        ];
+    }
 
     public function index()
     {
@@ -46,7 +50,16 @@ class EmployeeController extends Controller
             'name' => ['required', 'string'],
             'email' => ['required', 'email:rfc,dns', 'unique:users,email'],
             'password' => ['required', 'string', 'min:5'],
+            'permissions' => ['nullable', 'array'],
         ]);
+
+        foreach ($this->metaData['permissions'] as $key => $value) {
+            if (!isset($data['permissions'][$key])) {
+                $data['permissions'][$key] = false;
+            } else {
+                $data['permissions'][$key] = true;
+            }
+        }
 
         $data['role'] = 'manager';
         $data['password'] = Hash::make($data['password']);
@@ -64,6 +77,7 @@ class EmployeeController extends Controller
             'name' => ['required', 'string'],
             'email' => ['nullable', 'email:rfc,dns', "unique:users,email,$id"],
             'password' => ['nullable', 'string', 'min:5'],
+            'permissions' => ['nullable', 'array'],
         ]);
 
         if (!isset($data['name']) || $data['name'] === null) {
@@ -76,6 +90,14 @@ class EmployeeController extends Controller
 
         if (!isset($data['email']) || $data['email'] === null) {
             unset($data['email']);
+        }
+
+        foreach ($this->metaData['permissions'] as $key => $value) {
+            if (!isset($data['permissions'][$key])) {
+                $data['permissions'][$key] = false;
+            } else {
+                $data['permissions'][$key] = true;
+            }
         }
 
         if (isset($data['password']) && $data['password'] !== null) {

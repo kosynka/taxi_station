@@ -27,9 +27,10 @@ class RefreshCars
         foreach ($cars as $car) {
             $yesterdayRent = $car->yesterdayRent();
 
-            if ($yesterdayRent !== null && $car->todayRent() === null) {
-                $newRent = $yesterdayRent->replicate();
-                $newRent->start_at = now();
+            if ($yesterdayRent->isNotEmpty() && $car->todayRent()->isEmpty()) {
+                $lastYesterdayRent = $yesterdayRent->sortByDesc('start_at')->first();
+                $newRent = $lastYesterdayRent->replicate();
+                $newRent->start_at = $lastYesterdayRent->start_at->addDay();
                 $newRent->end_at = null;
                 $newRent->amount = $car->amount;
                 $newRent->save();

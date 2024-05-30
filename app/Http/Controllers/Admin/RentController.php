@@ -17,12 +17,6 @@ class RentController extends Controller
     private string $key = 'rents';
     private array $metaData = [];
     private array $relations = ['car', 'driver'];
-    private array $rules = [
-        'car_id' => ['required', 'integer', 'exists:cars,id'],
-        'driver_id' => ['required', 'integer', 'exists:drivers,id'],
-        'start_at' => ['nullable', 'date'],
-        'amount' => ['sometimes', 'integer', 'min:0'],
-    ];
 
     public function __construct(
         private Rent $model,
@@ -40,7 +34,7 @@ class RentController extends Controller
             'date_to' => ['nullable', 'date', 'after_or_equal:date_from'],
         ]);
 
-        $active = 'today';
+        $activeBar = 'today';
 
         $drivers = User::where('role', 'taxi_driver')->get();
         $historyStartDate = \Carbon\Carbon::parse($this->model->min('start_at'))->format('Y-m-d');
@@ -65,7 +59,7 @@ class RentController extends Controller
             ->whereDate('start_at', '!=', $historyStartDate);
 
         if (!empty($params)) {
-            $active = 'history';
+            $activeBar = 'history';
 
             if (isset($params['date_from'])) {
                 $notTodayQuery->whereDate('start_at', '>=', $params['date_from']);
@@ -118,7 +112,7 @@ class RentController extends Controller
 
         return view("admin.$this->key.index",
             compact(
-                'active',
+                'activeBar',
                 'today',
                 'amountByDays',
                 'historyByDays',

@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\Role::class,
             'refresh_cars' => \App\Http\Middleware\RefreshCars::class,
-            'check_permission' => \App\Http\Middleware\CheckPermission::class,
+            'check_permissions' => \App\Http\Middleware\CheckPermission::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

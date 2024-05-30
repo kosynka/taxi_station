@@ -14,16 +14,24 @@ class CheckPermission
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $permission): Response
+    public function handle(Request $request, Closure $next, string $permission = ''): Response
     {
-        if (auth()->user()->role == 'manager') {
-            $permission = Permission::where('name', $permission)->first();
+        $user = auth()->user();
 
-            if ($permission->is_active) {
+        if ($user->role === 'manager') {
+            $requestName = $request->route()->getName();
+            $permission = $user->permissions[$requestName];
+
+            if ($permission === true) {
                 return $next($request);
             }
 
-            return redirect()->back()->with(['error' => 'У вас нет на это прав']);
+            $requestNameParts = explode('.', $requestName);
+            $firstPart = $requestNameParts[0];
+
+            $message = 'У вас нет прав на ' . $user->getPermissionText($requestName);
+
+            return redirect()->route($firstPart . '.index')->withErrors(['msg' => $message]);
         }
 
         return $next($request);

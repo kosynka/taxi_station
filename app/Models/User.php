@@ -44,6 +44,7 @@ class User extends Authenticatable
         'driver_license_categories',
 
         'comments',
+        'permissions',
 
         'id_doc_photo_1',
         'id_doc_photo_2',
@@ -65,6 +66,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'comments' => 'array',
+            'permissions' => 'array',
         ];
     }
 
@@ -90,5 +92,57 @@ class User extends Authenticatable
     public function roleIs(string $role = 'admin'): bool
     {
         return $this->role === $role;
+    }
+
+    public function getPermissionText(string $key): string
+    {
+        return match ($key) {
+            'rents.create' => 'Создание аренды',
+            'rents.update' => 'Изменение аренды',
+            'rents.delete' => 'Удаление аренды',
+
+            'cars.create' => 'Создание автомобиля',
+            'cars.update' => 'Изменение автомобиля',
+            'cars.delete' => 'Удаление автомобиля',
+
+            'oilchanges.create' => 'Создание замены масла',
+            'oilchanges.update' => 'Изменение замены масла',
+            'oilchanges.delete' => 'Удаление замены масла',
+
+            'users.create' => 'Создание водителя',
+            'users.update' => 'Изменение водителя',
+            'users.delete' => 'Удаление водителя',
+
+            'penalties.create' => 'Создание штрафа',
+            'penalties.update' => 'Изменение штрафа',
+            'penalties.delete' => 'Удаление штрафа',
+
+            default => 'Неизвестное разрешение',
+        };
+    }
+
+    public static function getPermissions(): array
+    {
+        return [
+            'rents.create' => 'Создание аренды',
+            'rents.update' => 'Изменение аренды',
+            'rents.delete' => 'Удаление аренды',
+
+            'cars.create' => 'Создание автомобиля',
+            'cars.update' => 'Изменение автомобиля',
+            'cars.delete' => 'Удаление автомобиля',
+
+            'oilchanges.create' => 'Создание замены масла',
+            'oilchanges.update' => 'Изменение замены масла',
+            'oilchanges.delete' => 'Удаление замены масла',
+
+            'users.create' => 'Создание водителя',
+            'users.update' => 'Изменение водителя',
+            'users.delete' => 'Удаление водителя',
+
+            'penalties.create' => 'Создание штрафа',
+            'penalties.update' => 'Изменение штрафа',
+            'penalties.delete' => 'Удаление штрафа',
+        ];
     }
 }
