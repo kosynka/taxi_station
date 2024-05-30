@@ -94,6 +94,37 @@ class User extends Authenticatable
         return $this->role === $role;
     }
 
+    public function getRole(): string
+    {
+        return self::getRoles()[$this->role];
+    }
+
+    public static function getEmployeeRoles(): array
+    {
+        return [
+            // 'admin' => 'Администратор',
+            'seating_manager' => 'Менеджер по рассадке',
+            'mechanic' => 'Механик',
+            'accountant' => 'Бухгалтер',
+            'investor' => 'Инвестор',
+            'manager' => 'Управляющий',
+            // 'taxi_driver' => 'Водитель такси',
+        ];
+    }
+
+    public static function getRoles(): array
+    {
+        return [
+            'admin' => 'Администратор',
+            'seating_manager' => 'Менеджер по рассадке',
+            'mechanic' => 'Механик',
+            'accountant' => 'Бухгалтер',
+            'investor' => 'Инвестор',
+            'manager' => 'Управляющий',
+            'taxi_driver' => 'Водитель такси',
+        ];
+    }
+
     public function getPermissionText(string $key): string
     {
         return match ($key) {

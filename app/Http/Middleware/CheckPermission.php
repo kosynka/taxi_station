@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Permission;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,7 @@ class CheckPermission
     {
         $user = auth()->user();
 
-        if ($user->role === 'manager') {
+        if ($user->role !== 'admin') {
             $requestName = $request->route()->getName();
             $permission = $user->permissions[$requestName];
 

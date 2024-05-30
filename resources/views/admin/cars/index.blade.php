@@ -27,15 +27,14 @@
                     <th scope="col">стоимость аренды</th>
                     <th scope="col">Статус</th>
                     <th scope="col">Водитель</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody id="myTable">
                 @foreach($data as $item)
                     <tr>
                         <td>
-                            <a class="link-primary" href="{{ route('cars.show', ['id' => $item->id]) }}">
-                                @include('icons.pen')
-                            </a>
+                            @include('icons.pen', ['name' => 'cars', 'id' => $item->id])
                         </td>
                         <td>{{ $item->state_number }}</td>
                         <td>{{ $item->brand }}</td>
@@ -59,6 +58,9 @@
                                     </br>
                                 @endforeach
                             @endif
+                        </td>
+                        <td>
+                            @include('icons.trash', ['name' => 'cars', 'id' => $item->id])
                         </td>
                     </tr>
                 @endforeach

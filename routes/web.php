@@ -18,7 +18,13 @@ Route::group(['middleware' => 'refresh_cars', 'controller' => AuthController::cl
     Route::get('/custom-logout', 'logout')->name('custom.logout');
 });
 
-Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'role:admin,manager']], function () {
+Route::group([
+    'prefix' => '/',
+    'middleware' => [
+        'auth:sanctum',
+        'role:admin,seating_manager,mechanic,accountant,investor,manager',
+    ],
+], function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/contract/rent', [ContractController::class, 'contractRent'])->name('contract.rent');
@@ -72,12 +78,12 @@ Route::group(['prefix' => '/', 'middleware' => ['auth:sanctum', 'role:admin,mana
 
     Route::group(['prefix' => '/employees', 'middleware' => ['role:admin'], 'controller' => EmployeeController::class], function () {
         Route::get('/', 'index')->name('employees.index');
-        Route::post('/', 'store')->name('employees.store')->middleware('check_permissions');
+        Route::post('/', 'store')->name('employees.store');
         Route::get('/create', 'create')->name('employees.create');
         Route::get('/permissions', 'permissions')->name('employees.permissions');
-        Route::post('/permissions', 'updatePermissions')->name('employees.permissions.update')->middleware('check_permissions');
+        Route::post('/permissions', 'updatePermissions')->name('employees.permissions.update');
         Route::get('/{id}', 'show')->name('employees.show');
-        Route::post('/{id}', 'update')->name('employees.update')->middleware('check_permissions');
-        Route::get('/{id}/delete', 'delete')->name('employees.delete')->middleware('check_permissions');
+        Route::post('/{id}', 'update')->name('employees.update');
+        Route::get('/{id}/delete', 'delete')->name('employees.delete');
     });
 });

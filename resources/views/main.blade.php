@@ -116,6 +116,12 @@
         crossorigin="anonymous"></script>
 
     <script>
+        function clicked(e) {
+            if (!confirm('Вы уверены?')) {
+                e.preventDefault();
+            }
+        }
+
         $(document).ready(function () {
             $("#myInput").on("keyup", function () {
                 var value = $(this).val().toLowerCase();

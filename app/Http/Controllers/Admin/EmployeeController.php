@@ -20,6 +20,7 @@ class EmployeeController extends Controller
         $this->metaData = [
             'active' => $this->key,
             'permissions' => User::getPermissions(),
+            'roles' => User::getEmployeeRoles(),
         ];
     }
 
@@ -47,6 +48,7 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'role' => ['nullable', 'string'],
             'name' => ['required', 'string'],
             'email' => ['required', 'email:rfc,dns', 'unique:users,email'],
             'password' => ['required', 'string', 'min:5'],
@@ -74,6 +76,7 @@ class EmployeeController extends Controller
         $item = $this->model->findOrFail($id);
 
         $data = $request->validate([
+            'role' => ['nullable', 'string'],
             'name' => ['required', 'string'],
             'email' => ['nullable', 'email:rfc,dns', "unique:users,email,$id"],
             'password' => ['nullable', 'string', 'min:5'],
@@ -115,6 +118,11 @@ class EmployeeController extends Controller
     public function delete(int $id)
     {
         $item = $this->model->find($id);
+
+        if ($item->role === 'admin') {
+            return redirect()->route("$this->key.index")
+                ->withErrors(['msg' => 'Нельзя удалять администратора!']);
+        }
 
         $item->delete();
 

@@ -9,6 +9,17 @@
     <div class="row row-cols-3">
         <div class="col">
             <div class="form-floating mb-3">
+                <select name="role" class="form-select" required>
+                    @foreach($roles as $key => $text)
+                        <option value="{{ $key }}">{{ $text }}</option>
+                    @endforeach
+                </select>
+                <label for="role" class="form-label">Роль <i style="color: red;">*</i></label>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-floating mb-3">
                 <input value="{{ old('name') }}" type="text" class="form-control" name="name" id="name" required>
                 <label for="name" class="form-label">ФИО <i style="color: red;">*</i></label>
             </div>

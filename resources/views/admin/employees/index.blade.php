@@ -15,23 +15,24 @@
             <thead>
                 <tr>
                     <th scope="col"></th>
+                    <th scope="col"></th>
                     <th scope="col">ФИО</th>
                     <th scope="col">Почта</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody id="myTable">
                 @foreach($data as $item)
                     <tr>
                         <td>
-                            <a class="link-primary" href="{{ route('employees.show', ['id' => $item->id]) }}">
-                                @include('icons.pen')
-                            </a>
+                            @include('icons.pen', ['name' => 'employees', 'id' => $item->id])
                         </td>
-                        <td>
-                            {{ $item->name }}
-                            ({{ $item->role }})
-                        </td>
+                        <td>{{ $item->getRole() }}</td>
+                        <td>{{ $item->name }}</td>
                         <td>{{ $item->email }}</td>
+                        <td>
+                            @include('icons.trash', ['name' => 'employees', 'id' => $item->id])
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

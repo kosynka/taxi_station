@@ -25,15 +25,13 @@
                 </a>
             </li>
 
-            @if(auth()->user()->roleIs('admin'))
-                <li>
-                    <a href="{{ route('users.index') }}"
-                        class="nav-link {{ isset($active) && $active == 'users' ? 'active' : '' }}">
-                        @include('icons.driver')
-                        Водители
-                    </a>
-                </li>
-            @endif
+            <li>
+                <a href="{{ route('users.index') }}"
+                    class="nav-link {{ isset($active) && $active == 'users' ? 'active' : '' }}">
+                    @include('icons.driver')
+                    Водители
+                </a>
+            </li>
 
             <li>
                 <a href="{{ route('penalties.index') }}"
@@ -44,10 +42,6 @@
             </li>
         </ul>
 
-        <!-- // TODO: divide by role
-        // admin: everything
-        // manager: add rents(comments), add oilchanges -->
-
         @if(auth()->user()->roleIs('admin'))
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
             </h6>
@@ -57,17 +51,9 @@
                     <a href="{{ route('employees.index') }}"
                         class="nav-link {{ isset($active) && $active == 'employees' ? 'active' : '' }}">
                         @include('icons.document')
-                        Работники
+                        Работники и Права доступа
                     </a>
                 </li>
-
-                <!-- <li class="nav-item">
-                    <a href="{{ route('employees.permissions') }}"
-                        class="nav-link {{ isset($active) && $active == 'employees' ? 'active' : '' }}">
-                        @include('icons.lock')
-                        Права доступа
-                    </a>
-                </li> -->
             </ul>
         @endif
     </div>

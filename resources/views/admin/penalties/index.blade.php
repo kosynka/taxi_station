@@ -87,6 +87,7 @@
                 <th scope="col">Статус</th>
                 <th scope="col">Машина</th>
                 <th scope="col">Водитель</th>
+                <th scope="col"></th>
             </tr>
         </thead>
 
@@ -94,9 +95,7 @@
             @foreach($data as $item)
                 <tr>
                     <td scope="col">
-                        <a class="link-primary" href="{{ route('penalties.show', ['id' => $item->id]) }}">
-                            @include('icons.pen')
-                        </a>
+                        @include('icons.pen', ['name' => 'penalties', 'id' => $item->id])
                     </td>
                     <td scope="col">
                         <span class="badge rounded-pill bg-{{ $item->getType()[0] }}">
@@ -128,15 +127,16 @@
                     </td>
                     <td scope="col">
                         <a class="link-primary" href="{{ route('cars.show', ['id' => $item->rent->car_id]) }}">
-                            {{ $item->rent->car->brand }}
-                            {{ $item->rent->car->model }}
-                            {{ $item->rent->car->state_number }}
+                            {{ $item->rent->car->shortDescription() }}
                         </a>
                     </td>
                     <td scope="col">
                         <a class="link-primary" href="{{ route('users.show', ['id' => $item->rent->driver_id]) }}">
                             {{ $item->rent->driver->name }}
                         </a>
+                    </td>
+                    <td>
+                        @include('icons.trash', ['name' => 'oilchanges', 'id' => $item->id])
                     </td>
                 </tr>
             @endforeach

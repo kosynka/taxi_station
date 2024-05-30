@@ -17,7 +17,17 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->enum('role', ['admin', 'manager', 'taxi_driver'])->default('taxi_driver');
+
+            $table->enum('role', [
+                'admin',
+                'seating_manager',
+                'mechanic',
+                'accountant',
+                'investor',
+                'manager',
+                'taxi_driver',
+            ])->default('taxi_driver');
+
             $table->string('email')->nullable()->unique();
             $table->string('phone')->nullable();
             $table->string('password');

@@ -19,7 +19,6 @@
         <table class="table table-striped" id="oilchanges_table">
             <thead>
                 <tr>
-                    <th scope="col"></th>
                     <th scope="col">Гос.номер</th>
                     <th scope="col">Марка</th>
                     <th scope="col">Модель</th>
@@ -45,11 +44,6 @@
                         }
                     @endphp
                     <tr>
-                        <td>
-                            <a class="link-primary" href="{{ route('oilchanges.show', ['id' => $item->id]) }}">
-                                @include('icons.pen')
-                            </a>
-                        </td>
                         <td>
                             <a class="link-primary" href="{{ route('cars.show', ['id' => $item->id]) }}">
                                 {{ $item->state_number }}
@@ -80,7 +74,12 @@
                         </td>
                         <td>
                             @foreach($item->oilChanges as $oilChange)
+                                </br>
+                                @include('icons.pen', ['name' => 'oilchanges', 'id' => $item->id])
+
                                 {{ $oilChange->changed_at->format('d.m.Y H:i:s') }} на {{ $oilChange->mileage }}км
+
+                                @include('icons.trash', ['name' => 'oilchanges', 'id' => $item->id])
                                 </br>
                             @endforeach
                         </td>

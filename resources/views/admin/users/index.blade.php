@@ -23,20 +23,22 @@
                     <th scope="col">Телефон</th>
                     <th scope="col">ИИН</th>
                     <th scope="col">Баланс</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody id="myTable">
                 @foreach($data as $item)
                     <tr>
                         <td>
-                            <a class="link-primary" href="{{ route('users.show', ['id' => $item->id]) }}">
-                                @include('icons.pen')
-                            </a>
+                            @include('icons.pen', ['name' => 'users', 'id' => $item->id])
                         </td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->phone }}</td>
                         <td>{{ $item->iin }}</td>
                         <td>@convert($item->balance)</td>
+                        <td>
+                            @include('icons.trash', ['name' => 'users', 'id' => $item->id])
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

@@ -7,6 +7,19 @@
     {{ csrf_field() }}
 
     <div class="row row-cols-3">
+        @if($data->roleIs('admin') === false)
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <select name="role" class="form-select" required>
+                        @foreach($roles as $key => $text)
+                            <option value="{{ $key }}" {{ $data->role === $key ? 'selected' : '' }}>{{ $text }}</option>
+                        @endforeach
+                    </select>
+                    <label for="role" class="form-label">Роль <i style="color: red;">*</i></label>
+                </div>
+            </div>
+        @endif
+
         <div class="col">
             <div class="form-floating mb-3">
                 <input value="{{ $data->name !== null ? $data->name : old('name') }}" type="text" class="form-control" name="name" id="name" required>
@@ -30,7 +43,7 @@
         </div>
     </div>
 
-    @if($data->roleIs('manager'))
+    @if($data->roleIs('admin') === false)
         <label class="mb-1 mt-3">
             <b>Доступы:</b>
         </label>
@@ -38,11 +51,9 @@
         <div class="row row-cols-3 mb-3">
             @foreach($permissions as $key => $value)
                 <div class="col">
-                    <input class="form-check-input" type="checkbox" name="permissions[{{ $key }}]" {{ $data->permissions[$key] === true ?
-                    'checked' : '' }}>
-                    <label class="form-check-label" for="defaultCheck1">
-                        {{ $value }}
-                    </label>
+                    <input class="form-check-input" type="checkbox" name="permissions[{{ $key }}]"
+                        {{ $data->permissions[$key] === true ? 'checked' : '' }}>
+                    <label class="form-check-label" for="defaultCheck1">{{ $value }}</label>
                 </div>
             @endforeach
         </div>
@@ -51,7 +62,7 @@
     @endif
 
     <div class="col-auto">
-        <button type="submit" class="btn btn-success mb-3">Создать работника</button>
+        <button type="submit" class="btn btn-success mb-3">Сохранить</button>
     </div>
 </form>
 @endsection
