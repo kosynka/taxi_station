@@ -77,22 +77,7 @@
                                 ])
                             </td>
                             <td>
-                                @if($item->getLastComment())
-                                    <small>
-                                        @php
-                                            $commentUser = \App\Models\User::find($item->getLastComment()['user_id']);
-                                        @endphp
-                                        <blockquote class="blockquote">
-                                            <p class="mb-3">{{ $item->getLastComment()['text'] }}</p>
-                                            <small>
-                                                <footer class="blockquote-footer">
-                                                    {{ \Carbon\Carbon::parse($item->getLastComment()['created_at'])->format('h:i:s') }}
-                                                    <cite>{{ $commentUser->name }}</cite>
-                                                </footer>
-                                            </small>
-                                        </blockquote>
-                                    </small>
-                                @endif
+                                @include('admin.parts.comment', ['item' => $item])
                             </td>
                             <td>
                                 @if($item->todayRent()->isNotEmpty())

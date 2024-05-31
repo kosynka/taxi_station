@@ -127,7 +127,7 @@
                     <div class="form-floating mb-3">
                         <input value="{{ $data->driver_license_categories != null ? $data->driver_license_categories : old('driver_license_categories') }}"
                             type="text" class="form-control" name="driver_license_categories" id="driver_license_categories" required>
-                        <label for="driver_license_categories" class="form-label">Категории водительских пра</label>
+                        <label for="driver_license_categories" class="form-label">Категории водительских прав</label>
                     </div>
                 </div>
 
@@ -138,17 +138,7 @@
                     </div>
                 </div>
 
-                @if($data->getLastComment())
-                    <div class="col">
-                        Коммент:
-                        <small>
-                            {{ $data->getLastComment()['text'] }}
-                            </br>
-                            {{ \App\Models\User::find($data->getLastComment()['user_id'])->name }}
-                            {{ $data->getLastComment()['created_at'] }}
-                        </small>
-                    </div>
-                @endif
+                @include('admin.parts.comment', ['item' => $data])
             </div>
 
             <div class="row row-cols-1">

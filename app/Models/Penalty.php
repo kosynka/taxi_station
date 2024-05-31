@@ -27,6 +27,13 @@ class Penalty extends Model
         'protocol_file_path',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'comments' => 'array',
+        ];
+    }
+
     protected function received(): Attribute
     {
         return Attribute::make(

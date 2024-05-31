@@ -85,6 +85,7 @@
                 <th scope="col">Дата оплаты</th>
                 <th scope="col">Сумма</th>
                 <th scope="col">Статус</th>
+                <th scope="col">Коммент</th>
                 <th scope="col">Машина</th>
                 <th scope="col">Водитель</th>
                 <th scope="col"></th>
@@ -124,6 +125,9 @@
                         <span class="badge rounded-pill bg-{{ $item->getStatus()[0] }}">
                             {{ $item->getStatus()[1] }}
                         </span>
+                    </td>
+                    <td scope="col">
+                        @include('admin.parts.comment', ['item' => $item])
                     </td>
                     <td scope="col">
                         <a class="link-primary" href="{{ route('cars.show', ['id' => $item->rent->car_id]) }}">

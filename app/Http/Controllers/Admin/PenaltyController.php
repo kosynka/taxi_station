@@ -86,7 +86,14 @@ class PenaltyController extends Controller
             $data['protocol_file_path'] = $this->storeFile('protocol_file_path');
         }
 
-        $this->model->create($data);
+        $item = $this->model->create($data);
+
+        $item->addComment([
+            'text' => $data['comment'],
+            'status' => $data['status'] ?? $item->status,
+        ]);
+
+        $item->save();
 
         return redirect()->route("$this->key.index")->with(['success' => 'Успешно создан']);
     }
@@ -124,6 +131,11 @@ class PenaltyController extends Controller
         if (request()->file('protocol_file_path') != null) {
             $data['protocol_file_path'] = $this->storeFile('protocol_file_path');
         }
+
+        $item->addComment([
+            'text' => $data['comment'],
+            'status' => $data['status'] ?? $item->status,
+        ]);
 
         $item->update($data);
         $item->save();
