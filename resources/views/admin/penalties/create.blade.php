@@ -31,8 +31,8 @@
     </div>
 
     <div class="form-floating mb-3">
-        <input type="datetime-local" class="form-control" name="received_at" id="received_at" required>
-        <label for="received_at" class="form-label">Дата получения <i style="color: red;">*</i></label>
+        <input type="text" class="form-control" name="protocol_number" id="protocol_number" required>
+        <label for="protocol_number" class="form-label">№ протокола <i style="color: red;">*</i></label>
     </div>
 
     <div class="form-floating mb-3">

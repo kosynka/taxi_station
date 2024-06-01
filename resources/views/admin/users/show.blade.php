@@ -206,13 +206,13 @@
         <input class="form-control" id="penalty-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped" id="user_penalties_table">
+            <table class="table table-bordered table-hover border border-dark" id="user_penalties_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
-                        <th scope="col">Дата происшествия</th>
+                        <th scope="col">№ протокола</th>
                         <th scope="col">Дата оплаты</th>
                         <th scope="col">Сумма</th>
                         <th scope="col">Статус</th>
@@ -239,7 +239,7 @@
                                 @endif
                             </td>
                             <td scope="col">
-                                {{ $penalty->received->format('d.m.Y H:i:s') }}
+                                {{ $penalty->protocol_number }}
                             </td>
                             <td scope="col">
                                 @if($penalty->paid)
@@ -277,7 +277,7 @@
         <input class="form-control" id="rent-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped" id="user_rents_table">
+            <table class="table table-bordered table-hover border border-dark" id="user_rents_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>

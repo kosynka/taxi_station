@@ -24,6 +24,7 @@ class Penalty extends Model
         'amount',
         'status',
         'comments',
+        'protocol_number',
         'protocol_file_path',
     ];
 

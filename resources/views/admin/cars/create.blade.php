@@ -56,8 +56,8 @@
     </div>
 
     <div class="form-floating mb-3">
-        <input type="number" class="form-control" name="mileage" id="mileage" min="0">
-        <label for="mileage" class="form-label">Пробег, км</label>
+        <input type="number" class="form-control" name="mileage" id="mileage" min="0" required>
+        <label for="mileage" class="form-label">Пробег, км <i style="color: red;">*</i></label>
     </div>
 
     <div class="form-floating mb-3">

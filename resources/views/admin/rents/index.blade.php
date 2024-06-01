@@ -41,7 +41,7 @@
 
         <!-- TODAY TABLE -->
         <div class="table-responsive">
-            <table class="table table-striped" id="today_rents_table">
+            <table class="table table-bordered table-hover border border-dark" id="today_rents_table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -157,7 +157,7 @@
         <!-- HISTORY TABLE -->
         <div style="width: 100%; overflow-x: auto;">
             <div class="table-responsive" style="overflow: auto; overflow-x: scroll;">
-                <table class="table table-lg table-bordered mb-4" id="history_rents_table">
+                <table class="table table-lg table-bordered border border-dark mb-4" id="history_rents_table">
                     <thead>
                         <tr>
                             <th>Сумма</th>

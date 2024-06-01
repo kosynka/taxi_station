@@ -55,7 +55,7 @@ class CarController extends Controller
             'year' => ['nullable', 'integer', 'min:0'],
             'engine_capacity' => ['nullable', 'string'],
             'color' => ['nullable', 'string'],
-            'mileage' => ['nullable', 'integer', 'min:0'],
+            'mileage' => ['required', 'integer', 'min:0'],
             'amount' => ['nullable', 'integer', 'min:0'],
 
             'photo_1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],

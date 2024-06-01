@@ -14,9 +14,9 @@
     <div class="row row-cols-3">
         <div class="col">
             <div class="mb-3">
-                <label for="per_page" class="form-label">Показать количество</label>
-                <input type="number" class="form-control" name="per_page" id="per_page" min="10"
-                    value="@if(request()->per_page){{ request()->per_page }}@endif">
+                <label for="protocol_number" class="form-label">№ протокола</label>
+                <input type="text" class="form-control" name="protocol_number" id="protocol_number" min="10"
+                    value="@if(request()->protocol_number){{ request()->protocol_number }}@endif">
             </div>
         </div>
 
@@ -63,6 +63,14 @@
                 </select>
             </div>
         </div>
+
+        <div class="col">
+            <div class="mb-3">
+                <label for="per_page" class="form-label">Показать количество</label>
+                <input type="number" class="form-control" name="per_page" id="per_page" min="10"
+                    value="@if(request()->per_page){{ request()->per_page }}@endif">
+            </div>
+        </div>
     </div>
 
     <div class="d-flex justify-content-center">
@@ -75,13 +83,13 @@
 </form>
 
 <div class="table-responsive">
-    <table class="table table-striped" id="penalties_table">
+    <table class="table table-bordered table-hover border border-dark" id="penalties_table">
         <thead>
             <tr>
                 <th scope="col"></th>
                 <th scope="col">Тип</th>
                 <th scope="col">Протокол</th>
-                <th scope="col">Дата происшествия</th>
+                <th scope="col">№ протокола</th>
                 <th scope="col">Дата оплаты</th>
                 <th scope="col">Сумма</th>
                 <th scope="col">Статус</th>
@@ -113,7 +121,7 @@
                         @endif
                     </td>
                     <td scope="col">
-                        {{ $item->received->format('d.m.Y H:i:s') }}
+                        {{ $item->protocol_number }}
                     </td>
                     <td scope="col">
                         @if($item->paid)

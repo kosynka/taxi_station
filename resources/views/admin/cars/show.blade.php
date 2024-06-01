@@ -111,8 +111,8 @@
                 <div class="col">
                     <div class="form-floating mb-3">
                         <input value="{{ $data->mileage !== null ? $data->mileage : old('mileage') }}" type="number"
-                            class="form-control" name="mileage" id="mileage" min="0">
-                        <label for="mileage" class="form-label">Пробег, км</label>
+                            class="form-control" name="mileage" id="mileage" min="0" required>
+                        <label for="mileage" class="form-label">Пробег, км <i style="color: red;">*</i></label>
                     </div>
                 </div>
 
@@ -161,13 +161,13 @@
         <input class="form-control" id="penalty-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped" id="car_penalties_table">
+            <table class="table table-bordered table-hover border border-dark" id="car_penalties_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
-                        <th scope="col">Дата происшествия</th>
+                        <th scope="col">№ протокола</th>
                         <th scope="col">Дата оплаты</th>
                         <th scope="col">Сумма</th>
                         <th scope="col">Статус</th>
@@ -194,8 +194,7 @@
                                 @endif
                             </td>
                             <td scope="col">
-                                {{ $penalty->received->format('d.m.Y') }}
-                                ({{ $penalty->received->diffForHumans() }})
+                                {{ $penalty->protocol_number }}
                             </td>
                             <td scope="col">
                                 {{ $penalty->paid->format('d.m.Y') }}
@@ -230,7 +229,7 @@
         <input class="form-control" id="rent-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped" id="car_rents_table">
+            <table class="table table-bordered table-hover border border-dark" id="car_rents_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -277,7 +276,7 @@
         <input class="form-control" id="oilchange-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-striped" id="car_oilchanges_table">
+            <table class="table table-bordered table-hover border border-dark" id="car_oilchanges_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>

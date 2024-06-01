@@ -32,6 +32,10 @@ class PenaltyController extends Controller
     {
         $query = $this->model->with($this->relations);
 
+        if (isset($request->protocol_number)) {
+            $query->where('protocol_number', 'like', "%$request->protocol_number%");
+        }
+
         if (isset($request->date_from)) {
             $query->whereDate('received_at', '>=', $request->date_from);
         }
@@ -65,7 +69,7 @@ class PenaltyController extends Controller
         $data = $request->validate([
             'type' => ['required', 'in:fine,accident'],
             'rent_id' => ['required', 'integer', 'exists:rents,id'],
-            'received_at' => ['required', 'date'],
+            // 'received_at' => ['required', 'date'],
             'paid_at' => [
                 'nullable',
                 'date',
@@ -75,6 +79,7 @@ class PenaltyController extends Controller
             'amount' => ['required', 'integer', 'min:0'],
             'status' => ['required', 'in:unpaid,paid_with_discount,paid_without_discount'],
             'comment' => ['nullable', 'string'],
+            'protocol_number' => ['nullable', 'string'],
             'protocol_file_path' => [
                 'nullable',
                 'mimes:pdf,jpeg,jpg,png',
@@ -85,6 +90,8 @@ class PenaltyController extends Controller
         if (request()->file('protocol_file_path') != null) {
             $data['protocol_file_path'] = $this->storeFile('protocol_file_path');
         }
+
+        $data['received_at'] = now()->format('H:i:s');
 
         $item = $this->model->create($data);
 
@@ -111,7 +118,7 @@ class PenaltyController extends Controller
 
         $data = $request->validate([
             'type' => ['required', 'in:fine,accident'],
-            'received_at' => ['required', 'date'],
+            // 'received_at' => ['required', 'date'],
             'paid_at' => [
                 'nullable',
                 'date',
@@ -121,6 +128,7 @@ class PenaltyController extends Controller
             'amount' => ['required', 'integer', 'min:0'],
             'status' => ['required', 'in:unpaid,paid_with_discount,paid_without_discount'],
             'comment' => ['nullable', 'string'],
+            'protocol_number' => ['nullable', 'string'],
             'protocol_file_path' => [
                 'nullable',
                 'mimes:pdf,jpeg,jpg,png',
