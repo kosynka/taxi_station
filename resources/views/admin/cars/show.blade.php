@@ -207,9 +207,11 @@
                                 </span>
                             </td>
                             <td scope="col">
-                                <a class="link-primary" href="{{ route('users.show', ['id' => $penalty->rent->driver->id]) }}">
-                                    {{ $penalty->rent->driver->name }}
-                                </a>
+                                @if(isset($penalty->rent->driver))
+                                    <a class="link-primary" href="{{ route('users.show', ['id' => $penalty->rent->driver?->id]) }}">
+                                        {{ $penalty->rent->driver?->name }}
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -254,9 +256,11 @@
                             <!-- </td> -->
                             <td scope="col">@convert($rent->amount)</td>
                             <td scope="col">
-                                <a class="link-primary" href="{{ route('users.show', ['id' => $rent->driver->id]) }}">
-                                    {{ $rent->driver->name }}
-                                </a>
+                                @if(isset($rent->driver))
+                                    <a class="link-primary" href="{{ route('users.show', ['id' => $rent->driver?->id]) }}">
+                                        {{ $rent->driver?->name }}
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

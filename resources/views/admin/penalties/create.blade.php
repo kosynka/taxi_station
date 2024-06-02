@@ -24,7 +24,7 @@
                     {{ $rent->car->state_number }}
                     {{ $rent->car->brand }}
                     {{ $rent->car->model }} |
-                    {{ $rent->driver->name }}
+                    {{ $rent->driver?->name }}
                 </option>
             @endforeach
         </datalist>

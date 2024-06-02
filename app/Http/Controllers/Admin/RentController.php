@@ -176,7 +176,7 @@ class RentController extends Controller
                 $rent->car->brand . ' ' .
                 $rent->car->model . ' ' .
                 ' успешно арендован водителем ' .
-                $rent->driver->name,
+                $rent->driver?->name,
         ]);
     }
 

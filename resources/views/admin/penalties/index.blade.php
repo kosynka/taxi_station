@@ -143,9 +143,11 @@
                         </a>
                     </td>
                     <td scope="col">
-                        <a class="link-primary" href="{{ route('users.show', ['id' => $item->rent->driver_id]) }}">
-                            {{ $item->rent->driver->name }}
-                        </a>
+                        @if(isset($item->rent->driver))
+                            <a class="link-primary" href="{{ route('users.show', ['id' => $item->rent?->driver_id]) }}">
+                                {{ $item->rent?->driver?->name }}
+                            </a>
+                        @endif
                     </td>
                     <td>
                         @include('icons.trash', ['name' => 'oilchanges', 'id' => $item->id])

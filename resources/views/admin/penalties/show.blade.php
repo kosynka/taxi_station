@@ -6,7 +6,7 @@
     {{ $data->rent->car->state_number }}
     {{ $data->rent->car->brand }}
     {{ $data->rent->car->model }} </br>
-    {{ $data->rent->driver->name }}
+    {{ $data->rent->driver?->name }}
 </h2>
 
 <form class="demo-form" method="POST" data-parsley-validate="" class="form-horizontal form-label-left" novalidate=""

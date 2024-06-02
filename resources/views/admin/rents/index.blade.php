@@ -179,7 +179,7 @@
                                     <td>
                                         @foreach($rents as $rent)
                                             @if($rent !== null || $rent->driver !== null)
-                                                {{ $rent->driver->name }}
+                                                {{ $rent->driver?->name }}
                                                 @convert($rent->amount) |
 
                                                 {{ $rent->start_at->format('h:i:s') }} - {{ $rent->end_at?->format('h:i:s') ?? 'не сдал' }}

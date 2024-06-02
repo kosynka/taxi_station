@@ -23,9 +23,9 @@
 
                 <div class="modal-body">
                     <h5>
-                        Водитель: {{ $rent->driver->name }}
-                        {{ $rent->driver->phone }} |
-                        Баланс @convert($rent->driver->balance)
+                        Водитель: {{ $rent->driver?->name }}
+                        {{ $rent->driver?->phone }} |
+                        Баланс @convert($rent->driver?->balance)
                     </h5>
                     <h5>
                         Сумма: @convert($rent->amount)
