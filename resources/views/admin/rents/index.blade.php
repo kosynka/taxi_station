@@ -176,28 +176,30 @@
                                 @foreach ($item['dates'] as $date => $rents)
                                     <td>
                                         @foreach($rents as $rent)
-                                            {{ $rent->driver->name }}
-                                            @convert($rent->amount) |
+                                            @if($rent !== null || $rent->driver !== null)
+                                                {{ $rent->driver->name }}
+                                                @convert($rent->amount) |
 
-                                            {{ $rent->start_at->format('h:i:s') }} - {{ $rent->end_at?->format('h:i:s') ?? 'не сдал' }}
+                                                {{ $rent->start_at->format('h:i:s') }} - {{ $rent->end_at?->format('h:i:s') ?? 'не сдал' }}
 
-                                            @if(isset($rent->penalty))
-                                                |
-                                                <a class="link-{{ $rent->penalty->getType()[0] }}" href="{{ route('penalties.show', ['id' => $rent->penalty]) }}">
-                                                    {{ $rent->penalty->getType()[1] }} (@convert($rent->penalty->amount))
-                                                </a>
-                                            @endif
+                                                @if(isset($rent->penalty))
+                                                    |
+                                                    <a class="link-{{ $rent->penalty->getType()[0] }}" href="{{ route('penalties.show', ['id' => $rent->penalty]) }}">
+                                                        {{ $rent->penalty->getType()[1] }} (@convert($rent->penalty->amount))
+                                                    </a>
+                                                @endif
 
-                                            @if($rent->getLastComment())
+                                                @if($rent->getLastComment())
+                                                    </br>
+                                                    <small>
+                                                        {{ $rent->getLastComment()['text'] }} -
+                                                        {{ \App\Models\User::find($rent->getLastComment()['user_id'])->name }}
+                                                        {{ \Carbon\Carbon::parse($rent->getLastComment()['created_at'])->format('h:i:s') }}
+                                                    </small>
+                                                @endif
                                                 </br>
-                                                <small>
-                                                    {{ $rent->getLastComment()['text'] }} -
-                                                    {{ \App\Models\User::find($rent->getLastComment()['user_id'])->name }}
-                                                    {{ \Carbon\Carbon::parse($rent->getLastComment()['created_at'])->format('h:i:s') }}
-                                                </small>
+                                                </br>
                                             @endif
-                                            </br>
-                                            </br>
                                         @endforeach
                                     </td>
                                 @endforeach
