@@ -255,7 +255,7 @@
                             </td>
                             <td scope="col">
                                 @if($penalty->paid)
-                                    {{ $penalty->paid->format('d.m.Y H:i:s') }}
+                                    {{ $penalty->paid?->format('d.m.Y H:i:s') }}
                                 @endif
                             </td>
                             <td scope="col">@convert($penalty->amount)</td>

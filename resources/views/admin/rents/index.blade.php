@@ -182,7 +182,7 @@
                                                 {{ $rent->driver?->name }}
                                                 @convert($rent->amount) |
 
-                                                {{ $rent->start_at->format('h:i:s') }} - {{ $rent->end_at?->format('h:i:s') ?? 'не сдал' }}
+                                                {{ $rent->start_at?->format('h:i:s') }} - {{ $rent->end_at?->format('h:i:s') ?? 'не сдал' }}
 
                                                 @if(isset($rent->penalty))
                                                     |

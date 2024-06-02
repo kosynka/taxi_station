@@ -47,8 +47,8 @@ class CarController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'state_number' => ['required', 'string'],
-            'vin' => ['required', 'string'],
+            'state_number' => ['required', 'string', 'unique:cars,state_number'],
+            'vin' => ['required', 'string', 'unique:cars,vin'],
             'carcass' => ['nullable', 'string'],
             'brand' => ['required', 'string'],
             'model' => ['required', 'string'],
@@ -90,8 +90,8 @@ class CarController extends Controller
         $item = $this->model->findOrFail($id);
 
         $data = $request->validate([
-            'state_number' => ['required', 'string'],
-            'vin' => ['required', 'string'],
+            'state_number' => ['required', 'string', 'unique:cars,state_number,' . $id],
+            'vin' => ['required', 'string', 'unique:cars,vin,' . $id],
             'carcass' => ['nullable', 'string'],
             'brand' => ['required', 'string'],
             'model' => ['required', 'string'],

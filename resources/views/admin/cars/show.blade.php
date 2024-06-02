@@ -197,8 +197,10 @@
                                 {{ $penalty->protocol_number }}
                             </td>
                             <td scope="col">
-                                {{ $penalty->paid->format('d.m.Y') }}
-                                ({{ $penalty->paid->diffForHumans() }})
+                                @if($penalty->paid)
+                                    {{ $penalty->paid?->format('d.m.Y') }}
+                                    ({{ $penalty->paid?->diffForHumans() }})
+                                @endif
                             </td>
                             <td scope="col">@convert($penalty->amount)</td>
                             <td scope="col">

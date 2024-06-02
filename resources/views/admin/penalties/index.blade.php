@@ -125,7 +125,7 @@
                     </td>
                     <td scope="col">
                         @if($item->paid)
-                            {{ $item->paid->format('d.m.Y H:i:s') }}
+                            {{ $item->paid?->format('d.m.Y H:i:s') }}
                         @endif
                     </td>
                     <td scope="col">@convert($item->amount)</td>
