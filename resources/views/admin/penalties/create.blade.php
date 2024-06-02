@@ -21,9 +21,9 @@
             @foreach($rents as $rent)
                 <option style="width: 300px !important;" value="{{ $rent->id }}">
                     {{ \Carbon\Carbon::parse($rent->start_at)->format('d.m.Y H:i:s') }} |
-                    {{ $rent->car->state_number }}
-                    {{ $rent->car->brand }}
-                    {{ $rent->car->model }} |
+                    {{ $rent->car?->state_number }}
+                    {{ $rent->car?->brand }}
+                    {{ $rent->car?->model }} |
                     {{ $rent->driver?->name }}
                 </option>
             @endforeach

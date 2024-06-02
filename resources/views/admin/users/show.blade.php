@@ -265,11 +265,13 @@
                                 </span>
                             </td>
                             <td scope="col">
-                                <a class="link-primary" href="{{ route('cars.show', ['id' => $penalty->rent->car->id]) }}">
-                                    {{ $penalty->rent->car->brand }}
-                                    {{ $penalty->rent->car->model }}
-                                    {{ $penalty->rent->car->state_number }}
-                                </a>
+                                @if(isset($penalty->rent) && isset($penalty->rent->car))
+                                    <a class="link-primary" href="{{ route('cars.show', ['id' => $penalty->rent?->car?->id]) }}">
+                                        {{ $penalty->rent?->car?->brand }}
+                                        {{ $penalty->rent?->car?->model }}
+                                        {{ $penalty->rent?->car?->state_number }}
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -308,11 +310,13 @@
                             <!-- <td scope="col">{{ $rent->end_at }}</td> -->
                             <td scope="col">@convert($rent->amount)</td>
                             <td scope="col">
-                                <a class="link-primary" href="{{ route('cars.show', ['id' => $rent->car->id]) }}">
-                                    {{ $rent->car->brand }}
-                                    {{ $rent->car->model }}
-                                    {{ $rent->car->state_number }}
-                                </a>
+                                @if(isset($rent->car))
+                                    <a class="link-primary" href="{{ route('cars.show', ['id' => $rent->car?->id]) }}">
+                                        {{ $rent->car?->brand }}
+                                        {{ $rent->car?->model }}
+                                        {{ $rent->car?->state_number }}
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

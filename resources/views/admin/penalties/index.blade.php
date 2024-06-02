@@ -138,8 +138,8 @@
                         @include('admin.parts.comment', ['item' => $item])
                     </td>
                     <td scope="col">
-                        <a class="link-primary" href="{{ route('cars.show', ['id' => $item->rent->car_id]) }}">
-                            {{ $item->rent->car->shortDescription() }}
+                        <a class="link-primary" href="{{ route('cars.show', ['id' => $item->rent?->car_id]) }}">
+                            {{ $item->rent?->car?->shortDescription() }}
                         </a>
                     </td>
                     <td scope="col">
