@@ -44,15 +44,15 @@ class RentController extends Controller
             }, 'rents.driver', 'rents.penalty'])
             ->get();
 
-        // $todayAmount = 0;
-        // $todayCarsCount = 0;
+        $todayAmount = 0;
+        $todayCarsCount = 0;
 
-        // foreach ($today as $car) {
-        //     if ($car->todayRent()->isNotEmpty()) {
-        //         $todayAmount += $car->todayRent()->sum('amount');
-        //         $todayCarsCount += 1;
-        //     }
-        // }
+        foreach ($today as $car) {
+            if ($car->todayRent()->isNotEmpty()) {
+                $todayAmount += $car->todayRent()->sum('amount');
+                $todayCarsCount += 1;
+            }
+        }
 
         $notTodayQuery = $this->model
             ->with($this->relations)
@@ -77,7 +77,7 @@ class RentController extends Controller
             });
 
         $historyByDays = [];
-        // $amountByDays = [];
+        $amountByDays = [];
 
         foreach ($today as $car) {
             $historyByDays[$car->id] = [];
@@ -88,15 +88,15 @@ class RentController extends Controller
 
                 $historyByDays[$car->id]['dates'][$date] = $rents;
 
-                // if (!isset($amountByDays[$date])) {
-                //     $amountByDays[$date] = 0;
-                // }
+                if (!isset($amountByDays[$date])) {
+                    $amountByDays[$date] = 0;
+                }
 
-                // $amountByDays[$date] += (
-                //     ! empty($rents)
-                //     ? array_reduce($rents, function ($sum, $rent) { return $sum + $rent->amount; })
-                //     : 0
-                // );
+                $amountByDays[$date] += (
+                    ! empty($rents)
+                    ? array_reduce($rents, function ($sum, $rent) { return $sum + $rent->amount; })
+                    : 0
+                );
             }
         }
 
@@ -114,12 +114,12 @@ class RentController extends Controller
             compact(
                 'activeBar',
                 'today',
-                // 'amountByDays',
+                'amountByDays',
                 'historyByDays',
                 'drivers',
                 'dates',
-                // 'todayAmount',
-                // 'todayCarsCount',
+                'todayAmount',
+                'todayCarsCount',
             ) + $this->metaData
         );
     }
