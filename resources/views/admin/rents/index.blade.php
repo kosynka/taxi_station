@@ -79,12 +79,14 @@
                             <td>
                                 @if($item->todayRent()->isNotEmpty())
                                     @foreach($item->todayRent() as $rent)
-                                        @include('admin.rents.today-modal', [
-                                            'car' => $item,
-                                            'drivers' => $drivers,
-                                            'rent' => $rent,
-                                        ])
-                                        </br>
+                                        @if($rent !== null || $rent->driver !== null)
+                                            @include('admin.rents.today-modal', [
+                                                'car' => $item,
+                                                'drivers' => $drivers,
+                                                'rent' => $rent,
+                                            ])
+                                            </br>
+                                        @endif
                                     @endforeach
                                 @endif
                                 @if($item->todayRent()->count() < 2)
