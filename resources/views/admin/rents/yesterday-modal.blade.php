@@ -1,5 +1,5 @@
 <a class="link-dark" data-bs-toggle="modal" data-bs-target="#updateYesterdayRentModal{{ $car->state_number }}">
-    {{ $rent->driver->name }} (@convert($rent->amount))
+    {{ $rent->driver?->name }} (@convert($rent->amount))
 </a>
 
 <div class="modal fade" id="updateYesterdayRentModal{{ $car->state_number }}" tabindex="-1"
