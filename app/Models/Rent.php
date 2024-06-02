@@ -22,6 +22,7 @@ class Rent extends Model
         'comments',
         'contract_file_path',
         'contract_with_buy_file_path',
+        'is_paid',
     ];
 
     protected function casts(): array

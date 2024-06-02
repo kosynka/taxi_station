@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\Commentable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -31,6 +32,7 @@ class User extends Authenticatable
         'phone',
 
         'balance',
+        'debt',
 
         'iin',
         'id_doc_number',
@@ -88,6 +90,17 @@ class User extends Authenticatable
         )
         ->orderBy('received_at', 'desc');
     }
+
+    // protected function phone(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: function ($value) {
+    //             if (auth()->user() !== null && auth()->user()->roleIs('admin')) {
+    //                 return $value;
+    //             }
+    //         },
+    //     );
+    // }
 
     public function roleIs(string $role = 'admin'): bool
     {

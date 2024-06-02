@@ -28,10 +28,7 @@
     </br>
     <!-- TODAY STATS -->
     <div class="tab-pane fade {{ $activeBar == 'today' ? 'show active' : '' }}" id="today" role="tabpanel" aria-labelledby="today-tab">
-        <b>Количество машин на аренде:</b> {{ $todayCarsCount }} / {{ count($today) }}
         </br>
-        <b>Сумма машин на аренде:</b> @convert($todayAmount) / @convert($today->sum('amount'))
-        </br></br>
 
         <a class="btn btn-primary mb-3" href="#" onclick="download_table_as_csv('today_rents_table', ',', 'Сегодняшние аренды');">
             Выгрузить таблицу
@@ -53,7 +50,7 @@
                         <th scope="col">Статус</th>
                         <th scope="col">Коммент</th>
                         <th scope="col">Водитель</th>
-                        <th scope="col">Вчерашняя аренда</th>
+                        <!-- <th scope="col">Вчерашняя аренда</th> -->
                     </tr>
                 </thead>
 
@@ -97,7 +94,7 @@
                                     ])
                                 @endif
                             </td>
-                            <td class="table-info">
+                            <!-- <td class="table-info">
                                 @foreach($item->yesterdayRent() as $yesterdayRent)
                                     @if($yesterdayRent->end_at === null)
                                         @include('admin.rents.yesterday-modal', [
@@ -106,7 +103,7 @@
                                         ])
                                     @endif
                                 @endforeach
-                            </td>
+                            </td> -->
                         </tr>
                     @endforeach
                 </tbody>
@@ -159,16 +156,6 @@
             <div class="table-responsive" style="overflow: auto; overflow-x: scroll;">
                 <table class="table table-lg table-bordered border border-dark mb-4" id="history_rents_table">
                     <thead>
-                        <tr>
-                            <th>Сумма</th>
-                        
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-
-                            @foreach($dates as $date)
-                                <th>@convert($amountByDays[$date])</th>
-                            @endforeach
-                        </tr>
                         <tr>
                             <th scope="col">Гос.номер</th>
                             <th scope="col">Марка</th>

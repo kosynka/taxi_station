@@ -32,6 +32,9 @@ return new class extends Migration
             $table->string('contract_file_path')->nullable();
             $table->string('contract_with_buy_file_path')->nullable();
             $table->json('comments')->nullable();
+
+            $table->boolean('is_paid')->default(false);
+
             $table->timestamps();
         });
     }

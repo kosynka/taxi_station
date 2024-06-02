@@ -21,12 +21,14 @@
             </div>
         </div>
 
-        <div class="col">
-            <div class="form-floating mb-3">
-                <input value="{{ old('phone') }}" type="text" class="form-control" name="phone" id="phone" required>
-                <label for="phone" class="form-label">Телефон (формат 87001112233) <i style="color: red;">*</i></label>
+        @if (auth()->user()->roleIs('admin'))
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input value="{{ old('phone') }}" type="text" class="form-control" name="phone" id="phone" required>
+                    <label for="phone" class="form-label">Телефон (формат 87001112233) <i style="color: red;">*</i></label>
+                </div>
             </div>
-        </div>
+        @endif
 
         <div class="col">
             <div class="form-floating mb-3">
@@ -34,6 +36,15 @@
                 <label for="balance" class="form-label">Баланс, тг</label>
             </div>
         </div>
+
+        @if (auth()->user()->roleIs('admin'))
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input value="{{ old('debt') }}" type="number" class="form-control" name="debt" id="debt">
+                    <label for="debt" class="form-label">Долг, тг</label>
+                </div>
+            </div>
+        @endif
 
         <div class="col">
             <div class="form-floating mb-3">

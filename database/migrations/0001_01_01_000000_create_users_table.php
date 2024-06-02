@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('password');
 
             $table->bigInteger('balance')->nullable();
+            $table->bigInteger('debt')->nullable();
 
             $table->string('iin')->nullable()->unique();
             $table->string('id_doc_number')->nullable();

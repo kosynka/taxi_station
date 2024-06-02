@@ -49,6 +49,7 @@ class UserController extends Controller
             'phone' => ['required', 'string', 'regex:/^87\d{9}$/'],
             'email' => ['nullable', 'email:rfc,dns', 'unique:users,email'],
             'balance' => ['nullable', 'integer'],
+            'debt' => ['nullable', 'integer'],
 
             'iin' => ['required', 'string', 'regex:/^\d{12}$/', 'unique:users,iin'],
             'id_doc_number' => ['required', 'string'],
@@ -67,6 +68,11 @@ class UserController extends Controller
             'driver_license_photo_1' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
             'driver_license_photo_2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
         ]);
+
+        if (auth()->user()->roleIs('admin') === false) {
+            unset($data['phone']);
+            unset($data['debt']);
+        }
 
         $fileNames = ['id_doc_photo_1', 'id_doc_photo_2', 'driver_license_photo_1', 'driver_license_photo_2'];
 
@@ -102,6 +108,7 @@ class UserController extends Controller
             'phone' => ['required', 'string', 'regex:/^87\d{9}$/'],
             'email' => ['nullable', 'email:rfc,dns', "unique:users,email,$id"],
             'balance' => ['nullable', 'integer'],
+            'debt' => ['nullable', 'integer'],
 
             'iin' => ['required', 'string', 'regex:/^\d{12}$/', "unique:users,iin,$id"],
             'id_doc_number' => ['required', 'string'],
@@ -121,16 +128,9 @@ class UserController extends Controller
             'driver_license_photo_2' => ['nullable', 'mimes:jpeg,jpg,png', 'max:10240'],
         ]);
 
-        if (!isset($data['name']) || $data['name'] === null) {
-            unset($data['name']);
-        }
-
-        if (!isset($data['phone']) || $data['phone'] === null) {
+        if (auth()->user()->roleIs('admin') === false) {
             unset($data['phone']);
-        }
-
-        if (!isset($data['email']) || $data['email'] === null) {
-            unset($data['email']);
+            unset($data['debt']);
         }
 
         if (isset($data['password']) && $data['password'] !== null) {

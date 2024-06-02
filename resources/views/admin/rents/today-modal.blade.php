@@ -1,6 +1,9 @@
 <a class="link-{{ $rent->end_at === null ? 'success fw-bold' : 'dark fw-lighter' }}" data-bs-toggle="modal"
     data-bs-target="#updateTodayRentModal{{ $car->state_number }}{{ $rent->id }}">
     {{ $rent->driver->name }} (@convert($rent->amount) {{ $rent->end_at !== null ? ' - ' . $rent->end_at : ''}})
+    <span class="badge rounded-pill bg-{{ $rent->is_paid ? 'success' : 'danger' }}">
+        {{ $rent->is_paid ? 'оплачено' : 'не оплачено' }}
+    </span>
 </a>
 
 <div class="modal fade" id="updateTodayRentModal{{ $car->state_number }}{{ $rent->id }}" tabindex="-1"
@@ -48,6 +51,16 @@
                         <input type="datetime-local" class="form-control" name="end_at" id="end_at" value="{{ $rent->end_at }}">
                         <label for="end_at" class="form-label">Время сдачи машины</label>
                     </div>
+
+                    @if(auth()->user()->roleIs('admin') || auth()->user()->roleIs('accountant'))
+                        <div class="form-check mb-3">
+                            <label class="form-check-label" for="is_paid">
+                                Оплатил
+                            </label>
+                            <input name="is_paid" class="form-check-input" type="checkbox" value="1" id="is_paid" {{ $rent->is_paid ? 'checked' : '' }}>
+                        </div>
+                    @endif
+
                     </br>
 
                     <!-- <h5>

@@ -132,6 +132,8 @@ class Car extends Model
     public static function getStatusesForUpdate(): array
     {
         return [
+            self::ON_RENT => 'На линии',
+            self::PASSED => 'Сдан',
             self::IN_PARKING => 'На парковке',
             self::AT_SERVICE => 'На СТО',
             self::PARKING_FINE => 'Штраф стоянка',

@@ -20,12 +20,18 @@
                 <tr>
                     <th scope="col"></th>
                     <th scope="col">ФИО</th>
-                    <th scope="col">Телефон</th>
+                    @if (auth()->user()->roleIs('admin'))
+                        <th scope="col">Телефон</th>
+                    @endif
                     <th scope="col">ИИН</th>
                     <th scope="col">Баланс</th>
+                    @if (auth()->user()->roleIs('admin'))
+                        <th scope="col">Долг</th>
+                    @endif
                     <th scope="col"></th>
                 </tr>
             </thead>
+
             <tbody id="myTable">
                 @foreach($data as $item)
                     <tr>
@@ -33,9 +39,14 @@
                             @include('icons.pen', ['name' => 'users', 'id' => $item->id])
                         </td>
                         <td>{{ $item->name }}</td>
-                        <td>{{ $item->phone }}</td>
+                        @if (auth()->user()->roleIs('admin'))
+                            <td>{{ $item->phone }}</td>
+                        @endif
                         <td>{{ $item->iin }}</td>
                         <td>@convert($item->balance)</td>
+                        @if (auth()->user()->roleIs('admin'))
+                            <td>@convert($item->debt)</td>
+                        @endif
                         <td>
                             @include('icons.trash', ['name' => 'users', 'id' => $item->id])
                         </td>
