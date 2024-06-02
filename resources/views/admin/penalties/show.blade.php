@@ -3,10 +3,23 @@
 @section('content')
 </br>
 <h2>
-    {{ $data->rent?->car?->state_number }}
-    {{ $data->rent?->car?->brand }}
-    {{ $data->rent?->car?->model }} </br>
-    {{ $data->rent?->driver?->name }}
+    @if(isset($data->rent))
+        @if(isset($data->rent->car))
+            {{ $data->rent->car?->state_number }}
+            {{ $data->rent->car?->brand }}
+            {{ $data->rent->car?->model }} </br>
+        @else
+            Автомобиль был удален
+        @endif
+
+        @if(isset($data->rent->driver))
+            {{ $data->rent->driver?->name }}
+        @else
+            Водитель был удален
+        @endif
+    @else
+        Штраф не прикреплен к аренде
+    @endif
 </h2>
 
 <form class="demo-form" method="POST" data-parsley-validate="" class="form-horizontal form-label-left" novalidate=""
@@ -20,6 +33,21 @@
             @endforeach
         </select>
         <label for="type" class="form-label">Тип <i style="color: red;">*</i></label>
+    </div>
+
+    <div class="mb-3">
+        <input class="form-control" name="rent_id" list="datalistOptions" placeholder="Выберите аренду">
+        <datalist id="datalistOptions">
+            @foreach($rents as $rent)
+            <option style="width: 300px !important;" value="{{ $rent->id }}">
+                {{ \Carbon\Carbon::parse($rent->start_at)->format('d.m.Y H:i:s') }} |
+                {{ $rent->car?->state_number }}
+                {{ $rent->car?->brand }}
+                {{ $rent->car?->model }} |
+                {{ $rent->driver?->name }}
+            </option>
+            @endforeach
+        </datalist>
     </div>
 
     <div class="form-floating mb-3">
