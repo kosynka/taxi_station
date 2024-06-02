@@ -138,14 +138,14 @@
                         @include('admin.parts.comment', ['item' => $item])
                     </td>
                     <td scope="col">
-                        @if(isset($item->rent))
+                        @if(isset($item->rent) && $item->rent?->car_id !== null)
                             <a class="link-primary" href="{{ route('cars.show', ['id' => $item->rent?->car_id]) }}">
                                 {{ $item->rent?->car?->shortDescription() }}
                             </a>
                         @endif
                     </td>
                     <td scope="col">
-                        @if(isset($item->rent) && isset($item->rent->driver))
+                        @if(isset($item->rent) && $item->rent->driver_id !== null)
                             <a class="link-primary" href="{{ route('users.show', ['id' => $item->rent?->driver_id]) }}">
                                 {{ $item->rent?->driver?->name }}
                             </a>
