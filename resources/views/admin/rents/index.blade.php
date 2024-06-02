@@ -79,7 +79,7 @@
                             <td>
                                 @if($item->todayRent()->isNotEmpty())
                                     @foreach($item->todayRent() as $rent)
-                                        @if($rent !== null || $rent->driver !== null)
+                                        @if($rent !== null && isset($rent->driver))
                                             @include('admin.rents.today-modal', [
                                                 'car' => $item,
                                                 'drivers' => $drivers,
