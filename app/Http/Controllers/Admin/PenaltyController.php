@@ -153,7 +153,7 @@ class PenaltyController extends Controller
 
     public function delete(int $id)
     {
-        $item = $this->model->find($id);
+        $item = $this->model->findOrFail($id);
 
         $item->delete();
 

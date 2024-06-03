@@ -152,7 +152,7 @@
                         @endif
                     </td>
                     <td>
-                        @include('icons.trash', ['name' => 'oilchanges', 'id' => $item->id])
+                        @include('icons.trash', ['name' => 'penalties', 'id' => $item->id])
                     </td>
                 </tr>
             @endforeach
