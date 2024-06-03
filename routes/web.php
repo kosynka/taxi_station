@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\ContractController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DebtController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\OilChangeController;
 use App\Http\Controllers\Admin\PenaltyController;
@@ -85,5 +86,14 @@ Route::group([
         Route::get('/{id}', 'show')->name('employees.show');
         Route::post('/{id}', 'update')->name('employees.update');
         Route::get('/{id}/delete', 'delete')->name('employees.delete');
+    });
+
+    Route::group(['prefix' => '/debts', 'middleware' => ['role:admin'], 'controller' => DebtController::class], function () {
+        Route::get('/', 'index')->name('debts.index');
+        Route::post('/', 'store')->name('debts.store');
+        Route::get('/create', 'create')->name('debts.create');
+        Route::get('/{id}', 'show')->name('debts.show');
+        Route::post('/{id}', 'update')->name('debts.update');
+        Route::get('/{id}/delete', 'delete')->name('debts.delete');
     });
 });

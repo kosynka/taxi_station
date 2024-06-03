@@ -16,6 +16,10 @@
         <button class="nav-link" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent" type="button" role="tab"
             aria-controls="rent" aria-selected="false">История аренд</button>
     </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="debt-tab" data-bs-toggle="tab" data-bs-target="#debt" type="button" role="tab"
+            aria-controls="debt" aria-selected="false">Долги</button>
+    </li>
 </ul>
 
 <div class="tab-content" id="myTabContent">
@@ -62,13 +66,13 @@
                 </div>
 
                 @if (auth()->user()->roleIs('admin'))
-                    <div class="col">
+                    <!-- <div class="col">
                         <div class="form-floating mb-3">
                             <input value="{{ $data->debt != null ? $data->debt : old('debt') }}" type="number" class="form-control"
                                 name="debt" id="debt">
                             <label for="debt" class="form-label">Долг, тг</label>
                         </div>
-                    </div>
+                    </div> -->
                 @endif
 
                 <div class="col">
@@ -317,6 +321,54 @@
                                         {{ $rent->car?->state_number }}
                                     </a>
                                 @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="debt" role="tabpanel" aria-labelledby="debt-tab">
+        <h2>
+            Долги
+            <a class="link-success" href="{{ route('debts.create', ['user_id' => $data->id]) }}">
+                @include('icons.plus')
+            </a>
+        </h2>
+
+        <a class="btn btn-primary mb-3" href="#"
+            onclick="download_table_as_csv('user_debts_table', ',', 'История аренд {{ $data->name }}');">
+            Выгрузить таблицу
+        </a>
+
+        <input class="form-control" id="debt-search-input" type="text" placeholder="Поиск">
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover border border-dark" id="user_debts_table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Сумма</th>
+                        <!-- <th scope="col">Статус</th> -->
+                        <th scope="col">Коммент</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+
+                <tbody id="debt-search-table">
+                    @foreach($data->debts as $debt)
+                        <tr>
+                            <td scope="col">
+                                @include('icons.pen', ['name' => 'debts', 'id' => $debt->id])
+                            </td>
+                            <td scope="col">@convert($debt->amount)</td>
+                            <!-- <td scope="col">{{ $debt->getStatus() }}</td> -->
+                            <td scope="col">{{ $debt->comment }}</td>
+                            <td scope="col">{{ $debt->created_at }}</td>
+                            <td scope="col">
+                                @include('icons.trash', ['name' => 'debts', 'id' => $debt->id])
                             </td>
                         </tr>
                     @endforeach

@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     private string $key = 'users';
     private array $metaData = ['active' => 'users'];
-    private array $relations = ['rents', 'penalties'];
+    private array $relations = ['rents', 'penalties', 'debts'];
 
     public function __construct(
         private User $model,
@@ -24,6 +24,7 @@ class UserController extends Controller
     {
         $data = $this->model
             ->with($this->relations)
+            ->withSum('debts', 'amount')
             ->where('role', 'taxi_driver')
             ->get();
 

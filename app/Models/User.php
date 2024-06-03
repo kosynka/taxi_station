@@ -32,7 +32,7 @@ class User extends Authenticatable
         'phone',
 
         'balance',
-        'debt',
+        // 'debt',
 
         'iin',
         'id_doc_number',
@@ -76,6 +76,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Rent::class, 'driver_id', 'id')
             ->orderBy('start_at', 'desc');
+    }
+
+    public function debts(): HasMany
+    {
+        return $this->hasMany(UserDebt::class, 'user_id', 'id')
+            ->orderBy('status', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc');
     }
 
     public function penalties(): HasManyThrough

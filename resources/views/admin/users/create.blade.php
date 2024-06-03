@@ -38,12 +38,12 @@
         </div>
 
         @if (auth()->user()->roleIs('admin'))
-            <div class="col">
+            <!-- <div class="col">
                 <div class="form-floating mb-3">
                     <input value="{{ old('debt') }}" type="number" class="form-control" name="debt" id="debt">
                     <label for="debt" class="form-label">Долг, тг</label>
                 </div>
-            </div>
+            </div> -->
         @endif
 
         <div class="col">

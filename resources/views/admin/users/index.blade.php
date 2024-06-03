@@ -45,7 +45,7 @@
                         <td>{{ $item->iin }}</td>
                         <td>@convert($item->balance)</td>
                         @if (auth()->user()->roleIs('admin'))
-                            <td>@convert($item->debt)</td>
+                            <td>@convert($item->debts_sum_amount)</td>
                         @endif
                         <td>
                             @include('icons.trash', ['name' => 'users', 'id' => $item->id])

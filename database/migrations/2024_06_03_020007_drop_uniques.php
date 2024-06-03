@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cars', function (Blueprint $table) {
-            $table->dropUnique('cars_state_number_unique');
-            $table->dropUnique('cars_vin_unique');
-        });
+        // Schema::create('cars', function (Blueprint $table) {
+        //     $table->dropUnique('cars_state_number_unique');
+        //     $table->dropUnique('cars_vin_unique');
+        // });
     }
 
     /**
@@ -22,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('cars', function (Blueprint $table) {
-            $table->unique('state_number');
-            $table->unique('vin');
-        });
+        // Schema::table('cars', function (Blueprint $table) {
+        //     $table->unique('state_number');
+        //     $table->unique('vin');
+        // });
     }
 };
