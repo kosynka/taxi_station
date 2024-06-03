@@ -74,7 +74,7 @@ class DebtController extends Controller
         $item->update($data);
         $item->save();
 
-        return redirect()->redirect('users.show', ['id' => $item->user_id])->with(['success' => 'Успешно изменен']);
+        return redirect()->route('users.show', ['id' => $item->user_id])->with(['success' => 'Успешно изменен']);
     }
 
     public function delete(int $id)
