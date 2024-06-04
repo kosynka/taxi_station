@@ -14,7 +14,7 @@ use App\Http\Controllers\Admin\RentController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => 'refresh_cars', 'controller' => AuthController::class], function () {
+Route::group(['controller' => AuthController::class], function () {
     Route::get('/', 'check')->name('check');
     Route::get('/custom-logout', 'logout')->name('custom.logout');
 });
@@ -40,7 +40,7 @@ Route::group([
         Route::get('/{id}/delete', 'delete')->name('users.delete')->middleware(['role:admin', 'check_permissions']);
     });
 
-    Route::group(['prefix' => '/cars', 'middleware' => ['refresh_cars'], 'controller' => CarController::class], function () {
+    Route::group(['prefix' => '/cars', 'controller' => CarController::class], function () {
         Route::get('/', 'index')->name('cars.index');
         Route::post('/', 'store')->name('cars.store')->middleware('check_permissions');
         Route::get('/create', 'create')->name('cars.create');
@@ -59,7 +59,7 @@ Route::group([
         Route::get('/{id}/delete', 'delete')->name('oilchanges.delete')->middleware('check_permissions');
     });
 
-    Route::group(['prefix' => '/rents', 'middleware' => 'refresh_cars', 'controller' => RentController::class], function () {
+    Route::group(['prefix' => '/rents', 'controller' => RentController::class], function () {
         Route::get('/', 'index')->name('rents.index');
         Route::post('/', 'store')->name('rents.store')->middleware('check_permissions');
         Route::get('/create', 'create')->name('rents.create');
