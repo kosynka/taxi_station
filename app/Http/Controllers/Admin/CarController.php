@@ -101,7 +101,7 @@ class CarController extends Controller
             'status' => [
                 'required',
                 'string',
-                'in:on_rent,in_parking,at_service,parking_fine,at_owner,weekend,accident',
+                'in:empty,passed,on_rent,in_parking,at_service,parking_fine,at_owner,weekend,accident',
             ],
             'mileage' => ['nullable ', 'integer', 'min:0'],
             'amount' => ['nullable', 'integer', 'min:0'],
