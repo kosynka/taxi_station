@@ -90,7 +90,7 @@
                 <th scope="col">Тип</th>
                 <th scope="col">Протокол</th>
                 <th scope="col">№ протокола</th>
-                <th scope="col">Дата оплаты</th>
+                <th scope="col">Дата получения протокола</th>
                 <th scope="col">Сумма</th>
                 <th scope="col">Статус</th>
                 <th scope="col">Коммент</th>

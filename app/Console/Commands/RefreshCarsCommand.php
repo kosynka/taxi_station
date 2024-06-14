@@ -26,27 +26,27 @@ class RefreshCarsCommand extends Command
      */
     public function handle()
     {
-        $cars = Car::with([
-            'rents' => function ($query) {
-                $query->whereDate('start_at', '=', date('Y-m-d', strtotime("-1 days")));
-            },
-            'rents.driver',
-        ])->get();
+        // $cars = Car::with([
+        //     'rents' => function ($query) {
+        //         $query->whereDate('start_at', '=', date('Y-m-d', strtotime("-1 days")));
+        //     },
+        //     'rents.driver',
+        // ])->get();
 
-        foreach ($cars as $car) {
-            $yesterdayRent = $car->yesterdayRent();
+        // foreach ($cars as $car) {
+        //     $yesterdayRent = $car->yesterdayRent();
 
-            if ($yesterdayRent->isNotEmpty() && $car->todayRent()->isEmpty()) {
-                $lastYesterdayRent = $yesterdayRent->sortByDesc('start_at')->first();
-                $newRent = $lastYesterdayRent->replicate();
-                $newRent->start_at = $lastYesterdayRent->start_at->addDay();
-                $newRent->end_at = null;
-                $newRent->amount = $car->amount;
-                $newRent->save();
-            }
+        //     if ($yesterdayRent->isNotEmpty() && $car->todayRent()->isEmpty()) {
+        //         $lastYesterdayRent = $yesterdayRent->sortByDesc('start_at')->first();
+        //         $newRent = $lastYesterdayRent->replicate();
+        //         $newRent->start_at = $lastYesterdayRent->start_at->addDay();
+        //         $newRent->end_at = null;
+        //         $newRent->amount = $car->amount;
+        //         $newRent->save();
+        //     }
 
-            $car->update(['status' => Car::EMPTY]);
-            $car->save();
-        }
+        //     $car->update(['status' => Car::EMPTY]);
+        //     $car->save();
+        // }
     }
 }

@@ -37,7 +37,7 @@
 
     <div class="form-floating mb-3">
         <input type="datetime-local" class="form-control" name="paid_at" id="paid_at" required>
-        <label for="paid_at" class="form-label">Дата оплаты</label>
+        <label for="paid_at" class="form-label">Дата получения протокола</label>
     </div>
 
     <div class="form-floating mb-3">

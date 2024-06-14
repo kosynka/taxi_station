@@ -23,6 +23,7 @@ Route::group([
     'prefix' => '/',
     'middleware' => [
         'auth:sanctum',
+        'refresh_cars',
         'role:admin,seating_manager,mechanic,accountant,investor,manager',
     ],
 ], function () {

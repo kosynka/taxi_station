@@ -26,6 +26,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script> 
+
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -170,6 +172,16 @@
         });
 
         @if(auth()->user()->role === 'admin')
+            function download_table_as_excel(table_id, separator = ',', file_name = 'export') {
+                $('#' + table_id).table2excel({
+                    exclude: ".no-export",
+                    filename: "download.xls",
+                    fileext: ".xls",
+                    exclude_links: true,
+                    exclude_inputs: true
+                });
+            }
+
             function download_table_as_csv(table_id, separator = ',', file_name = 'export') {
                 var rows = document.querySelectorAll('table#' + table_id + ' tr');
                 var csv = [];

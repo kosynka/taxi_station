@@ -36,17 +36,7 @@ class RefreshCars
                 $newRent->save();
             }
 
-            $updated_at = \Carbon\Carbon::parse('2024-06-03 12:18:37')->toDateString();
-
-            dd(
-                $updated_at,
-                // $car->created_at,
-                \Carbon\Carbon::yesterday()->toDateString(),
-                $updated_at === \Carbon\Carbon::yesterday()->toDateString(),
-                // $car->created_at > \Carbon\Carbon::yesterday(),
-            );
-
-            if ($car->updated_at >= \Carbon\Carbon::yesterday()) {
+            if ($car->updated_at <= \Carbon\Carbon::today()) {
                 $car->update(['status' => Car::EMPTY]);
                 $car->save();
             }
