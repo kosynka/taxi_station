@@ -100,7 +100,13 @@ class RentController extends Controller
             }
         }
 
-        if (empty($historyByDays) || !isset($historyByDays[1]) || !array_key_exists('dates', $historyByDays[1])) {
+        if (!empty($historyByDays)) {
+            $last = last($historyByDays);
+        } else {
+            $last = [];
+        }
+
+        if (empty($historyByDays) || empty($last) || !array_key_exists('dates', $last)) {
             $dates = [];
             $historyByDays = [];
         } else {
