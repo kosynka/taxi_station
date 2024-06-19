@@ -110,7 +110,7 @@ class RentController extends Controller
             $dates = [];
             $historyByDays = [];
         } else {
-            $dates = array_keys($historyByDays[1]['dates']);
+            $dates = array_keys($last['dates']);
             $dates = array_map(function ($date) {
                 return \Carbon\Carbon::parse($date)->format('d.m.Y');
             }, $dates);
