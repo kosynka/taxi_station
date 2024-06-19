@@ -74,6 +74,20 @@ class Car extends Model
             ->get();
     }
 
+    public function lastRent()
+    {
+        return $this->rents()
+            ->first();
+    }
+
+    public function notTodayRent()
+    {
+        return $this->rents()
+            ->whereDate('start_at', '!=', now()->toDateString())
+            ->orderBy('start_at', 'desc')
+            ->first();
+    }
+
     public function yesterdayRent(): Collection
     {
         return $this->rents()

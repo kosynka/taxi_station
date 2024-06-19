@@ -83,7 +83,7 @@
 </form>
 
 <div class="table-responsive">
-    <table class="table table-bordered table-hover border border-dark" id="penalties_table">
+    <table class="table table-sm table-bordered table-hover border border-dark" id="penalties_table">
         <thead>
             <tr>
                 <th scope="col"></th>

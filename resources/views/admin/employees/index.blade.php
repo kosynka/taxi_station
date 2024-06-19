@@ -11,7 +11,7 @@
     <input class="form-control" id="myInput" type="text" placeholder="Поиск">
 
     <div class="table-responsive">
-        <table class="table table-bordered table-hover border border-dark">
+        <table class="table table-sm table-bordered table-hover border border-dark">
             <thead>
                 <tr>
                     <th scope="col"></th>

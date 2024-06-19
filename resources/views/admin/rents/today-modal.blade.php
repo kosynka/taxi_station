@@ -6,6 +6,8 @@
     </span>
 </a>
 
+@include('icons.trash', ['name' => 'rents', 'id' => $rent->id])
+
 <div class="modal fade" id="updateTodayRentModal{{ $car->state_number }}{{ $rent->id }}" tabindex="-1"
     aria-labelledby="updateTodayRentModal{{ $car->state_number }}{{ $rent->id }}Label" aria-hidden="true">
     <div class="modal-dialog modal-lg">

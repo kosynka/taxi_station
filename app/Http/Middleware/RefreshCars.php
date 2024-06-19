@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Models\Car;
-use App\Models\Rent;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,18 +24,17 @@ class RefreshCars
             ])->get();
 
         foreach ($cars as $car) {
-            $yesterdayRent = $car->yesterdayRent();
+            $lastRent = $car->notTodayRent();
 
-            if ($yesterdayRent->isNotEmpty() && $car->todayRent()->isEmpty()) {
-                $lastYesterdayRent = $yesterdayRent->sortByDesc('start_at')->first();
-                $newRent = $lastYesterdayRent->replicate();
-                $newRent->start_at = $lastYesterdayRent->start_at->addDay();
+            if (isset($lastRent) && $car->todayRent()->isEmpty() && $car->updated_at <= today()) {
+                $newRent = $lastRent->replicate();
+                $newRent->start_at = now()->toDateString() . $lastRent->start_at->toTimeString();
                 $newRent->end_at = null;
                 $newRent->amount = $car->amount;
                 $newRent->save();
             }
 
-            if ($car->updated_at <= \Carbon\Carbon::today()) {
+            if ($car->updated_at <= today()) {
                 $car->update(['status' => Car::EMPTY]);
                 $car->save();
             }

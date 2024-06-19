@@ -222,7 +222,7 @@
         <input class="form-control" id="penalty-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-bordered table-hover border border-dark" id="user_penalties_table">
+            <table class="table table-sm table-bordered table-hover border border-dark" id="user_penalties_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -295,7 +295,7 @@
         <input class="form-control" id="rent-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-bordered table-hover border border-dark" id="user_rents_table">
+            <table class="table table-sm table-bordered table-hover border border-dark" id="user_rents_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -345,7 +345,7 @@
         <input class="form-control" id="debt-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-bordered table-hover border border-dark" id="user_debts_table">
+            <table class="table table-sm table-bordered table-hover border border-dark" id="user_debts_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>

@@ -38,7 +38,7 @@
 
         <!-- TODAY TABLE -->
         <div class="table-responsive">
-            <table class="table table-bordered table-hover border border-dark" id="today_rents_table">
+            <table class="table table-sm table-bordered table-hover border border-dark" id="today_rents_table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>

@@ -161,7 +161,7 @@
         <input class="form-control" id="penalty-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-bordered table-hover border border-dark" id="car_penalties_table">
+            <table class="table table-sm table-bordered table-hover border border-dark" id="car_penalties_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -233,7 +233,7 @@
         <input class="form-control" id="rent-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-bordered table-hover border border-dark" id="car_rents_table">
+            <table class="table table-sm table-bordered table-hover border border-dark" id="car_rents_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
@@ -282,7 +282,7 @@
         <input class="form-control" id="oilchange-search-input" type="text" placeholder="Поиск">
 
         <div class="table-responsive">
-            <table class="table table-bordered table-hover border border-dark" id="car_oilchanges_table">
+            <table class="table table-sm table-bordered table-hover border border-dark" id="car_oilchanges_table">
                 <thead>
                     <tr>
                         <th scope="col"></th>
